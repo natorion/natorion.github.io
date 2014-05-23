@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a4b5889-5491-47a3-a2e5-f39af11d4c27" name="Default" comment="Included dynamic footer&#10;Cleaned up not needed files">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/includes/footer.js" />
-      <change type="DELETED" beforePath="D:\Daten\Dropbox\git\natorion.github.io\css\bootstrap-theme.css" afterPath="" />
-      <change type="DELETED" beforePath="D:\Daten\Dropbox\git\natorion.github.io\css\bootstrap-theme.css.map" afterPath="" />
-      <change type="DELETED" beforePath="D:\Daten\Dropbox\git\natorion.github.io\css\bootstrap-theme.min.css" afterPath="" />
-      <change type="DELETED" beforePath="D:\Daten\Dropbox\git\natorion.github.io\css\bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="D:\Daten\Dropbox\git\natorion.github.io\css\starter-template.css" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/includes/navbar.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ImpactMapsForProcessImprovements.html" afterPath="$PROJECT_DIR$/ImpactMapsForProcessImprovements.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/content/ImpactMapsForTeamImprovements.html" afterPath="$PROJECT_DIR$/content/ImpactMapsForTeamImprovements.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bio.html" afterPath="$PROJECT_DIR$/bio.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/bootstrap.css" afterPath="$PROJECT_DIR$/css/bootstrap.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="natorion.github.io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -38,8 +33,8 @@
       <file leaf-file-name="bio.html" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bio.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5862069" vertical-offset="102" max-vertical-offset="1411">
-              <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.33214286" vertical-offset="528" max-vertical-offset="1139">
+              <caret line="42" column="27" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -49,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/js/bootstrap.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="33269">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -81,21 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="bootstrap.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/css/bootstrap.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.285714" vertical-offset="97925" max-vertical-offset="98498">
-              <caret line="5769" column="19" selection-start-line="5769" selection-start-column="19" selection-end-line="5769" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ImpactMapsForProcessImprovements.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ImpactMapsForProcessImprovements.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.730769" vertical-offset="1413" max-vertical-offset="1921">
-              <caret line="98" column="69" selection-start-line="98" selection-start-column="69" selection-end-line="98" selection-end-column="69" />
+            <state vertical-scroll-proportion="-6.6923075" vertical-offset="455" max-vertical-offset="1632">
+              <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -114,9 +99,41 @@
       <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.538462" vertical-offset="1281" max-vertical-offset="1853">
-              <caret line="93" column="4" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="69" />
+            <state vertical-scroll-proportion="-6.269231" vertical-offset="517" max-vertical-offset="1564">
+              <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="navbar.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/includes/navbar.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-1.7894737" vertical-offset="0" max-vertical-offset="663">
+              <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+              <folding>
+                <marker date="1400843708381" expanded="true" signature="137:165" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:198" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:287" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:299" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:343" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:376" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:427" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:472" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:483" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:497" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:497" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:495" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:507" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="137:520" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="166:198" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="199:287" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="199:300" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="344:496" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="344:376" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="377:484" placeholder="..." />
+                <marker date="1400843708381" expanded="true" signature="377:427" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -142,9 +159,10 @@
         <option value="$PROJECT_DIR$/includes/footer.js" />
         <option value="$PROJECT_DIR$/content/ImpactMapsForTeamImprovements.html" />
         <option value="$PROJECT_DIR$/css/bootstrap.css" />
+        <option value="$PROJECT_DIR$/bio.html" />
+        <option value="$PROJECT_DIR$/includes/navbar.js" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/ImpactMapsForProcessImprovements.html" />
-        <option value="$PROJECT_DIR$/bio.html" />
       </list>
     </option>
   </component>
@@ -236,6 +254,20 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="Images" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natorion.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="natorion.github.io" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="css" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -311,6 +343,9 @@
     </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="0a4b5889-5491-47a3-a2e5-f39af11d4c27" name="Default" comment="" />
@@ -321,16 +356,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1634" height="1066" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32985386" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32985386" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21384425" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39979124" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32985386" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21384425" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39979124" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32985386" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -380,18 +415,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/includes/footer.js">
+    <entry file="file://$PROJECT_DIR$/js/jquery.min.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="119">
-          <caret line="0" column="44" selection-start-line="0" selection-start-column="44" selection-end-line="0" selection-end-column="44" />
-          <folding />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="170">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bootstrap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="33269">
+          <caret line="11" column="35" selection-start-line="11" selection-start-column="35" selection-end-line="11" selection-end-column="35" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/bootstrap.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.285714" vertical-offset="97925" max-vertical-offset="98498">
-          <caret line="5769" column="19" selection-start-line="5769" selection-start-column="19" selection-end-line="5769" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="64137" max-vertical-offset="98498">
+          <caret line="3784" column="0" selection-start-line="3784" selection-start-column="0" selection-end-line="3784" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -406,46 +453,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/bootstrap.js">
+    <entry file="file://$PROJECT_DIR$/includes/footer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="33269">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/jquery.min.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="170">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ImpactMapsForProcessImprovements.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.730769" vertical-offset="1413" max-vertical-offset="1921">
-          <caret line="98" column="69" selection-start-line="98" selection-start-column="69" selection-end-line="98" selection-end-column="69" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="119">
+          <caret line="0" column="44" selection-start-line="0" selection-start-column="44" selection-end-line="0" selection-end-column="44" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/includes/navbar.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.7894737" vertical-offset="0" max-vertical-offset="663">
+          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
+          <folding>
+            <marker date="1400843708381" expanded="true" signature="137:165" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:198" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:287" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:299" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:343" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:376" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:427" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:472" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:483" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:497" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:497" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:495" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:507" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="137:520" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="166:198" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="199:287" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="199:300" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="344:496" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="344:376" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="377:484" placeholder="..." />
+            <marker date="1400843708381" expanded="true" signature="377:427" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.538462" vertical-offset="1281" max-vertical-offset="1853">
-          <caret line="93" column="4" selection-start-line="93" selection-start-column="4" selection-end-line="93" selection-end-column="69" />
+        <state vertical-scroll-proportion="-6.269231" vertical-offset="517" max-vertical-offset="1564">
+          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ImpactMapsForProcessImprovements.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.6923075" vertical-offset="455" max-vertical-offset="1632">
+          <caret line="37" column="4" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bio.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5862069" vertical-offset="102" max-vertical-offset="1411">
-          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.33214286" vertical-offset="528" max-vertical-offset="1139">
+          <caret line="42" column="27" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
           <folding />
         </state>
       </provider>
