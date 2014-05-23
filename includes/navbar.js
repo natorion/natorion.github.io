@@ -13,8 +13,8 @@ navbarDivision.innerHTML = '<div class="navbar navbar-inverse" role="navigation"
     </div>\
     <div class="collapse navbar-collapse">\
     <ul class="nav navbar-nav">\
-        <li><a href="index.html">Cabinet</a></li>\
-        <li><a href="bio.html">Bio</a></li>\
+        <li><a href="index.html"><span class="glyphicon glyphicon-th"></span> Cabinet</a></li>\
+        <li><a href="bio.html"><span class="glyphicon glyphicon-user"></span> Bio</a></li>\
     </ul>\
     </div>\
     </div>\
