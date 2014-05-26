@@ -277,7 +277,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  background-color: #999999;
+  background-color: #BBBBBB;
 }
 input,
 button,
@@ -5786,4 +5786,7 @@ button.close {
 
 div.footer {
     font-size: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-top: 1px solid #000;
 }
