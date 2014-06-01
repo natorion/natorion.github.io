@@ -14,7 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="TeamCanvas.svg">
+   sodipodi:docname="TeamCanvas.svg"
+   inkscape:export-filename="D:\Daten\Dropbox\git\natorion.github.io\images\TeamCanvas.png"
+   inkscape:export-xdpi="51.259998"
+   inkscape:export-ydpi="51.259998">
   <defs
      id="defs4">
     <marker
@@ -101,10 +104,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.0899154"
-     inkscape:cx="526.18109"
-     inkscape:cy="372.04724"
+     inkscape:cx="430.74417"
+     inkscape:cy="225.24686"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer5"
      showgrid="true"
      inkscape:snap-page="false"
      inkscape:snap-bbox="true"
@@ -134,6 +137,19 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Background"
+     sodipodi:insensitive="true">
+    <rect
+       y="0"
+       x="0"
+       height="744.09448"
+       width="1052.3622"
+       id="rect4085"
+       style="fill:#ffffff;stroke:#000000;display:inline" />
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer3"
@@ -167,7 +183,9 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Grid">
+     inkscape:label="Grid"
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        style="fill:none;stroke:#000000"
        id="rect2990"
@@ -298,7 +316,7 @@
          x="10"
          y="442.09448"
          style="font-size:22px"
-         id="tspan7621-8-4">Target state</tspan></text>
+         id="tspan7621-8-4">Verified improvements</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -347,5 +365,137 @@
          y="684.09448"
          style="font-size:22px"
          id="tspan7621-8-1-1">Impacted people</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Descriptions"
+     sodipodi:insensitive="true">
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="10.734375"
+       y="256.31714"
+       id="text3031"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3033"
+         x="10.734375"
+         y="256.31714">How does your </tspan><tspan
+         sodipodi:role="line"
+         x="10.734375"
+         y="276.31714"
+         id="tspan3035">future looks like?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="398.69672"
+       y="43.906982"
+       id="text3031-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="398.69672"
+         y="43.906982"
+         id="tspan3035-4">How should the team be defined?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="190.6875"
+       y="256.31714"
+       id="text3031-0"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="190.6875"
+         y="256.31714"
+         id="tspan3035-48">What hurts currently</tspan><tspan
+         sodipodi:role="line"
+         x="190.6875"
+         y="276.31714"
+         id="tspan3886">the most?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="426.92188"
+       y="254.72729"
+       id="text3031-0-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="426.92188"
+         y="254.72729"
+         id="tspan3886-4">What needs to be done in order</tspan><tspan
+         sodipodi:role="line"
+         x="426.92188"
+         y="274.72729"
+         id="tspan3924">to reach the target state?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="758.9375"
+       y="254.9187"
+       id="text3031-0-8-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="758.9375"
+         y="254.9187"
+         id="tspan3924-1">How to check if the</tspan><tspan
+         sodipodi:role="line"
+         x="758.9375"
+         y="274.9187"
+         id="tspan3952">action is a success?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="10.6875"
+       y="473.90698"
+       id="text3031-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="10.6875"
+         y="473.90698"
+         id="tspan3035-1">What action is a success?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="359.0625"
+       y="470.91479"
+       id="text3031-7-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="359.0625"
+         y="470.91479"
+         id="tspan3035-1-2">What is needed to implement the action?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="359.0625"
+       y="550.91479"
+       id="text3031-7-5-7"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="359.0625"
+         y="550.91479"
+         id="tspan3035-1-2-6">Who do we need to implement the action?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="359.0625"
+       y="630.91479"
+       id="text3031-7-5-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="359.0625"
+         y="630.91479"
+         id="tspan3035-1-2-4">Who is driving the action forward?</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
+       x="359.0625"
+       y="715.74292"
+       id="text3031-7-5-1-2"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         x="359.0625"
+         y="715.74292"
+         id="tspan3035-1-2-4-3">Who will feel the impact of the implemented action?</tspan></text>
   </g>
 </svg>
