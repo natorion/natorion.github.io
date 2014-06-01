@@ -105,9 +105,9 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.0899154"
      inkscape:cx="430.74417"
-     inkscape:cy="225.24686"
+     inkscape:cy="335.34715"
      inkscape:document-units="px"
-     inkscape:current-layer="layer5"
+     inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:snap-page="false"
      inkscape:snap-bbox="true"
@@ -133,7 +133,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -369,8 +369,7 @@
   <g
      inkscape:groupmode="layer"
      id="layer1"
-     inkscape:label="Descriptions"
-     sodipodi:insensitive="true">
+     inkscape:label="Descriptions">
     <text
        xml:space="preserve"
        style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
@@ -385,7 +384,7 @@
          sodipodi:role="line"
          x="10.734375"
          y="276.31714"
-         id="tspan3035">future looks like?</tspan></text>
+         id="tspan3035">future look like?</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:16px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#666666;fill-opacity:1;stroke:none;font-family:Sans"
