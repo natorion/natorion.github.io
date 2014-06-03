@@ -133,7 +133,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -421,7 +421,7 @@
          sodipodi:role="line"
          x="426.92188"
          y="254.72729"
-         id="tspan3886-4">What needs to be done in order</tspan><tspan
+         id="tspan3886-4">What is done in order</tspan><tspan
          sodipodi:role="line"
          x="426.92188"
          y="274.72729"
