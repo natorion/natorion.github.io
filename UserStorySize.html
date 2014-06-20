@@ -35,7 +35,7 @@
 
       <div>
 		<h1>Reducing the size of a User Story to fit in a sprint</h1>
-		<p>v0.2</p>
+		<p>v0.4</p>
 		<h2>Motivation</h2>
 			<p>User Stories should be small enough to fit easily into one Sprint. The better their rank in the Product Backlog the smaller they should be. The standard approach would be to split the User Story in vertical slices. If this is not possible or not enough other techniques need to be used.
 <h2>A warning</h2>
@@ -55,12 +55,33 @@
 <h2>Resizing techniques for each dimension</h2>
 Some techniques acknowledge that there are times when it is not (easily) possible to deliver the customer value of a User Story in one Sprint. Especially when working with legacy applications this can occur. The best thing would be to recognize this problem and adress it. Sometimes this is not desireable e.g. team has other problems than this and cannot do even more improvements at the same time. Nevertheless the problem should be acknowledged and be planned in with the following thought in mind: "We have a problem there and we are doing ... <strong> for now</strong> to adress it."
 <h3>Functionality</h3>
-<p>Apply here the classical vertical slicing techniques. There are numerous good books and articels on this. Keep in mind that this is the only dimension which may really reduce the amount of Story Points of a User Story.  
+<p>Apply here the classical vertical slicing techniques. There are numerous good books and articles on this. Keep in mind that this is the only dimension which may really reduce the amount of Story Points of a User Story.
  <h3>Repetition</h3>
 <p>Let's suppose it is needed to refactor 100 similar classes and this is simply to big to be achievable in one Sprint. The following techniques might help in this case:
 <ul>
 	<li>Slice it user components (vertically): Vertical slices should also have an impact on the touched classes.  If 100 classes are representing 4 related but different workflows you might get 4 User Stories out of it. This is the optimal solution as you will deliver real value at the end of the Sprint. </li>
 <li>Slice it by technical components: Especially in legacy applications the architecture of the app cannot keep up with the fast delivery mechanism of Agile development. In that case the architecture is not emerged and thus it is difficult to make a big impact by vertical slicing. Try slicing it by technical component e.g. the 100 classes are distributed over 6 assemblies. So you can make 6 "technical" User Stories - one for each assembly. It is not optimal but at least you have a checkpoint after one Sprint.
+          </li>
+          </ul>
+          <h3>Complexity</h3>
+            <p>Optimizing a complex algorithm takes more effort than implementing Bubble Sort. The following techniques support one to reduce this dimension:</p>
+            <ul>
+                <li>Prototypes: Perfect for trying out designs and ideas. Just make sure that you are really creating prototypes and throwing them away afterwards.
+                If this is not the case you are putting to much effort into your prototypes and your teams performance will suffer.</li>
+                <li>Research: Good old real research is often overlooked. </li>
+            </ul>
+          <h3>Uncertainty</h3>
+            <p>This is the dimension of the known unknowns. Will the new library work out as expected? Who knows without knowledge? You can use the follow techniques
+            to attack this dimension:</p>
+                <ul>
+                    <li>Ask experts: If the guy from the other department has already worked with the specific library it is a good idea to ask him for some hints :-).</li>
+                    <li>Research: Check out those API docs/tutorials/...</li>
+                    <li>Plan B: What are we going to do if the library is not suitable? Do we have a Plan B? What is your contingency plan? Obviously this can also increase the size.</li>
+                    <li>Prototypes: Try out the things you need with the new library.</li>
+                </ul>
+          <h2>Final thoughts</h2>
+          <p>Keep in mind that every activity which do not generate value is waste. So vertical slicing is almost always the best idea to fit User Stories in a Sprint.
+          The additional techniques can be easily be used for covering up impediments, so use them with care.
       </div>
         <span id="feedback"></span>
         <script type="text/javascript" src="includes/feedback.js"></script>
