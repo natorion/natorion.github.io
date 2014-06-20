@@ -35,12 +35,32 @@
 
       <div>
 		<h1>Reducing the size of a User Story to fit in a sprint</h1>
-		<p>v0.1</p>
-
+		<p>v0.2</p>
+		<h2>Motivation</h2>
+			<p>User Stories should be small enough to fit easily into one Sprint. The better their rank in the Product Backlog the smaller they should be. The standard approach would be to split the User Story in vertical slices. If this is not possible or not enough other techniques need to be used.
+<h2>A warning</h2>
+<p>Estimates should not be the goal as in most cases they do not add value. Although making estimates will positively impact discussions regarding an User Story. The goal of this reducing techniques is the same: <i>Encourage discussions and a little bit of risk management.</i>
 		<h2>Concept</h2>
         <p><img src="images/SizeOfUS.png" alt="Concept for  Reducing the size of a User Story to fit in an iteration" />
 
         </p>
+<h2>What defines the size of a User Story?</h2>
+<p>I really like the size defintion by <a href="https://www.goodreads.com/book/show/16269900-scrum-shortcuts-without-cutting-corners?ac=1">Ian Goldstein</a>. I have swapped the Risk component with Uncertainty as this seems to be better understandable when teaching. The following three dimensions compose the size of a User Story:
+<ul>
+	<li>Functionality: The amount of user functionality covered.</li>
+	<li>Repetition: The amount of similar work to do e.g. refactoring one class has a smaller size tha refactoring 100 classes (in general)</li>
+<li>Complexity: The difficulty level of the work e.g. optimizing a complex ranking algorithm is bigger than implementing simple Bubble Sort.</li>
+<li>Uncertainty: The amount of certainty that everything goes "according to plan" e.g. using an unknown library for implementing a User Story might not work out as expected and thus takes longer to implement and test.</li>
+</ul> 
+<h2>Resizing techniques for each dimension</h2>
+Some techniques acknowledge that there are times when it is not (easily) possible to deliver the customer value of a User Story in one Sprint. Especially when working with legacy applications this can occur. The best thing would be to recognize this problem and adress it. Sometimes this is not desireable e.g. team has other problems than this and cannot do even more improvements at the same time. Nevertheless the problem should be acknowledged and be planned in with the following thought in mind: "We have a problem there and we are doing ... <strong> for now</strong> to adress it."
+<h3>Functionality</h3>
+<p>Apply here the classical vertical slicing techniques. There are numerous good books and articels on this. Keep in mind that this is the only dimension which may really reduce the amount of Story Points of a User Story.  
+ <h3>Repetition</h3>
+<p>Let's suppose it is needed to refactor 100 similar classes and this is simply to big to be achievable in one Sprint. The following techniques might help in this case:
+<ul>
+	<li>Slice it user components (vertically): Vertical slices should also have an impact on the touched classes.  If 100 classes are representing 4 related but different workflows you might get 4 User Stories out of it. This is the optimal solution as you will deliver real value at the end of the Sprint. </li>
+<li>Slice it by technical components: Especially in legacy applications the architecture of the app cannot keep up with the fast delivery mechanism of Agile development. In that case the architecture is not emerged and thus it is difficult to make a big impact by vertical slicing. Try slicing it by technical component e.g. the 100 classes are distributed over 6 assemblies. So you can make 6 "technical" User Stories - one for each assembly. It is not optimal but at least you have a checkpoint after one Sprint.
       </div>
         <span id="feedback"></span>
         <script type="text/javascript" src="includes/feedback.js"></script>
