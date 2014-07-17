@@ -34,12 +34,10 @@
     <div class="container">
 
       <div>
-		<h1>Duration, Effort, Relative Size - Difference in scales</h1>
+		<h1>Duration, Effort, Size - Difference in scales</h1>
         <p>There exist several scales which can be used to estimate development work. Everyone of them can be used for a specific purpose and is not interchangeable.
             Although they can be transformed to each other with a bit of magic.
         </p>
-        <h2>Example used through this article</h2>
-          <p>Suppose you want to transport 1000 kg of package from Vienna to Berlin. </p>
         <h2>Estimating the duration of something</h2><i>How long does it take?</i>
         <p>This is often the type of estimation Management (with a big M intentionally) wants when they asked for estimations. The fun part is that the answer
         most of the time is: <i>It depends. </i>The reason for that will get clearer when we have a look at the parameters influencing duration:</p>
@@ -61,13 +59,29 @@
               <li>Unproductive/Wait time: 2 h (heavy traffic jam)</li>
               <li>Time spent on other tasks: 1 h (one detour to Prague)</li>
           </ul>
-        <p>So the duration will be 10 hours.</p>
-        <h3>Application of Lean to reduce duration</h3>
-        TBI
+        <p>So the duration will be 10 hours. This estimation is highly dependable on multiple parameters. If only one of them changes the whole estimation is off (a lot).</p>
         <h2>Estimating the effort of something</h2><i>How much does it cost?</i>
-        TBI
+        There is one parameter describing the effort:
+          <ul>
+              <li>Skill of <i>working entities</i> working on the task</li>
+          </ul>
+        <p>This means if there is a difference between the estimator and the implementer this will have a (big) impact on the estimation. Here are some examples: </p>
+          <table class="table table-bordered">
+              <thead><tr><th>Low skill</th><th>High skill</th></tr></thead>
+              <tr><td>Junior Programmer</td><td>Senior Programmer</td></tr>
+              <tr><td>Car</td><td>Jet</td></tr>
+              <tr><td>Small packaging machine</td><td>Big packaging machine</td></tr>
+          </table>
         <h2>Estimating the size of something</h2><i>How big is it?</i>
-        TBI
+        Absolute size is very hard to estimate if the numbers get bigger. It is easy to estimate if something is one or two meters tall. I will have a very hard time to
+          estimate the height of the skyscraper over there. Comparing two skyscrapers standing next to each other is a lot easier. In a software project an absolute size
+          would be:
+          <ul>
+              <li>Changed classes</li>
+              <li>Lines of code added</li>
+              <li>Function points created</li>
+              <li>Acceptance criteria implemented</li>
+          </ul>
         <span id="feedback"></span>
         <script type="text/javascript" src="includes/feedback.js"></script>
 
