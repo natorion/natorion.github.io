@@ -34,7 +34,7 @@
     <div class="container">
 
       <div>
-		<h1>Duration, Man Days, Effort, Story Points, Size - Difference in scales</h1>
+		<h1>Duration, Effort, Relative Size - Difference in scales</h1>
         <p>There exist several scales which can be used to estimate development work. Everyone of them can be used for a specific purpose and is not interchangeable.
             Although they can be transformed to each other with a bit of magic.
         </p>
@@ -45,23 +45,23 @@
         most of the time is: <i>It depends. </i>The reason for that will get clearer when we have a look at the parameters influencing duration:</p>
         <ul>
             <li>Effort needed to finish the task</li>
-            <li>Amount of people working on the task (minus communication overhead)</li>
-            <li>Skill of people working on the task (how much effort can they pull of per time unit)</li>
-            <li>Wait time</li>
+            <li>Amount of <i>working entities</i> working on the task (minus communication overhead)</li>
+            <li>Skill of  <i>working entities</i> working on the task (how much effort can they pull of per time unit)</li>
+            <li>Unproductive/Wait time</li>
             <li>Time spent on other tasks</li>
         </ul>
         <p>So in order to create a good enough estimate for the duration of a task, the parameters need to be frozen at the time of estimation. This is
           a quite difficult constraint for long term tasks.</p>
         <h3>Example for duration</h3>
-        <p>Let's model the question "How long does it take to transport 1000 kg of package from Vienna to Berlin?":</p>
+        <p>Let's model the question "How long does it take to transport one tiny package from Vienna to Berlin?":</p>
           <ul>
-              <li>Effort needed to finish the task: 1000 kg</li>
-              <li>Amount of people working on the task (minus communication overhead): 1 postal service</li>
-              <li>Skill of people working on the task (how much effort can they pull of per time unit): Transportation by air so it takes 2 hours to transport 1000 kg</li>
-              <li>Wait time: 2 h to wait until you can give the package to the postal service (they are not yet open)</li>
-              <li>Time spent on other tasks: 0</li>
+              <li>Effort needed to finish the task: ~ 700 km</li>
+              <li>Amount of <i>working entities</i> working on the task (minus communication overhead): one car</li>
+              <li>Skill of <i>working entities</i> working on the task (how much effort can they pull of per time unit): 100 km/h</li>
+              <li>Unproductive/Wait time: 2 h (heavy traffic jam)</li>
+              <li>Time spent on other tasks: 1 h (one detour to Prague)</li>
           </ul>
-
+        <p>So the duration will be 10 hours.</p>
         <h3>Application of Lean to reduce duration</h3>
         TBI
         <h2>Estimating the effort of something</h2><i>How much does it cost?</i>
