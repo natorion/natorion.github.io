@@ -42,39 +42,26 @@
           <p>Relative estimations are a lot easier than absolute ones. For further information on this topic just ask your favourite search engine.
               The following examples are absolute size measures:
           <ul>
-              <li>Changed classes</li>
-              <li>Lines of code added</li>
-              <li>Function points created</li>
-              <li>Acceptance criteria implemented</li>
-              <li>Distance between two locations</li>
+              <li>Amount of changed classes</li>
+              <li>Amount of lines of code added</li>
+              <li>Amount of function points created</li>
+              <li>Amount of acceptance criteria implemented</li>
+              <li>Distance in km between two locations</li>
           </ul>
-
-
-        <h2>Estimating the duration of something</h2><i>How long does it take?</i>
-        <p>This is often the type of estimation Management (with a big M intentionally) wants when they asked for estimations. The fun part is that the answer
-        most of the time is: <i>It depends. </i>The reason for that will get clearer when we have a look at the parameters influencing duration:</p>
-        <ul>
-            <li>Size of the task</li>
-            <li>Amount of <i>working entities</i> working on the task (minus coordination overhead)</li>
-            <li>Skill of  <i>working entities</i> working on the task (how much effort can they pull of per time unit)</li>
-            <li>Coordination overhead</li>
-            <li>Unproductive/Wait time</li>
-            <li>Time spent on other tasks</li>
-        </ul>
-        <p>So in order to create a good enough estimate for the duration of a task, the parameters need to be frozen at the time of estimation. This is
-          a quite difficult constraint for long term tasks.</p>
-        <h3>Example for duration</h3>
-        <p>Let's model the question "How long does it take to transport one tiny package from Vienna to Berlin?":</p>
+            <p>Compared to relative size measures: </p>
           <ul>
-              <li>Size of the task: ~ 700 km</li>
-              <li>Amount of <i>working entities</i> working on the task (minus communication overhead): one car</li>
-              <li>Skill of <i>working entities</i> working on the task (how much effort can they pull of per time unit): 100 km/h</li>
-              <li>Unproductive/Wait time: 2 h (heavy traffic jam)</li>
-              <li>Time spent on other tasks: 1 h (one detour to Prague)</li>
+              <li>Changed classes compared to ...</li>
+              <li>Lines of code added compared to ...</li>
+              <li>Function points created compared to ...</li>
+              <li>Acceptance criteria implemented compared to ...</li>
+              <li>Distance between two locations compared to ...</li>
           </ul>
-        <p>So the duration will be 10 hours. This estimation is highly dependable on multiple parameters.
-            If only one of them changes the whole estimation is off (a lot). This means you want to do this estimation as late as possible so most of the parameters
-            are "fixed".</p>
+            <p>So if I know the correct absolute measure of the comparison reference I am able to easily calculate the <b>estimations</b> for the other items.
+          For example I estimate that the distance between Vienna and Berlin is double the distance between Vienna and Munich. I did a trip to Munich last week so I
+          know that the distance between Vienna and Munich is ~ 350 km. This means the distance Vienna to Berlin should be ~ 700 km
+                (it is ~ <a href="http://www.travelmath.com/drive-distance/from/Berlin,+Germany/to/Vienna,+Austria">690 km</a> by the way).
+
+
         <h2>Estimating the effort of something</h2><i>How much does it cost?</i>
         There is one parameter describing the effort:
           <ul>
@@ -95,7 +82,31 @@
           </ul>
 
 
-          <p></p>
+          <h2>Estimating the duration of something</h2><i>How long does it take?</i>
+          <p>This is often the type of estimation Management (with a big M intentionally) wants when they asked for estimations. The fun part is that the answer
+              most of the time is: <i>It depends. </i>The reason for that will get clearer when we have a look at the parameters influencing duration:</p>
+          <ul>
+              <li>Size of the task</li>
+              <li>Amount of <i>working entities</i> working on the task (minus coordination overhead)</li>
+              <li>Skill of  <i>working entities</i> working on the task (how much effort can they pull of per time unit)</li>
+              <li>Coordination overhead</li>
+              <li>Unproductive/Wait time</li>
+              <li>Time spent on other tasks</li>
+          </ul>
+          <p>So in order to create a good enough estimate for the duration of a task, the parameters need to be frozen at the time of estimation. This is
+              a quite difficult constraint for long term tasks.</p>
+          <h3>Example for duration</h3>
+          <p>Let's model the question "How long does it take to transport one tiny package from Vienna to Berlin?":</p>
+          <ul>
+              <li>Size of the task: ~ 700 km</li>
+              <li>Amount of <i>working entities</i> working on the task (minus communication overhead): one car</li>
+              <li>Skill of <i>working entities</i> working on the task (how much effort can they pull of per time unit): 100 km/h</li>
+              <li>Unproductive/Wait time: 2 h (heavy traffic jam)</li>
+              <li>Time spent on other tasks: 1 h (one detour to Prague)</li>
+          </ul>
+          <p>So the duration will be 10 hours. This estimation is highly dependable on multiple parameters.
+              If only one of them changes the whole estimation is off (a lot). This means you want to do this estimation as late as possible so most of the parameters
+              are "fixed".</p>
         <span id="feedback"></span>
         <script type="text/javascript" src="includes/feedback.js"></script>
 
