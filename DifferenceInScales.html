@@ -38,13 +38,26 @@
         <p>There exist several scales which can be used to estimate development work. Everyone of them can be used for a specific purpose and is not interchangeable.
             Although they can be transformed to each other with a bit of magic.
         </p>
+          <h2>Estimating the size of something</h2><i>How big is it?</i>
+          <p>Relative estimations are a lot easier than absolute ones. For further information on this topic just ask your favourite search engine.
+              The following examples are absolute size measures:
+          <ul>
+              <li>Changed classes</li>
+              <li>Lines of code added</li>
+              <li>Function points created</li>
+              <li>Acceptance criteria implemented</li>
+              <li>Distance between two locations</li>
+          </ul>
+
+
         <h2>Estimating the duration of something</h2><i>How long does it take?</i>
         <p>This is often the type of estimation Management (with a big M intentionally) wants when they asked for estimations. The fun part is that the answer
         most of the time is: <i>It depends. </i>The reason for that will get clearer when we have a look at the parameters influencing duration:</p>
         <ul>
             <li>Size of the task</li>
-            <li>Amount of <i>working entities</i> working on the task (minus communication overhead)</li>
+            <li>Amount of <i>working entities</i> working on the task (minus coordination overhead)</li>
             <li>Skill of  <i>working entities</i> working on the task (how much effort can they pull of per time unit)</li>
+            <li>Coordination overhead</li>
             <li>Unproductive/Wait time</li>
             <li>Time spent on other tasks</li>
         </ul>
@@ -59,7 +72,9 @@
               <li>Unproductive/Wait time: 2 h (heavy traffic jam)</li>
               <li>Time spent on other tasks: 1 h (one detour to Prague)</li>
           </ul>
-        <p>So the duration will be 10 hours. This estimation is highly dependable on multiple parameters. If only one of them changes the whole estimation is off (a lot).</p>
+        <p>So the duration will be 10 hours. This estimation is highly dependable on multiple parameters.
+            If only one of them changes the whole estimation is off (a lot). This means you want to do this estimation as late as possible so most of the parameters
+            are "fixed".</p>
         <h2>Estimating the effort of something</h2><i>How much does it cost?</i>
         There is one parameter describing the effort:
           <ul>
@@ -72,16 +87,15 @@
               <tr><td>Car</td><td>Jet</td></tr>
               <tr><td>Small packaging machine</td><td>Big packaging machine</td></tr>
           </table>
-        <h2>Estimating the size of something</h2><i>How big is it?</i>
-        Absolute size is very hard to estimate if the numbers get bigger. It is easy to estimate if something is one or two meters tall. I will have a very hard time to
-          estimate the height of the skyscraper over there. Comparing two skyscrapers standing next to each other is a lot easier. In a software project an absolute size
-          would be:
+            <p>As already mentioned it highly depends on the working entity how much it will cost. In software projects it is hard to forecast a long time
+            into the future who will really do a task. So for planning purposes there are the following choices:</p>
           <ul>
-              <li>Changed classes</li>
-              <li>Lines of code added</li>
-              <li>Function points created</li>
-              <li>Acceptance criteria implemented</li>
+              <li>Developers are very similar to each other in skill and costs (interchangeable): This will not work out most of the time :-)</li>
+              <li>Make the decision who is doing the work as late as possible: In Scrum the Sprint Planning 2 has this "task"</li>
           </ul>
+
+
+          <p></p>
         <span id="feedback"></span>
         <script type="text/javascript" src="includes/feedback.js"></script>
 
