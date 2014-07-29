@@ -59,13 +59,22 @@
             <p>So if I know the correct absolute measure of the comparison reference I am able to easily calculate the <b>estimations</b> for the other items.
           For example I estimate that the distance between Vienna and Berlin is double the distance between Vienna and Munich. I did a trip to Munich last week so I
           know that the distance between Vienna and Munich is ~ 350 km. This means the distance Vienna to Berlin should be ~ 700 km
-                (it is ~ <a href="http://www.travelmath.com/drive-distance/from/Berlin,+Germany/to/Vienna,+Austria">690 km</a> by the way).
-
+                (it is ~ <a href="http://www.travelmath.com/drive-distance/from/Berlin,+Germany/to/Vienna,+Austria">690 km</a> by the way).</p>
+            <p>In the end the size will not change over time if the system in which the estimated things are existing is not changing. So the distance between
+            Vienna and Berlin will very unlikely change in the near future as Earth (the system where Vienna and Berlin are existing) is very stable.
+            Let's compare that to a software feature. It is best-practice to build a software architecture as changeable/adaptable as possible. So in a
+            optimal scenario the system is changing quite fast. As a result the "correctness" of the size estimates will decline quite fast. This is the
+                <a href="http://en.wikipedia.org/wiki/Cone_of_Uncertainty">Cone of Uncertainty</a>. This means if you have a
+                often changing system and need to estimates for a lot of stuff which will be done in the future, better use empirical data than these estimates.
+                See the chart below for a visualization of this.
+            </p>
+          <img src="images/ChangesInSizeEstimates.png"/>
 
         <h2>Estimating the effort of something</h2><i>How much does it cost?</i>
-        There is one parameter describing the effort:
+        There are two parameter describing the effort:
           <ul>
               <li>Skill of <i>working entities</i> working on the task</li>
+              <li>Size of the task</li>
           </ul>
         <p>This means if there is a difference between the estimator and the implementer this will have a (big) impact on the estimation. Here are some examples: </p>
           <table class="table table-bordered">
@@ -107,6 +116,15 @@
           <p>So the duration will be 10 hours. This estimation is highly dependable on multiple parameters.
               If only one of them changes the whole estimation is off (a lot). This means you want to do this estimation as late as possible so most of the parameters
               are "fixed".</p>
+          <h2>Conclusion</h2>
+          <p>Estimates deteriorate over time. Additionally the more parameters are to be considered for an estimate the more energy is
+              needed to come up with a meaningful estimate. In general this is an ordering of estimates by their generated value/knowledge: </p>
+          <ol>
+              <li>Size estimates</li>
+              <li>Effort estimates</li>
+              <li>Duration estimates</li>
+          </ol>
+          <p>So think of the <a href="http://en.wikipedia.org/wiki/Pareto_principle">Pareto Principle</a> next time you need estimates :-).</p>
         <span id="feedback"></span>
         <script type="text/javascript" src="includes/feedback.js"></script>
 
