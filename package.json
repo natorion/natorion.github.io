@@ -1,0 +1,26 @@
+{
+  "name": "natorion.github.io",
+  "version": "1.0.0",
+  "description": "Michael's homepage",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natorion/natorion.github.io.git"
+  },
+  "author": "Michael Hablich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/natorion/natorion.github.io/issues"
+  },
+  "homepage": "https://github.com/natorion/natorion.github.io#readme",
+  "devDependencies": {
+    "vitepress": "^1.0.0-alpha.46",
+    "vue": "^3.2.47"
+  }
+}
