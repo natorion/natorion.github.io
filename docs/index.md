@@ -6,6 +6,6 @@ I consider this page a playground to try out web technology. Cheers!
 
 ![Michael Hablich Photo](/img/me.jfif)
 
-
 Articles:
 * [Failure Demand and Value Demand in Product Development](/articles/failuredemand)
+* [Using Impact Maps for planning and controlling process improvements](/articles/impactmapforprocess)
