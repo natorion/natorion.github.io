@@ -9,3 +9,6 @@ I consider this page a playground to try out web technology. Cheers!
 Articles:
 * [Failure Demand and Value Demand in Product Development](/articles/failuredemand)
 * [Using Impact Maps for planning and controlling process improvements](/articles/impactmapforprocess)
+
+Downloads:
+*  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
