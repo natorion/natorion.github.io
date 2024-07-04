@@ -5,7 +5,7 @@ export default {
     head: [
       [
         'script',
-        { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=448982390' }
+        { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-ZQM6C2G2DQ' }
       ],
       [
         'script',
@@ -13,7 +13,7 @@ export default {
         `window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '448982390');`
+        gtag('config', 'G-ZQM6C2G2DQ');`
       ]
     ]
   }
