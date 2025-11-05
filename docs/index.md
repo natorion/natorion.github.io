@@ -14,3 +14,4 @@ Articles:
 Downloads:
 *  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
 *  JSNation 2023: [10 DevTools features you could be using](/downloads/WebDriver_BiDi.pdf)
+*  perf.sync talk: [Chrome DevTools MCP Intro](/downloads/[Talk][perf.sync]Chrome_DevTools_MCP_Intro.pdf)
