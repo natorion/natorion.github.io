@@ -21,6 +21,6 @@
   "homepage": "https://github.com/natorion/natorion.github.io#readme",
   "devDependencies": {
     "vitepress": "^1.6.4",
-    "vue": "^3.4.31"
+    "vue": "^3.5.25"
   }
 }
