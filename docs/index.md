@@ -15,3 +15,4 @@ Downloads:
 *  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
 *  JSNation 2023: [10 DevTools features you could be using](/downloads/WebDriver_BiDi.pdf)
 *  perf.sync talk: [Chrome DevTools MCP Intro](/downloads/[Talk][perf.sync]Chrome_DevTools_MCP_Intro.pdf)
+*  Product Tank Vienna: [When your user is an AI agent](/downloads/%5BTalk%5D%20%5BProduct%20Tank%20Vienna%5D%20When%20your%20user%20is%20an%20AI%20agent.pdf)
