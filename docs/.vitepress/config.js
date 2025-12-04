@@ -7,6 +7,7 @@ export default {
         'script',
         { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-ZQM6C2G2DQ' }
       ],
+      ['link', { rel: 'icon', href: '/favicon.png' }],
       [
         'script',
         {},
