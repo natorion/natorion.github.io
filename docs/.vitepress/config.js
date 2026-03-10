@@ -16,5 +16,11 @@ export default {
         gtag('js', new Date());
         gtag('config', 'G-ZQM6C2G2DQ');`
       ]
-    ]
+    ],
+    themeConfig: {
+      footer: {
+        message: '<a href="/impressum">Impressum</a>',
+        copyright: 'Copyright © 2024-present Michael Hablich'
+      }
+    }
   }
