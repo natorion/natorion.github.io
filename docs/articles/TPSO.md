@@ -81,7 +81,3 @@ If you want to formalize this into a repeatable practice, the [Anthropic guide t
 ## What's next
 
 Token cost is one dimension of agent experience. It's the most visible one because it has a price tag attached, but it's not the only one that determines whether agents succeed or fail with your API. The next post in this series covers what happens when your API fails and the agent can't figure out why: error design as an agent experience problem.
-
----
-
-*Michael Hablich is a Product Manager at Google, leading Chrome DevTools and Puppeteer. He builds tools used by millions of developers and AI agents. Connect on [LinkedIn](https://linkedin.com/in/michael-hablich) or [X](https://x.com/mhablich).*
