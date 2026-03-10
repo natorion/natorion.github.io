@@ -1,6 +1,6 @@
 # Your API is costing agents money - what makes Tokens per Successful Outcome relevant
 
-The Chrome DevTools MCP server shipped a performance trace endpoint that returned 50,000 lines of JSON. Technically correct. An agent calling it got the full trace, parsed it, and produced a performance diagnosis. It also burned through most of its context window in a single call.
+The [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp) server shipped a performance trace endpoint that returned 50,000 lines of JSON. Technically correct. An agent calling it got the full trace, parsed it, and produced a performance diagnosis. It also burned through most of its context window in a single call.
 
 We designed it the way we'd design any API: return the complete data, let the consumer decide what's relevant. That assumption works when the consumer is a human developer who glances at a waterfall chart and immediately knows where to look. It does not work when the consumer is an LLM that has to ingest every single line before it can reason about any of them.
 
@@ -32,7 +32,7 @@ We hit the same problem with network requests. Real web pages make hundreds of n
 
 ## The patterns that actually work
 
-When we rewrote error messages in [Chrome DevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp), the token savings were a side effect. The real gain was recoverability.
+When we rewrote error messages in Chrome DevTools MCP, the token savings were a side effect. The real gain was recoverability.
 
 Our navigation tool used to return: "Unable to navigate back in currently selected page." An agent reading that has no idea what went wrong. It doesn't know if the page crashed, if the tool is broken, or if there's a prerequisite it missed. So it retries. And retries. Each retry burns more tokens and gets the same useless error. We changed the message to: "Cannot navigate back: no previous page in history." Now the agent understands the failure mode, stops retrying, and adjusts its strategy. The [cost-effective LLM applications research](https://www.glukhov.org/post/2025/11/cost-effective-llm-applications/) puts the reduction from clearer error messages at 30-40%. That includes both the shorter message itself and the retries you eliminate.
 
