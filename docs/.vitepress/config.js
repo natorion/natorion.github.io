@@ -3,23 +3,11 @@ export default {
     description: 'Content about software product development.',
 
     head: [
-      [
-        'script',
-        { async: '', src: 'https://www.googletagmanager.com/gtag/js?id=G-ZQM6C2G2DQ' }
-      ],
-      ['link', { rel: 'icon', href: '/favicon.png' }],
-      [
-        'script',
-        {},
-        `window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-ZQM6C2G2DQ');`
-      ]
+      ['link', { rel: 'icon', href: '/favicon.png' }]
     ],
     themeConfig: {
       footer: {
-        message: '<a href="/impressum">Impressum</a>',
+        message: '<a href="/impressum">Impressum</a> | <a href="/datenschutz">Datenschutz</a>',
         copyright: 'Copyright © 2024-present Michael Hablich'
       }
     }
