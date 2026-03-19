@@ -11,6 +11,7 @@ Articles:
 * [Using Impact Maps for planning and controlling process improvements](/articles/impactmapforprocess)
 * [De-risking Quality Assurance for LLM-powered applications](/articles/deriskingQA4AI)
 * [What makes Tokens per Successful Outcome relevant](/articles/TPSO)
+* [When your user is an AI agent: trust boundaries for browser access](/articles/trust-boundaries-browser-agents)
 
 Downloads:
 *  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
