@@ -12,6 +12,7 @@ Articles:
 * [De-risking Quality Assurance for LLM-powered applications](/articles/deriskingQA4AI)
 * [What makes Tokens per Successful Outcome relevant](/articles/TPSO)
 * [When your user is an AI agent: trust boundaries for browser access](/articles/trust-boundaries-browser-agents)
+* [Your agent doesn't know what you can do](/articles/discoverability-agent-experience)
 
 Downloads:
 *  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
