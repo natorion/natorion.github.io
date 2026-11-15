@@ -15,6 +15,9 @@ Articles:
 * [Your agent doesn't know what you can do](/articles/discoverability-agent-experience)
 * [Your agent experience has no dashboard](/articles/observability-agent-experience)
 
+Experiments:
+*  [Schnapsertal](/schnapsertal/){target="_self"}: card game prototype, Bauernschnapsen against the computer (in German)
+
 Downloads:
 *  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
 *  JSNation 2023: [10 DevTools features you could be using](/downloads/WebDriver_BiDi.pdf)

@@ -40,6 +40,8 @@ Weitere Informationen: [Google Analytics Datenschutz](https://support.google.com
 
 Ihre Cookie-Einstellung wird in Ihrem Browser (localStorage) gespeichert, damit Sie nicht bei jedem Besuch erneut gefragt werden. Dies ist technisch notwendig und erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.
 
+Das Spiel [Schnapsertal](/schnapsertal/){target="_self"} speichert Spielstand und Einstellungen ebenfalls nur im localStorage Ihres Browsers. Diese Daten verlassen Ihr Gerät nicht. Sie können sie jederzeit löschen, indem Sie die Website-Daten für diese Seite in Ihrem Browser entfernen.
+
 ## Ihre Rechte
 
 Sie haben folgende Rechte bezüglich Ihrer personenbezogenen Daten:
