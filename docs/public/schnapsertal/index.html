@@ -1192,6 +1192,12 @@ footer a {
   cursor: pointer;
   font-weight: 500;
 }
+.skiplesson {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--card-ink);
+}
 </style>
 </head>
 <body>
@@ -2920,11 +2926,20 @@ footer a {
     $("view").innerHTML = `<div class="tablegrid"><div class="felt">
     <div class="houserules" aria-label="Hausregeln" style="flex-direction:column;align-items:center">
       <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
+      ${lesson ? `<button type="button" id="skipLesson" class="skiplesson" title="Lektion als geschafft abhaken">${nextLesson(P.lesson) ? "Verstanden, n\xE4chste Lektion" : "Verstanden, Lernpfad beenden"}</button>` : ""}
       ${P.specials.length ? `<div class="spchips">${P.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : "dir"}</span>`).join("")}</div>` : ""}</div>
     ${seatBox(2)}${seatBox(1)}${center}${seatBox(3)}${seatBox(0)}
     <div class="actions" id="actions"></div></div>${side}</div>`;
     const lg = $("log");
     lg.scrollTop = lg.scrollHeight;
+    if ($("skipLesson"))
+      $("skipLesson").onclick = () => {
+        const nx = nextLesson(P.lesson);
+        busy = false;
+        showTrick = null;
+        endPartie2(true);
+        if (nx) startLesson(nx.id);
+      };
     $("leave").onclick = () => {
       const b = $("leave");
       if (!b.dataset.armed) {
@@ -3074,7 +3089,7 @@ footer a {
     if (a.phase === "bid") {
       const opts = bidOptions(st, 0);
       if (P.lesson && opts.every((k) => k === "normal")) {
-        el.innerHTML = `<div class="msg muted">Ansagen kommen in einer sp\xE4teren Lektion. Gespielt wird Normalspiel.</div>`;
+        el.innerHTML = `<div class="msg muted" style="color:var(--felt-ink);opacity:.8">Ansagen kommen in einer sp\xE4teren Lektion. Gespielt wird Normalspiel.</div>`;
         setTimeout(() => {
           if (!P || P.hand !== st || st.phase !== "bid" || actor(st).seat !== 0) return;
           applyBid(st, 0, opts.length ? "normal" : null);
