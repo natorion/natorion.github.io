@@ -40,7 +40,23 @@ Weitere Informationen: [Google Analytics Datenschutz](https://support.google.com
 
 Ihre Cookie-Einstellung wird in Ihrem Browser (localStorage) gespeichert, damit Sie nicht bei jedem Besuch erneut gefragt werden. Dies ist technisch notwendig und erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.
 
-Einzelne Anwendungen auf dieser Website (z. B. Spiele unter „Experiments“) speichern Spielstände und Einstellungen ebenfalls nur im localStorage Ihres Browsers. Diese Daten verlassen Ihr Gerät nicht und werden weder an den Betreiber noch an Dritte übertragen. Sie können sie jederzeit löschen, indem Sie die Website-Daten für diese Seite in Ihrem Browser entfernen.
+Einzelne Anwendungen auf dieser Website (z. B. Spiele unter „Experiments“) speichern Spielstände und Einstellungen ebenfalls nur im localStorage Ihres Browsers. Diese Daten verlassen Ihr Gerät nicht und werden weder an den Betreiber noch an Dritte übertragen, außer Sie schicken sie ausdrücklich mit einer Feedback-Meldung mit (siehe unten). Sie können sie jederzeit löschen, indem Sie die Website-Daten für diese Seite in Ihrem Browser entfernen.
+
+## Feedback in Schnapsertal
+
+Im Spiel Schnapsertal können Sie über „⚑ Feedback“ eine Meldung (Fehler, Idee) schicken. Das geschieht nur, wenn Sie selbst auf „Senden“ klicken.
+
+**Was übertragen wird:** der gewählte Grund, Ihr Text, auf Wunsch (Häkchen „Spielstand mitschicken“, vorausgewählt) der aktuelle Spielstand, die Spielversion, Ihre Spieleinstellungen, die Browserkennung (User-Agent), die Fenstergröße und technische Fehlermeldungen des Spiels. Name, E-Mail-Adresse oder Cookies werden nicht erhoben. Bitte schreiben Sie keine persönlichen Daten in den Text.
+
+**Wohin:** an einen Cloudflare Worker des Betreibers (Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA, als Auftragsverarbeiter). Die Meldung wird dort gespeichert und ist nur für den Betreiber nach Anmeldung einsehbar. Daten können dabei in die USA übertragen werden; Cloudflare stützt sich auf Standardvertragsklauseln und das EU-US Data Privacy Framework.
+
+**IP-Adresse:** Ihre IP-Adresse wird nicht mit der Meldung gespeichert. Um Missbrauch zu begrenzen, wird aus ihr ein nicht umkehrbarer Hashwert (mit geheimem Salt) gebildet, mit dem die Zahl der Meldungen pro Tag gezählt wird. Dieser Wert wird am Folgetag gelöscht.
+
+**Ohne Internetverbindung** bleibt die Meldung zunächst nur im localStorage Ihres Browsers und wird beim nächsten Mal automatisch gesendet.
+
+**Zweck und Rechtsgrundlage:** Fehlerbehebung und Verbesserung des Spiels, berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).
+
+**Speicherdauer:** Bearbeitete Meldungen werden 90 Tage nach der Bearbeitung automatisch gelöscht, auf Wunsch auch früher. Für eine Löschung oder Auskunft schreiben Sie an die oben genannte E-Mail-Adresse.
 
 ## Ihre Rechte
 
@@ -70,4 +86,4 @@ Website: https://www.dsb.gv.at
 
 ## Änderungen
 
-Diese Datenschutzerklärung kann bei Bedarf aktualisiert werden. Stand: März 2026.
+Diese Datenschutzerklärung kann bei Bedarf aktualisiert werden. Stand: November 2026.
