@@ -1026,6 +1026,21 @@ details ul {
   padding-left: 18px;
   margin: 6px 0;
 }
+.updatebar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+}
+.updatebar[hidden] {
+  display: none;
+}
 .banner {
   background: var(--accent);
   color: #fff;
@@ -1282,6 +1297,10 @@ button.link {
     <button id="reset" type="button">Neue Reise</button>
     <button id="fb-open" type="button" title="Fehler oder Idee melden">⚑ Feedback</button>
   </header>
+  <div id="update" class="updatebar" role="status" hidden>
+    <span>Eine neue Version von Schnapsertal ist da. Dein Spielstand bleibt erhalten.</span>
+    <button id="updateReload" type="button" class="primary">Neu laden</button>
+  </div>
   <div id="view"></div>
   <details class="panel small">
     <summary>Regeln dieser Variante</summary>
@@ -3813,7 +3832,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "351bde70aa" : "dev";
+  var BUILD = true ? "a25c72ac30" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
@@ -3887,9 +3906,19 @@ button.link {
   render();
   if (P) pump();
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
-    navigator.serviceWorker.register("sw.js").catch(() => {
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (hadController) $("update").hidden = false;
+    });
+    navigator.serviceWorker.register("sw.js").then((reg) => {
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") reg.update().catch(() => {
+        });
+      });
+    }).catch(() => {
     });
   }
+  $("updateReload").onclick = () => location.reload();
 })();
 </script>
 </body>
