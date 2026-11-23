@@ -50,7 +50,7 @@ Im Spiel Schnapsertal können Sie über „⚑ Feedback“ eine Meldung (Fehler,
 
 **Wohin:** an einen Cloudflare Worker des Betreibers (Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA, als Auftragsverarbeiter). Die Meldung wird dort gespeichert und ist nur für den Betreiber nach Anmeldung einsehbar. Daten können dabei in die USA übertragen werden; Cloudflare stützt sich auf Standardvertragsklauseln und das EU-US Data Privacy Framework.
 
-**IP-Adresse:** Ihre IP-Adresse wird nicht mit der Meldung gespeichert. Um Missbrauch zu begrenzen, wird aus ihr ein nicht umkehrbarer, gesalzener Hashwert gebildet, mit dem die Zahl der Meldungen pro Tag gezählt wird. Dieser Wert wird am Folgetag gelöscht.
+**IP-Adresse:** Ihre IP-Adresse wird nicht mit der Meldung gespeichert. Um Missbrauch zu begrenzen, wird aus ihr ein nicht umkehrbarer Hashwert (mit geheimem Salt) gebildet, mit dem die Zahl der Meldungen pro Tag gezählt wird. Dieser Wert wird am Folgetag gelöscht.
 
 **Ohne Internetverbindung** bleibt die Meldung zunächst nur im localStorage Ihres Browsers und wird beim nächsten Mal automatisch gesendet.
 
