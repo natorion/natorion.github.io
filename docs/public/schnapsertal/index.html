@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Schnapsertal</title>
+<meta name="description" content="Bauernschnapsen mit Landkarte">
+<meta name="theme-color" content="#2d5a47">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <style>/* Self-hosted fonts (SIL OFL 1.1, see fonts/OFL-*.txt), latin subset from Fontsource.
@@ -1198,6 +1203,70 @@ footer a {
   background: rgba(255, 255, 255, 0.9);
   color: var(--card-ink);
 }
+
+/* Feedback dialog */
+.fb-dlg {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  color: var(--ink);
+  width: min(460px, calc(100vw - 32px));
+  padding: 16px 18px;
+}
+.fb-dlg::backdrop {
+  background: rgb(0 0 0 / 0.45);
+}
+.fb-dlg form {
+  display: grid;
+  gap: 10px;
+}
+.fb-dlg h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.3rem;
+  margin: 0;
+}
+.fb-dlg label {
+  display: grid;
+  gap: 4px;
+}
+.fb-dlg select,
+.fb-dlg textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.fb-dlg textarea {
+  resize: vertical;
+}
+.fb-dlg .fb-check {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.fb-dlg p {
+  margin: 0;
+}
+.fb-actions {
+  justify-content: flex-end;
+}
+#fb-status.err {
+  color: var(--accent);
+}
+button.link {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  color: var(--muted);
+  text-decoration: underline;
+}
+.no-feedback #fb-open,
+.no-feedback #fb-hand {
+  display: none;
+}
 </style>
 </head>
 <body>
@@ -1211,6 +1280,7 @@ footer a {
     <button id="ferdl" type="button" title="Wie Ferdl mit Zeichen umgeht">Ferdl: treu</button>
     <button id="melee" type="button" aria-pressed="true">Stichkampf: an</button>
     <button id="reset" type="button">Neue Reise</button>
+    <button id="fb-open" type="button" title="Fehler oder Idee melden">⚑ Feedback</button>
   </header>
   <div id="view"></div>
   <details class="panel small">
@@ -1232,6 +1302,28 @@ footer a {
       <li><b>Vereinfachungen:</b> automatisches Zudrehen bei 66 (kein falsches Zudrehen), Partien unterwegs kürzer als ein Bummerl (12 oder 15), nur im Schloss bis 24.</li>
     </ul>
   </details>
+  <dialog id="fb-dlg" class="fb-dlg" aria-labelledby="fb-title">
+    <form method="dialog" id="fb-form">
+      <h3 id="fb-title">Feedback</h3>
+      <p class="small" id="fb-what"></p>
+      <label>Worum geht es?
+        <select id="fb-reason"></select>
+      </label>
+      <label><span>Was ist passiert? <span class="muted">(optional)</span></span>
+        <textarea id="fb-comment" rows="4" maxlength="1000" placeholder="z. B. „Ferdl hat mein Ass gestochen, obwohl …“"></textarea>
+      </label>
+      <label class="fb-check"><input type="checkbox" id="fb-state" checked> Spielstand mitschicken (Karten aller Spieler, Stiche, Ort)</label>
+      <details class="small">
+        <summary>Was wird gesendet?</summary>
+        <p>Grund, dein Text, auf Wunsch der Spielstand, die Spielversion, deine Einstellungen (Coach, Ferdl, Stichkampf), Browser und Bildschirmgröße sowie die letzten Fehlermeldungen des Spiels. Kein Name, keine E-Mail, keine Cookies. Ohne Netz wird die Meldung auf diesem Gerät gespeichert und später gesendet.</p>
+      </details>
+      <p class="small" id="fb-status" role="status"></p>
+      <div class="row fb-actions">
+        <button type="submit" value="cancel" formnovalidate>Abbrechen</button>
+        <button type="submit" value="send" id="fb-send" class="primary">Senden</button>
+      </div>
+    </form>
+  </dialog>
   <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a></footer>
 </div>
 <script>(() => {
@@ -2603,6 +2695,109 @@ footer a {
     W2.partien = (W2.partien || 0) + 1;
   }
 
+  // src/ui/feedback.js
+  var FEEDBACK_URL = "https://schnapsertal-feedback.michael-hablich.workers.dev/api/feedback";
+  var REASONS = [
+    "Regel stimmt nicht",
+    "KI spielt komisch",
+    "Coach / Erkl\xE4rung falsch",
+    "Fehler / h\xE4ngt",
+    "Idee / Wunsch",
+    "Sonstiges"
+  ];
+  var QUEUE_KEY = "schnapsertal-feedback";
+  var MAX_COMMENT = 1e3;
+  var MAX_QUEUE = 50;
+  var MAX_STATE = 6e4;
+  var clip = (s, n) => String(s ?? "").slice(0, n);
+  function gameSnapshot(W2, P2) {
+    const world = W2 ? Object.assign({}, W2, { hist: (W2.hist || []).slice(-10) }) : null;
+    if (!P2) return { view: "map", world };
+    const hand = P2.hand ? Object.assign({}, P2.hand, { rng: null }) : null;
+    const partie = Object.assign({}, P2, { hand });
+    let json = JSON.stringify(partie);
+    if (json.length > MAX_STATE && hand) {
+      partie.hand = Object.assign({}, hand, { log: (hand.log || []).slice(-30) });
+      json = JSON.stringify(partie);
+    }
+    if (json.length > MAX_STATE) partie.hand = null;
+    return { view: P2.lesson ? "lesson" : "table", world, partie };
+  }
+  function buildReport({ reason, comment, withState, W: W2, P: P2, env = {}, now = Date.now(), id }) {
+    if (!REASONS.includes(reason)) reason = "Sonstiges";
+    comment = clip(comment, MAX_COMMENT).trim();
+    if (!comment && reason === "Sonstiges") throw new Error("Bitte kurz beschreiben, worum es geht.");
+    return {
+      id: id || `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+      ts: new Date(now).toISOString(),
+      reason,
+      comment,
+      build: env.build || "dev",
+      settings: env.settings || {},
+      device: { ua: clip(env.ua, 200), screen: clip(env.screen, 20) },
+      errors: (env.errors || []).slice(-5).map((e) => clip(e, 300)),
+      game: withState ? gameSnapshot(W2, P2) : { view: P2 ? P2.lesson ? "lesson" : "table" : "map" }
+    };
+  }
+  function readQueue(storage) {
+    try {
+      const q = JSON.parse(storage.getItem(QUEUE_KEY) || "[]");
+      return Array.isArray(q) ? q : [];
+    } catch {
+      return [];
+    }
+  }
+  function writeQueue(storage, q) {
+    try {
+      storage.setItem(QUEUE_KEY, JSON.stringify(q.slice(-MAX_QUEUE)));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  function enqueue(storage, report) {
+    const q = readQueue(storage);
+    q.push(Object.assign({}, report, { sent: false }));
+    return writeQueue(storage, q);
+  }
+  async function flush(storage, post) {
+    let sent = 0;
+    for (const r of readQueue(storage).filter((x) => !x.sent)) {
+      let ok;
+      try {
+        ok = await post(Object.assign({}, r, { sent: void 0 }));
+      } catch {
+        ok = false;
+      }
+      if (!ok) break;
+      writeQueue(
+        storage,
+        readQueue(storage).map((x) => x.id === r.id ? Object.assign({}, x, { sent: true }) : x)
+      );
+      sent++;
+    }
+    return sent;
+  }
+  function httpPost(url, fetchFn = globalThis.fetch) {
+    return async (report) => {
+      if (!url) return false;
+      const ctl = typeof AbortController === "function" ? new AbortController() : null;
+      const timer = ctl && setTimeout(() => ctl.abort(), 1e4);
+      try {
+        const res = await fetchFn(url, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(report),
+          credentials: "omit",
+          signal: ctl && ctl.signal
+        });
+        return res.ok || res.status >= 400 && res.status < 500 && res.status !== 408 && res.status !== 429;
+      } finally {
+        if (timer) clearTimeout(timer);
+      }
+    };
+  }
+
   // src/ui/app.js
   var { LOCS: LOCS2, ROUTES: ROUTES2, PARTNER: PARTNER2, TEMPER: TEMPER2 } = world_exports;
   var $ = (id) => document.getElementById(id);
@@ -3053,6 +3248,7 @@ footer a {
       const over = partieResult(P) !== null;
       el.innerHTML = `<div class="msg">${r.why}</div>
       <div class="msg"><b>${ours ? "Ihr bekommt" : "Die Gegner bekommen"} ${r.points} Punkt${r.points > 1 ? "e" : ""}.</b></div>
+      <div><button class="link" id="fb-hand" type="button">\u2691 Stimmt etwas nicht? Feedback zu dieser Hand</button></div>
       ${coachOn() && P.notes && P.notes.length ? (() => {
         const t = coach_exports.review(st, 0, P.notes);
         return coachBox(
@@ -3065,6 +3261,7 @@ footer a {
         <div class="row" style="justify-content:center">${nx ? `<button class="primary" id="nextLesson" type="button">N\xE4chste Lektion</button>` : ""}<button${nx ? "" : ' class="primary"'} id="next" type="button">Zur\xFCck zur Karte</button></div>`;
       })() : over ? `<div class="msg"><b>${P.score[0] >= P.target ? "Partie gewonnen!" : "Partie verloren."}</b></div>
         <button class="primary" id="next" type="button">Zur\xFCck zur Karte</button>` : '<button class="primary" id="next" type="button">N\xE4chstes Spiel</button>'}`;
+      $("fb-hand").onclick = () => openFeedback("Regel stimmt nicht");
       $("next").onclick = () => over ? endPartie2(partieResult(P)) : (P.dealer = (P.dealer + 1) % 4, newDeal());
       if ($("nextLesson"))
         $("nextLesson").onclick = () => {
@@ -3335,10 +3532,86 @@ footer a {
       $("reset").textContent = "Neue Reise";
     }, 3e3);
   };
+  var recentErrors = [];
+  addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
+  addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
+  var BUILD = true ? "f8622f02b4" : "dev";
+  var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
+  var fbPost = httpPost(fbUrl);
+  var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
+  document.body.classList.toggle("no-feedback", !fbUrl);
+  $("fb-reason").innerHTML = REASONS.map((r) => `<option>${r}</option>`).join("");
+  function fbWhere() {
+    if (!P) return `Auf der Landkarte (${LOCS2[W.loc].name}).`;
+    const st = P.hand;
+    const lesson = P.lesson && LESSONS.find((l) => l.id === P.lesson);
+    const what = P.lesson ? `Lektion \u201E${lesson ? lesson.title : P.lesson}\u201C` : LOCS2[P.loc].name;
+    if (!st) return `${what}.`;
+    if (!st.contract) return `${what}, beim Ansagen.`;
+    const c = C[st.contract.key].name;
+    if (st.phase === "done") return `${what}, ${c}, Hand vorbei nach ${st.done.length} Stich${st.done.length === 1 ? "" : "en"}.`;
+    return `${what}, ${c}, Stich ${st.done.length + 1}.`;
+  }
+  function openFeedback(reason) {
+    $("fb-what").textContent = fbWhere();
+    $("fb-reason").value = reason || (P ? "KI spielt komisch" : "Idee / Wunsch");
+    $("fb-comment").value = "";
+    $("fb-state").checked = true;
+    $("fb-status").textContent = "";
+    $("fb-status").className = "small";
+    $("fb-send").disabled = false;
+    $("fb-dlg").showModal();
+  }
+  $("fb-open").onclick = () => openFeedback();
+  $("fb-form").addEventListener("submit", async (e) => {
+    if (!e.submitter || e.submitter.value !== "send") return;
+    e.preventDefault();
+    const status = (t, err) => {
+      $("fb-status").textContent = t;
+      $("fb-status").className = "small" + (err ? " err" : "");
+    };
+    let report;
+    try {
+      report = buildReport({
+        reason: $("fb-reason").value,
+        comment: $("fb-comment").value,
+        withState: $("fb-state").checked,
+        W,
+        P,
+        env: {
+          build: BUILD,
+          settings: { coach: coachOn(), ferdl: W.ferdl || "treu", melee: meleeOn() },
+          ua: navigator.userAgent,
+          screen: `${innerWidth}x${innerHeight}`,
+          errors: recentErrors
+        }
+      });
+    } catch (err) {
+      status(err.message, true);
+      return;
+    }
+    if (!enqueue(localStorage, report)) {
+      status("Konnte nicht gespeichert werden (Speicher voll oder gesperrt).", true);
+      return;
+    }
+    $("fb-send").disabled = true;
+    status("Wird gesendet \u2026");
+    await fbFlush();
+    const mine = readQueue(localStorage).find((x) => x.id === report.id);
+    if (mine && mine.sent) status("Danke! Gesendet \u2713");
+    else status("Gerade kein Netz: gespeichert, wird automatisch nachgeschickt. Danke!");
+    setTimeout(() => $("fb-dlg").open && $("fb-dlg").close(), 1600);
+  });
+  addEventListener("online", fbFlush);
+  fbFlush();
   P = loadP();
   if (P) setNames(seatNames(P.loc));
   render();
   if (P) pump();
+  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    navigator.serviceWorker.register("sw.js").catch(() => {
+    });
+  }
 })();
 </script>
 </body>
