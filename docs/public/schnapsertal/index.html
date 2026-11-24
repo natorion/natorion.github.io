@@ -377,6 +377,83 @@ button:disabled {
 .seat.s {
   grid-area: s;
 }
+/* Trick piles left and right of your name; your team's pile opens the trick list */
+.srow {
+  align-self: stretch;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+}
+.pile {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: none;
+  color: var(--felt-ink);
+  font: inherit;
+  font-size: 0.7rem;
+  line-height: 1.1;
+  text-align: left;
+}
+button.pile {
+  cursor: pointer;
+  border-color: rgb(255 255 255 / 0.35);
+  background: rgb(0 0 0 / 0.15);
+}
+button.pile:hover,
+button.pile:focus-visible {
+  background: rgb(0 0 0 / 0.3);
+}
+.pile .txt {
+  display: grid;
+}
+.pile .txt b {
+  font-size: 1rem;
+}
+.pile .txt span {
+  opacity: 0.85;
+}
+.pile .stack {
+  position: relative;
+  width: 26px;
+  height: 30px;
+}
+.pile .stack i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 18px;
+  height: 26px;
+  border-radius: 3px;
+  background: repeating-linear-gradient(45deg, var(--card-back) 0 3px, #93403c 3px 6px);
+  border: 2px solid var(--card-bg);
+}
+.pile .stack i:nth-child(2) {
+  left: 2px;
+  bottom: 2px;
+  transform: rotate(6deg);
+}
+.pile .stack i:nth-child(3) {
+  left: 4px;
+  bottom: 1px;
+  transform: rotate(-5deg);
+}
+.pile .stack i:nth-child(4) {
+  left: 6px;
+  bottom: 3px;
+  transform: rotate(9deg);
+}
+.pile .stack:empty {
+  border: 1px dashed rgb(255 255 255 / 0.3);
+  border-radius: 3px;
+  width: 18px;
+  height: 26px;
+}
 .seatname {
   font-size: 0.9rem;
   display: flex;
@@ -1131,21 +1208,48 @@ details ul {
   cursor: pointer;
   font-weight: 600;
 }
-.tricks .trow {
+.tricks .trow,
+.tr-dlg .trow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  align-items: center;
+  margin: 4px 0;
+}
+.trow .no {
+  min-width: 1.4em;
+  color: var(--muted);
+}
+.trow .cards {
   display: flex;
   gap: 3px;
-  align-items: center;
-  margin: 3px 0;
 }
-.tricks .trow small {
-  margin-left: 4px;
-  opacity: 0.7;
+.trow .who {
+  font-size: 0.8rem;
+  line-height: 1.2;
 }
-.tricks .card.small {
+.trow .fx {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.tr-dlg h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.3rem;
+  margin: 0;
+}
+.tr-dlg .trow {
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+.tricks .card.small,
+.tr-dlg .card.small {
   width: 30px;
   height: 44px;
 }
-.tricks .card.small svg {
+.tricks .card.small svg,
+.tr-dlg .card.small svg {
   width: 16px;
   height: 16px;
 }
@@ -1282,6 +1386,83 @@ button.link {
 .no-feedback #fb-hand {
   display: none;
 }
+/* table talk: speech bubble next to the speaker's name. Ferdl (north) gets it below, over his face-down cards;
+   west and east above, on empty felt, so it never covers the trick or your hand. */
+.seatname {
+  position: relative;
+}
+.bubble {
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 5;
+  width: max-content;
+  max-width: min(200px, 34vw);
+  padding: 5px 9px;
+  border-radius: 12px;
+  background: var(--card-bg);
+  color: var(--card-ink);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  pointer-events: none;
+}
+.bubble::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  margin-left: -7px;
+  border: 7px solid transparent;
+  border-top: 0;
+  border-bottom-color: var(--card-bg);
+}
+.seat.w .bubble,
+.seat.e .bubble {
+  top: auto;
+  bottom: calc(100% + 9px);
+}
+.seat.w .bubble::before,
+.seat.e .bubble::before {
+  top: auto;
+  bottom: -7px;
+  border: 7px solid transparent;
+  border-bottom: 0;
+  border-top-color: var(--card-bg);
+}
+.seat.w .bubble {
+  left: 0;
+  translate: none;
+  text-align: left;
+}
+.seat.w .bubble::before {
+  left: 24px;
+}
+.seat.e .bubble {
+  left: auto;
+  right: 0;
+  translate: none;
+  text-align: right;
+}
+.seat.e .bubble::before {
+  left: auto;
+  right: 17px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .bubble.pop {
+    animation: bubble-pop 0.25s ease-out;
+  }
+}
+@keyframes bubble-pop {
+  from {
+    opacity: 0;
+    scale: 0.7;
+  }
+}
 </style>
 </head>
 <body>
@@ -1293,6 +1474,7 @@ button.link {
     <button id="coach" type="button" aria-pressed="false" title="Erklärt Regeln und gibt Tipps">Coach: aus</button>
     <button id="ferdl" type="button" title="Wie Ferdl mit Zeichen umgeht">Ferdl: treu</button>
     <button id="melee" type="button" aria-pressed="true">Stichkampf: an</button>
+    <button id="banter" type="button" aria-pressed="true" title="Ferdl und die Gegner kommentieren das Spiel">Sprüche: an</button>
     <button id="reset" type="button">Neue Reise</button>
     <button id="fb-open" type="button" title="Fehler oder Idee melden">⚑ Feedback</button>
   </header>
@@ -1313,10 +1495,10 @@ button.link {
       <li><b>Zeichen:</b> Reden ist verboten, gedeutet wird indirekt. <i>Abwerfen:</i> Wer nicht bedienen kann und einen Ober oder Unter einer Nebenfarbe abwirft, sagt damit „da hab ich nichts“. <i>Klopfen</i> (nur wo die Hausregel es erlaubt, höchstens einmal pro Stich): Du klopfst auf die Karte, die du gerade spielst, egal ob du ausspielst oder zugibst. Beim <i>Bettler</i> klopfen die zwei Gegner des Bettlers untereinander: Die geklopfte Farbe hat man nicht mehr, der Partner soll sie nachspielen. In <i>allen anderen Spielen</i> heißt Klopfen: In dieser Farbe bin ich stark, du musst sie nicht halten und kannst sie abwerfen. Alle am Tisch hören das Klopfen.</li>
       <li><b>Coach:</b> Oben einschalten. Er erklärt, warum nur bestimmte Karten erlaubt sind, zeigt auf Wunsch, was Ferdl spielen würde, rechnet beim Ansagen die Gewinnchancen aus und gibt nach jeder Hand bis zu drei Hinweise.</li>
       <li><b>Ferdl:</b> Im Kopf der Seite stellst du ein, wie dein Partner mit Zeichen umgeht. <i>Treu</i> klopft nur mit Grund und folgt deinen Zeichen. <i>Stur</i> klopft nie und ignoriert deine Zeichen. <i>Schlitzohr</i> folgt deinen Zeichen, klopft aber manchmal auch zum Bluff. Ob jemand ein Zeichen bemerkt, hängt von seiner Erfahrung ab: Die Stammtischler übersehen viel, der Graf fast nichts. Ferdl lernt mit jeder Partie dazu (von 50 % bis 95 %).</li>
-      <li><b>Spritzen:</b> Hat jemand Normalspiel angesagt, kann ein Gegner schon beim Ansagen spritzen. Das Normalspiel zählt dann doppelt (2 bis 6 Punkte) und kann nicht mehr mit einem Bettler überboten werden, nur mit Schnapser oder höher. Das Team des Ansagers kann danach noch Re sagen.</li>
+      <li><b>Spritzen:</b> Hat jemand Normalspiel angesagt, kann ein Gegner schon beim Ansagen spritzen. Das geht auch, wenn die Vorhand gleich Bettler ansagt: Dann muss sie stattdessen ein Normalspiel spielen. Das Normalspiel zählt dann doppelt (2 bis 6 Punkte) und kann nicht mehr mit einem Bettler überboten werden, nur mit Schnapser oder höher. Das Team des Ansagers kann danach noch Re sagen.</li>
       <li><b>Kontra / Re:</b> verdoppeln jeweils. Subkontra ist im Prototyp weggelassen.</li>
       <li><b>Hausregeln:</b> Jeder Ort verbietet einzelne Ansagen oder schränkt sie ein (zum Beispiel kein Bettler) oder ändert, was sie zählen.</li>
-      <li><b>Spezialkarten:</b> Die Gegner spielen immer mit ihrer Spezialkarte. Sie ersetzt im Deck die normale Karte gleicher Farbe und Höhe und wird ganz normal ausgeteilt. Ihr Effekt wirkt nur, wenn ihr Besitzer sie spielt (bei Gegner-Karten einer der beiden Gegner, bei deiner Karte nur du). Bei allen anderen ist sie eine gewöhnliche Karte (grau markiert). Schlägst du sie, gehört die Karte dir: Alle erbeuteten Karten werden ab dann in jeder Partie mitgemischt. Der Graf im Schloss spielt mit drei Spezialkarten.</li>
+      <li><b>Spezialkarten:</b> Die Gegner spielen immer mit ihrer Spezialkarte. Sie ersetzt im Deck die normale Karte gleicher Farbe und Höhe und wird ganz normal ausgeteilt. Ihr Effekt wirkt nur, wenn ihr Besitzer sie spielt (bei Gegner-Karten einer der beiden Gegner, bei deinen erbeuteten Karten du oder Ferdl). Bei allen anderen ist sie eine gewöhnliche Karte (grau markiert). Schlägst du sie, gehört die Karte dir: Alle erbeuteten Karten werden ab dann in jeder Partie mitgemischt. Der Graf im Schloss spielt mit drei Spezialkarten.</li>
       <li><b>Vereinfachungen:</b> automatisches Zudrehen bei 66 (kein falsches Zudrehen), Partien unterwegs kürzer als ein Bummerl (12 oder 15), nur im Schloss bis 24.</li>
     </ul>
   </details>
@@ -1342,7 +1524,13 @@ button.link {
       </div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version 7c332df615 · 24.11.2026, 09:21</span></footer>
+  <dialog id="tr-dlg" class="fb-dlg tr-dlg" aria-label="Stiche">
+    <form method="dialog">
+      <div id="tr-body"></div>
+      <div class="row fb-actions"><button value="close" autofocus>Schließen</button></div>
+    </form>
+  </dialog>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version acb9c099e5 · 24.11.2026, 12:04</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -1417,6 +1605,7 @@ button.link {
   var C = {
     normal: { key: "normal", name: "Normalspiel", val: 1, rank: 0, who: "F", trump: true, goal: "normal" },
     // Spritzer: an opponent of the Normalspiel caller doubles it during the auction (2-6 points), so it outranks the Bettler.
+    // Also allowed against forehand opening straight with Bettler: forehand then plays Normalspiel ×2 (house rule 2026-11-24).
     spritzer: { key: "spritzer", name: "Spritzer", val: 6, rank: 1.5, who: "any", trump: true, goal: "normal", bid: true },
     bettler: { key: "bettler", name: "Bettler", val: 4, rank: 1, who: "any", trump: false, out: true, goal: "none" },
     schnapser: { key: "schnapser", name: "Schnapser", val: 6, rank: 2, who: "FT", trump: true, goal: "three" },
@@ -1437,7 +1626,7 @@ button.link {
   var isTen = (st) => !!(st.contract && C[st.contract.key].ten);
   var GOALS = {
     normal: "Mit dem Partner zuerst 66 Augen sammeln.",
-    spritzer: "Das Normalspiel der Gegner verdoppeln: Ihr glaubt, sie schaffen keine 66.",
+    spritzer: "Das Normalspiel der Gegner verdoppeln (auch gegen einen Bettler der Vorhand): Ihr glaubt, sie schaffen keine 66.",
     bettler: "Allein spielen und keinen einzigen Stich machen.",
     schnapser: "Die ersten drei Stiche machen und dabei 66 Augen haben.",
     gang: "Alle f\xFCnf Stiche machen, ohne Trumpf.",
@@ -1810,6 +1999,14 @@ button.link {
     if (n === 5) return fin(true, `${subj(decl2, "machst", "macht")} alle Stiche \u2013 ${C[k].name} gewonnen`);
     return false;
   }
+  function visibleTricks(st, seat = 0) {
+    const me = team(seat);
+    const all = st.done.map((d, n) => ({ ...d, n }));
+    const ours = all.filter((d) => team(d.winner) === me);
+    const theirsAll = all.filter((d) => team(d.winner) !== me);
+    const theirs = st.phase === "done" ? theirsAll : theirsAll.slice(0, 1);
+    return { ours, theirs, hidden: theirsAll.length - theirs.length };
+  }
 
   // src/engine/auction.js
   function trumpOptions(st) {
@@ -1838,6 +2035,10 @@ button.link {
     const rel = (seat - st.dealer + 4) % 4;
     return { 1: 4, 2: 3, 3: 2, 0: 1 }[rel];
   }
+  var spritzable = (st) => {
+    const a = st.auction;
+    return a.cur === "normal" || a.cur === "bettler" && a.holder === st.fh;
+  };
   function mayBidKey(st, seat, key) {
     const c = C[key];
     const fh = st.fh;
@@ -1846,7 +2047,7 @@ button.link {
     if (c.who === "OT" && team(seat) === team(fh)) return false;
     if (c.who === "notF" && seat === fh) return false;
     if (key === "normal" && st.auction.cur) return false;
-    if (key === "spritzer") return !st.rules.noKontra && st.auction.cur === "normal" && team(seat) !== team(st.auction.holder);
+    if (key === "spritzer") return !st.rules.noKontra && spritzable(st) && team(seat) !== team(st.auction.holder);
     const h = st.hands[seat];
     if ((st.rules.banned || []).includes(key)) return false;
     if (key === "bettler" && st.rules.bettlerNoAce && h.some((x) => x.r === 0)) return false;
@@ -1860,9 +2061,13 @@ button.link {
   var bidOptions = (st, seat) => ORDER.filter((k) => mayBidKey(st, seat, k));
   function blockedBids(st, seat) {
     const plain = { ...st, rules: {} };
-    return ORDER.filter((k) => k !== "normal" && k !== "spritzer" && mayBidKey(plain, seat, k) && !mayBidKey(st, seat, k)).map(
+    const out = ORDER.filter((k) => k !== "normal" && k !== "spritzer" && mayBidKey(plain, seat, k) && !mayBidKey(st, seat, k)).map(
       (key) => ({ key, why: (st.rules.banned || []).includes(key) ? "banned" : "ace" })
     );
+    const a = st.auction;
+    if (!st.rules.noKontra && a.cur && a.cur !== "spritzer" && !spritzable(st) && team(seat) !== team(st.fh))
+      out.push({ key: "spritzer", why: "noNormal" });
+    return out;
   }
   var canPass = (st, seat) => !(seat === st.fh && !st.auction.cur);
   function applyBid(st, seat, key) {
@@ -1875,7 +2080,7 @@ button.link {
       st.log.push(`${seatName(seat)}: weiter.`);
     } else {
       if (!mayBidKey(st, seat, key)) throw new Error("Ansage nicht erlaubt: " + key);
-      a.spritz = key === "spritzer" ? { seat, caller: a.holder } : null;
+      a.spritz = key === "spritzer" ? { seat, caller: a.holder, from: a.cur } : null;
       a.cur = key;
       a.holder = seat;
       if (a.said) a.said[seat] = key;
@@ -1897,7 +2102,7 @@ button.link {
       st.mult = 2;
       (st.kontraSaid = st.kontraSaid || {})[a.spritz.seat] = "Spritzer";
       st.log.push(
-        `Der Spritzer von ${seatName(a.spritz.seat)} bleibt stehen: ${subj(a.spritz.caller, "spielst", "spielt")} das Normalspiel doppelt (\xD72).`
+        `Der Spritzer von ${seatName(a.spritz.seat)} bleibt stehen: ${subj(a.spritz.caller, "spielst", "spielt")} ${a.spritz.from === "bettler" ? "statt Bettler " : ""}das Normalspiel doppelt (\xD72).`
       );
       st.phase = "kontra";
       st.kontraQ = [a.spritz.caller, partnerOf(a.spritz.caller)].map((s) => ({ seat: s, kind: "re" }));
@@ -1950,7 +2155,7 @@ button.link {
     for (let k = 0; k < 4; k++) hands[(fh + k) % 4].push(...d.slice(12 + k * 2, 14 + k * 2));
     for (const sp of o.specials || []) {
       const def = SPECIALS[sp.key];
-      const owners = sp.team === 0 ? [0] : [1, 3];
+      const owners = sp.team === 0 ? [0, 2] : [1, 3];
       hands.forEach(
         (h, s) => h.forEach((c, i) => {
           if (c.s === def.s && c.r === def.r) h[i] = { ...c, ...owners.includes(s) ? { sp: def } : { spIdle: def } };
@@ -2225,7 +2430,8 @@ button.link {
     for (const k of opts) {
       if (k === "spritzer") {
         const p2 = estimate(st, seat, "normal", st.auction.holder, 24);
-        if (p2 < 0.3 && 3 > bestEv) {
+        const keep = st.auction.cur === "bettler" ? value(st, "bettler") * (1 - 2 * estimate(st, seat, "bettler", st.auction.holder, 24)) : -Infinity;
+        if (p2 < 0.3 && 3 > bestEv && 3 * (1 - 2 * p2) > keep) {
           best = k;
           bestEv = 3;
         }
@@ -2457,6 +2663,8 @@ button.link {
     PARTNER: () => PARTNER,
     ROUTES: () => ROUTES,
     TEMPER: () => TEMPER,
+    banter: () => banter,
+    banterMemory: () => banterMemory,
     canChallenge: () => canChallenge,
     countHand: () => countHand,
     endPartie: () => endPartie,
@@ -2754,7 +2962,7 @@ button.link {
         "Bei <b>Gang</b> (9 Punkte, ohne Trumpf) und <b>Bauernschnapser</b> (12, mit Trumpf) musst du alle Stiche machen. <b>Zehnerloch</b> ist wie Gang, nur ist der Zehner die h\xF6chste und das Ass die niedrigste Karte.",
         "Noch h\xF6her: Farbengang (alle f\xFCnf Karten einer Farbe), Herrenschnapser (alle f\xFCnf Tr\xFCmpfe) und die Kontra-Spiele, die nur die Gegner der Vorhand ansagen d\xFCrfen.",
         "Glaubst du, der Ansager schafft sein Spiel nicht, sag <b>Kontra</b>: Die Punkte verdoppeln sich. Er kann mit <b>Re</b> noch einmal verdoppeln.",
-        "<b>Spritzen</b> (Hausregel): Gegen ein Normalspiel kann ein Gegner schon beim Ansagen verdoppeln."
+        "<b>Spritzen</b> (Hausregel): Gegen ein Normalspiel kann ein Gegner schon beim Ansagen verdoppeln. Sagt die Vorhand gleich Bettler an, zwingt ein Spritzer sie stattdessen zum doppelten Normalspiel."
       ],
       tips: ["Ein einziger Stich der Gegner bricht ein Spiel, bei dem man alle Stiche machen muss."]
     },
@@ -2918,9 +3126,17 @@ button.link {
         stamp: "ohne Wirkung",
         tip: `wirkt nur f\xFCr ${opp[1]} und ${opp[3]}, und nur gegen Spiele, die ihr angesagt habt. Hier eine gew\xF6hnliche Karte.`
       };
+    if (def.against && own)
+      return {
+        stamp: "ohne Wirkung",
+        tip: `eure Beutekarte, wirkt nur gegen Spiele, die ${opp[1]} oder ${opp[3]} angesagt haben. Hier eine gew\xF6hnliche Karte.`
+      };
     if (own && own.team === 1)
       return { stamp: "nur f\xFCr Gegner", tip: `wirkt nur, wenn ${opp[1]} oder ${opp[3]} sie spielt. Hier eine gew\xF6hnliche Karte.` };
-    return { stamp: "nur f\xFCr dich", tip: "deine Beutekarte, wirkt nur, wenn du sie selbst spielst. Hier eine gew\xF6hnliche Karte." };
+    return {
+      stamp: "nur f\xFCr euch",
+      tip: `eure Beutekarte, wirkt nur, wenn du oder ${opp[2]} sie spielt. Hier eine gew\xF6hnliche Karte.`
+    };
   }
   var seatNames = (loc) => ["Du", LOCS[loc].opp[0], PARTNER, LOCS[loc].opp[1]];
   function countHand(W2, P2) {
@@ -2974,6 +3190,283 @@ button.link {
       }
     }
     W2.partien = (W2.partien || 0) + 1;
+  }
+
+  // src/world/banter.js
+  var FEIN = /* @__PURE__ */ new Set(["schloss", "kaffee", "oper", "residenz"]);
+  var OPP = {
+    derb: {
+      winBig: [
+        "Des g\u2019h\xF6rt jetzt uns!",
+        "Danke f\xFCr die Augen!",
+        "Merci, des nehm i.",
+        "Na, wer sagt\u2019s denn!",
+        "Sch\xF6n langsam wird\u2019s eng f\xFCr di."
+      ],
+      trumped: ["Da schaust, gell?", "Gstochn, Herr Nachbar!", "Weg is\u2019 des Ass.", "Pech g\u2019habt, Burschi."],
+      loseBig: ["Jo, eh.", "Na servas.", "Wart nur, des kommt z\u2019ruck.", "Des war jetzt ned notwendig.", "Gl\xFCck g\u2019habt, sonst nix."],
+      callYou: ["A {c}? Des w\xFCll i sehn.", "Mutig, mutig.", "A {c}? Na, schau ma amoi.", "Du traust di was."],
+      callOwn: ["{c}! Jetzt wird\u2019s ernst.", "{c}. Pass guat auf.", "Heit geht ma ois auf: {c}!"],
+      kontraOwn: ["Kontra! Des glaub i da ned.", "Kontra, und zwar gern."],
+      kontraYou: ["Uh, jetzt wird\u2019s spannend.", "Kontra? Hast di eh guat \xFCberlegt?"],
+      meldOwn: ["{p}! H\xF6rst es?", "Und {p} san a no da.", "{p}, Herrschaften!"],
+      meldYou: ["Scho wieder g\u2019meld\u2019t.", "G\xF6nn ma da.", "Jaja, protz nur."],
+      spOwn: ["{sp}! Damit hast ned g\u2019rechnet.", "Schau her: {sp}!"],
+      spYou: ["Wo hast denn {sp} her?", "{sp}? Des is ned fair."],
+      win: [
+        "Des war\u2019s. Die n\xE4chste Runde zahlst du!",
+        "Guat g\u2019spielt. Von uns.",
+        "Kumm, i lern da\u2019s no.",
+        "Des hamma uns verdient."
+      ],
+      lose: ["Gl\xFCck g\u2019habt, sonst nix.", "Des n\xE4chste Mal hamma di.", "Na guat, a blindes Huhn \u2026", "\xC4rgerlich, des."]
+    },
+    fein: {
+      winBig: ["Besten Dank, sehr freundlich.", "Wie aufmerksam von Ihnen.", "Das nehmen wir gern."],
+      trumped: ["Pardon, das Ass geh\xF6rt nun uns.", "Ein Trumpf. Wie unangenehm f\xFCr Sie.", "Tja."],
+      loseBig: ["Sehr \xE4rgerlich.", "Ein reiner Zufall.", "Man muss auch g\xF6nnen k\xF6nnen.", "Contenance."],
+      callYou: ["Ein {c}? Wie k\xFChn.", "Interessant. Ein {c}.", "Sie wagen sich weit hinaus."],
+      callOwn: ["{c}. Sie gestatten?", "Ich sage {c}. Selbstverst\xE4ndlich."],
+      kontraOwn: ["Kontra. Mit Verlaub.", "Kontra. Das trauen wir Ihnen nicht zu."],
+      kontraYou: ["Wie keck.", "Kontra? Sie \xFCberraschen mich."],
+      meldOwn: ["{p}, wenn ich bitten darf.", "Ich melde {p}. Ganz ergebenst."],
+      meldYou: ["Wie reizend.", "Bemerkenswert."],
+      spOwn: ["Darf ich vorstellen: {sp}.", "{sp}. Ein Familienerbst\xFCck."],
+      spYou: ["{sp}? Woher haben Sie das?", "Wie kommen Sie zu {sp}?"],
+      win: ["Ein Vergn\xFCgen.", "Vielleicht beim n\xE4chsten Mal.", "Sie haben sich wacker geschlagen."],
+      lose: ["Nun ja. Gl\xFCck geh\xF6rt dazu.", "Respekt. Widerwillig.", "Das bleibt unter uns."]
+    }
+  };
+  var QUIPS = {
+    dorf: ["Noch a Runde, Wirt!", "Am Stammtisch verliert ma ned."],
+    muehle: ["Des mahlt ma klein.", "Bei uns geht nix verloren."],
+    kirche: ["Vergelt\u2019s Gott.", "Des war a F\xFCgung."],
+    markt: ["Verkauft!", "Um den Preis kriegst des nirgends."],
+    alm: ["Do herobn san mia dahoam.", "Jodlh\xFC!"],
+    schloss: ["Im Schloss gewinnt das Haus.", "Der Graf bedankt sich."],
+    post: ["Des geht aufs Haus.", "Post is\u2019 kumma!"],
+    kaffee: ["Ein Melange auf Ihre Rechnung.", "Zahlen, bitte!"],
+    brauerei: ["Prost!", "Des is guat abg\u2019lagert."],
+    oper: ["Bravo! Bravissimo!", "Da capo!"],
+    residenz: ["Das Haus dankt.", "Wie es sich geh\xF6rt."]
+  };
+  var FERDL = {
+    treu: {
+      winBig: ["Guat g\u2019macht, Partner!", "So g\u2019h\xF6rt si des!", "Des san unsere!"],
+      mine: ["Den hamma!", "F\xFCr uns, Partner."],
+      trumped: ["Macht nix, des holn ma uns z\u2019ruck.", "Kopf hoch."],
+      loseBig: ["Weiter geht\u2019s.", "Des hol ma uns wieder."],
+      callYou: ["I bin dabei!", "Des schaff ma."],
+      callMine: ["Vertrau ma, Partner.", "Jetzt gilt\u2019s!"],
+      kontraOwn: ["Recht hast!", "Denen zeig ma\u2019s."],
+      kontraThem: ["Lass di ned einsch\xFCchtern.", "Nur ka Angst."],
+      win: ["Mia zwa san a Team!", "Prost, Partner!"],
+      lose: ["N\xE4chstes Mal, Partner.", "Kopf hoch, des wird scho."]
+    },
+    stur: {
+      winBig: ["Na endlich.", "Hab i\u2019s ned g\u2019sagt?"],
+      mine: ["Siehgst, so geht des.", "Lern was."],
+      trumped: ["I h\xE4tt des anders g\u2019spielt.", "Des hamma jetzt davon.", "Hmpf."],
+      loseBig: ["Typisch.", "Des h\xE4tt ned sein m\xFCssen."],
+      callYou: ["Wenn\u2019st moanst.", "Auf dei Verantwortung."],
+      callMine: ["Red ma ned drein.", "I woa\xDF, was i tu."],
+      kontraOwn: ["Scho wieder Kontra \u2026", "Na guat."],
+      kontraThem: ["Hab i ma denkt.", "Jetzt hamma den Salat."],
+      win: ["War eh klar.", "Wegen mir, eh."],
+      lose: ["H\xE4tt\u2019st auf mi g\u2019h\xF6rt.", "Des war ned i."]
+    },
+    schlitzohr: {
+      winBig: ["Hoppala, Herrschaften!", "Des tuat weh, gell?", "Danke vielmals!"],
+      mine: ["Hehe, den hab i eich g\u2019stohln.", "\xDCberraschung!", "Da schauts, gell?"],
+      trumped: ["Uiii, des Ass is furt.", "Des war jetzt teuer."],
+      loseBig: ["Na, g\xF6nn ma\u2019s eana.", "Des war a Falle. Eh kloar."],
+      callYou: ["Uiui, mutig!", "Des wird a Gaudi."],
+      callMine: ["Jetzt werd\u2019s lustig.", "Schauts amoi her."],
+      kontraOwn: ["Kontra, weil\u2019s so sch\xF6n is.", "Jetzt zahl\u2019n s\u2019 doppelt."],
+      kontraThem: ["Kontra? Ah geh.", "Die bluffen nur."],
+      win: ["Abkassiert!", "Sch\xF6ne Gr\xFC\xDF an d\u2019 Verlierer!"],
+      lose: ["Na guat, sie d\xFCrfen a amoi.", "Mia ham\u2019s ihna g\u2019schenkt."]
+    }
+  };
+  var OPPS = [1, 3];
+  var MAX_LINES = 1;
+  var pick = (rng, a) => a[Math.floor(rng() * a.length) % a.length];
+  function banterMemory(st) {
+    return {
+      done: st.done.length,
+      meld: st.marriages.length,
+      called: !!(st.contract && st.phase !== "bid" && st.phase !== "trump"),
+      kontra: Object.keys(st.kontraSaid || {}).length,
+      over: st.phase === "done",
+      spoke: -9,
+      // trick index of the last line, for a short cool-down
+      lines: 0
+      // lines so far in this hand
+    };
+  }
+  function banter(st, mem, ctx) {
+    const rng = ctx.rng || Math.random;
+    const opp = OPP[FEIN.has(ctx.loc) ? "fein" : "derb"];
+    const fer = FERDL[ctx.temper] || FERDL.treu;
+    const quips = QUIPS[ctx.loc] || [];
+    const contract = st.contract && C[st.contract.key];
+    const fill = (t, v) => t.replace("{c}", v.c || "").replace("{p}", v.p || "").replace("{sp}", v.sp || "");
+    const say = (chance, cands, v = {}) => {
+      if (rng() >= chance) return null;
+      const live = cands.filter((x) => x && x[1] && x[1].length);
+      const total = live.reduce((a, x) => a + x[2], 0);
+      let r = rng() * total;
+      for (const [seat, pool, w] of live) {
+        r -= w;
+        if (r < 0) return { seat, text: fill(pick(rng, pool), v) };
+      }
+      return null;
+    };
+    const anyOpp = () => OPPS[Math.floor(rng() * 2) % 2];
+    const out = [];
+    if (st.phase === "done" && !mem.over) {
+      mem.over = true;
+      const r = st.result;
+      if (r) {
+        const weWon = r.winTeam === 0;
+        out.push([
+          0.5,
+          weWon ? [
+            [anyOpp(), opp.lose, 2],
+            [2, fer.win, 2]
+          ] : [
+            [anyOpp(), opp.win.concat(quips), 2],
+            [2, fer.lose, 1.5]
+          ],
+          {},
+          3
+        ]);
+      }
+    }
+    if (!mem.called && contract && st.phase !== "bid" && st.phase !== "trump") {
+      mem.called = true;
+      const d = st.contract.declarer;
+      const big = st.contract.key !== "normal" ? 1 : 0;
+      const v = { c: contract.name };
+      if (d === 0)
+        out.push([
+          0.55 * big,
+          [
+            [anyOpp(), opp.callYou, 2],
+            [2, fer.callYou, 1]
+          ],
+          v,
+          2
+        ]);
+      else if (d === 2)
+        out.push([
+          0.55 * big,
+          [
+            [2, fer.callMine, 2],
+            [anyOpp(), opp.callYou.filter((t) => !t.includes("{c}")), 0.5]
+          ],
+          v,
+          2
+        ]);
+      else out.push([0.5 * big, [[d, opp.callOwn, 2]], v, 2]);
+    }
+    const k = Object.keys(st.kontraSaid || {});
+    if (k.length > mem.kontra) {
+      const seat = Number(k[k.length - 1]);
+      mem.kontra = k.length;
+      if (seat % 2 === 1)
+        out.push([
+          0.6,
+          [
+            [seat, opp.kontraOwn, 2],
+            [2, fer.kontraThem, 1]
+          ],
+          {},
+          2
+        ]);
+      else
+        out.push([
+          0.6,
+          [
+            [anyOpp(), opp.kontraYou, 2],
+            [2, fer.kontraOwn, 1]
+          ],
+          {},
+          2
+        ]);
+    }
+    while (mem.meld < st.marriages.length) {
+      const m = st.marriages[mem.meld++];
+      const v = { p: String(m.pts) };
+      if (m.seat % 2 === 1) out.push([0.45, [[m.seat, opp.meldOwn, 1]], v, 1]);
+      else out.push([0.35, [[anyOpp(), opp.meldYou, 1]], v, 1]);
+    }
+    while (mem.done < st.done.length) {
+      const i = mem.done++;
+      const d = st.done[i];
+      const w = d.winner;
+      const cards = d.cards || [];
+      const sp = d.fx && d.fx.length ? cards.find((t) => t.card.sp) : null;
+      if (sp) {
+        const v = { sp: sp.card.sp.name };
+        if (sp.seat % 2 === 1) out.push([0.4, [[sp.seat, opp.spOwn, 1]], v, 1.5]);
+        else out.push([0.4, [[anyOpp(), opp.spYou, 1]], v, 1.5]);
+        continue;
+      }
+      if (!contract || contract.goal === "none") continue;
+      const led = cards[0] && cards[0].card;
+      const win = cards.find((t) => t.seat === w);
+      const trumpedAce = st.trump != null && win && win.card.s === st.trump && led && led.s !== st.trump && cards.some((t) => t.seat % 2 !== w % 2 && t.card.r === 0 && t.card.s !== st.trump);
+      const big = d.pts >= 25;
+      const cool = mem.spoke >= i - 1 ? 0.5 : 1;
+      if (w % 2 === 1) {
+        if (trumpedAce)
+          out.push([
+            0.45 * cool,
+            [
+              [w, opp.trumped, 3],
+              [2, fer.trumped, 1]
+            ],
+            {},
+            1
+          ]);
+        else if (big)
+          out.push([
+            0.3 * cool,
+            [
+              [w, opp.winBig.concat(quips), 3],
+              [2, fer.loseBig, 1]
+            ],
+            {},
+            0.5
+          ]);
+        else out.push([0.08 * cool, [[w, opp.winBig, 1]], {}, 0]);
+      } else {
+        const loser = OPPS.find((s) => cards.some((t) => t.seat === s && t.card.r <= 1)) ?? anyOpp();
+        if (big || trumpedAce)
+          out.push([
+            0.3 * cool,
+            [
+              [loser, opp.loseBig, 2],
+              [2, w === 2 ? fer.mine : fer.winBig, 2]
+            ],
+            {},
+            0.5
+          ]);
+        else if (w === 2) out.push([0.1 * cool, [[2, fer.mine, 1]], {}, 0]);
+      }
+    }
+    out.sort((a, b) => b[3] - a[3]);
+    for (const [chance, cands, v, rank] of out) {
+      if (mem.lines >= MAX_LINES && rank < 3) continue;
+      const line = say(chance, cands, v);
+      if (line) {
+        mem.lines++;
+        mem.spoke = st.done.length - 1;
+        return line;
+      }
+    }
+    return null;
   }
 
   // src/ui/feedback.js
@@ -3095,6 +3588,7 @@ button.link {
   var P = null;
   var busy = false;
   var showTrick = null;
+  var chat = { hand: null, mem: null, line: null, fresh: false, timer: 0 };
   function load() {
     try {
       const s = localStorage.getItem("schnapsertal");
@@ -3236,22 +3730,22 @@ button.link {
       ${action}
       <h2 style="font-size:1.05rem">Deine Spezialkarten</h2>
       ${W.loot.length ? `${W.loot.map((key) => specHTML(key, "", true)).join("")}
-        <div class="small muted">Alle erbeuteten Karten werden in jeder Partie mitgemischt. Ihr Effekt wirkt nur, wenn du sie selbst spielst.</div>` : '<div class="small muted">Noch keine. Schl\xE4gst du einen Ort, erbeutest du die Spezialkarte der Gegner.</div>'}
+        <div class="small muted">Alle erbeuteten Karten werden in jeder Partie mitgemischt. Ihr Effekt wirkt, wenn du oder ${PARTNER2} sie spielt.</div>` : '<div class="small muted">Noch keine. Schl\xE4gst du einen Ort, erbeutest du die Spezialkarte der Gegner.</div>'}
       ${W.speck ? `<div class="small">Im Rucksack: ${speckName(W)} (+2 zum Start der n\xE4chsten Partie).</div>` : ""}
       <div class="small muted">Schlag die Orte auf dem Weg zum Ziel. ${W.level === 2 ? "Ein gewonnener Gang" : "Ein gewonnener Bauernschnapser"} spricht sich herum.</div>
       <h2 style="font-size:1.05rem">Reisetagebuch</h2>
       <div class="hist">${W.hist.map((h) => `<div class="${h.c}">${h.t}</div>`).join("")}</div>
     </div></div>`;
     document.querySelectorAll(".loc").forEach((g) => {
-      const pick = () => {
+      const pick2 = () => {
         sel = g.dataset.loc === W.loc ? null : g.dataset.loc;
         render();
       };
-      g.addEventListener("click", pick);
+      g.addEventListener("click", pick2);
       g.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          pick();
+          pick2();
         }
       });
     });
@@ -3344,8 +3838,9 @@ button.link {
       else if (st.phase === "bid" && said)
         calls.push(said === "pass" ? '<span class="call pass">weiter</span>' : `<span class="call">${C[said].name}</span>`);
       if (st.kontraSaid && st.kontraSaid[seat]) calls.push(`<span class="call kontra">${st.kontraSaid[seat]}!</span>`);
-      const name = `<div class="seatname"><b>${seatName(seat)}</b>${tags.join("")}</div>${calls.length ? `<div class="calls">${calls.join("")}</div>` : ""}`;
-      if (seat === 0) return `<div class="seat s">${name}<div class="hand" id="myhand"></div></div>`;
+      const name = `<div class="seatname"><b>${seatName(seat)}</b>${tags.join("")}${bubbleHTML(seat)}</div>${calls.length ? `<div class="calls">${calls.join("")}</div>` : ""}`;
+      if (seat === 0)
+        return `<div class="seat s">${st.done.length ? `<div class="srow">${pilesHTML(st, "us")}<div>${name}</div>${pilesHTML(st, "them")}</div>` : name}<div class="hand" id="myhand"></div></div>`;
       const n = st.hands[seat].length;
       let body;
       if (st.outSeat === seat) body = '<div class="small">sitzt aus</div>';
@@ -3389,7 +3884,7 @@ button.link {
     <button type="button" id="leave" class="leave" title="${P.practice ? "\xDCbung abbrechen, ohne Folgen" : "Z\xE4hlt als verlorene Partie"}">${P.practice ? "Tisch verlassen" : "Tisch verlassen (gilt als verloren)"}</button></div>
     ${lessonBox}
     ${l.home ? "" : ruleHTML(l)}
-    ${P.specials.map((x) => specHTML(x.key, x.team ? "Gegner: " : "Deine: ", true)).join("")}
+    ${P.specials.map((x) => specHTML(x.key, x.team ? "Gegner: " : "Eure: ", true)).join("")}
     <div class="score">
       <span class="h">${lesson ? "Punkte zum \xDCben" : "Partie bis " + P.target}</span><span class="h">Punkte</span><span class="h">Augen</span>
       <span style="color:var(--you)">Du & ${PARTNER2}</span><b>${P.score[0]}</b><span>${st.teamPts[0]}${meldSum(0)}</span>
@@ -3419,7 +3914,7 @@ button.link {
     <div class="houserules" aria-label="Hausregeln" style="flex-direction:column;align-items:center">
       <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
       ${lesson ? `<button type="button" id="skipLesson" class="skiplesson" title="Lektion als geschafft abhaken">${nextLesson(P.lesson) ? "Verstanden, n\xE4chste Lektion" : "Verstanden, Lernpfad beenden"}</button>` : ""}
-      ${P.specials.length ? `<div class="spchips">${P.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : "dir"}</span>`).join("")}</div>` : ""}</div>
+      ${P.specials.length ? `<div class="spchips">${P.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : `dir und ${PARTNER2}`}</span>`).join("")}</div>` : ""}</div>
     ${seatBox(2)}${seatBox(1)}${center}${seatBox(3)}${seatBox(0)}
     <div class="actions" id="actions"></div></div>${side}</div>`;
     const lg = $("log");
@@ -3450,6 +3945,7 @@ button.link {
       if (!P.practice) note3(`Du stehst ${l.at} vorzeitig auf.`, "bad");
       endPartie2(false);
     };
+    document.querySelectorAll("[data-pile]").forEach((b) => b.onclick = () => openTricks(b.dataset.pile));
     renderMyHand();
     renderActions();
   }
@@ -3468,14 +3964,39 @@ button.link {
     );
     return `<div class="signals small"><b>Zeichen</b>${rows.join("")}</div>`;
   }
+  function pilesHTML(st, side) {
+    const v = visibleTricks(st, 0);
+    const n = side === "us" ? v.ours.length : v.theirs.length + v.hidden;
+    const open = side === "us" ? n > 0 : v.theirs.length > 0;
+    const label = side === "us" ? "Eure Stiche" : "Gegner";
+    const backs = Array.from({ length: Math.min(n, 4) }, () => "<i></i>").join("");
+    const inner = `<span class="stack">${backs}</span><span class="txt"><b>${n}</b><span>${side === "us" ? "Eure<br>Stiche" : "Gegner"}</span></span>`;
+    const aria = `${label}: ${n} Stich${n === 1 ? "" : "e"}`;
+    return open ? `<button type="button" class="pile ${side}" data-pile="${side}" aria-label="${aria} ansehen" title="${aria} ansehen">${inner}</button>` : `<div class="pile ${side}" aria-label="${aria}">${inner}</div>`;
+  }
+  function trickRow(d, big) {
+    const fx = d.fx && d.fx.length ? `<div class="fx">${d.fx.join(" \xB7 ")}</div>` : "";
+    return `<div class="trow"><span class="no">${d.n + 1}.</span><span class="cards">${d.cards.map((t) => cardHTML(t.card, { small: !big })).join("")}</span><span class="who">${who(d.winner)}<br><b>${d.pts}</b> Augen</span>${fx}</div>`;
+  }
+  function trickListHTML(st, side) {
+    const v = visibleTricks(st, 0);
+    if (side === "us") {
+      const sum = v.ours.reduce((a, d) => a + d.pts, 0);
+      return `<h3>Eure Stiche</h3><p class="small muted">${v.ours.length} Stich${v.ours.length === 1 ? "" : "e"}, ${sum} Augen ohne Meldungen. Die Stiche deines Teams darfst du jederzeit ansehen.</p>${v.ours.map((d) => trickRow(d, true)).join("")}`;
+    }
+    const done = st.phase === "done";
+    return `<h3>Stiche der Gegner</h3><p class="small muted">${done ? "Die Hand ist vorbei: alle Stiche liegen offen." : "Nur ihr erster Stich liegt offen, die anderen verdeckt."}</p>${v.theirs.map((d) => trickRow(d, true)).join("")}${v.hidden ? `<p class="small muted">dazu ${v.hidden} verdeckt${v.hidden > 1 ? "e Stiche" : "er Stich"}</p>` : ""}`;
+  }
+  function openTricks(side) {
+    $("tr-body").innerHTML = trickListHTML(P.hand, side);
+    $("tr-dlg").showModal();
+  }
   function tricksHTML(st) {
     if (!st.done.length) return "";
-    const row = (d) => `<div class="trow">${d.cards.map((t) => cardHTML(t.card, { small: true })).join("")}<small>${who(d.winner)}</small></div>`;
-    const ours = st.done.filter((d) => team(d.winner) === 0), theirs = st.done.filter((d) => team(d.winner) === 1);
-    const rest = theirs.length - 1;
-    return `<details class="tricks small"${st.phase === "done" ? " open" : ""}><summary>Stiche: ihr ${ours.length}, Gegner ${theirs.length}</summary>
-    ${ours.length ? `<div class="muted">Eure Stiche</div>${ours.map(row).join("")}` : ""}
-    ${theirs.length ? `<div class="muted">Erster Stich der Gegner (offen)</div>${row(theirs[0])}${rest > 0 ? `<div class="muted">dazu ${rest} verdeckt${rest > 1 ? "e Stiche" : "er Stich"}</div>` : ""}` : ""}
+    const v = visibleTricks(st, 0);
+    return `<details class="tricks small"${st.phase === "done" ? " open" : ""}><summary>Stiche: ihr ${v.ours.length}, Gegner ${v.theirs.length + v.hidden}</summary>
+    ${v.ours.length ? `<div class="muted">Eure Stiche</div>${v.ours.map(trickRow).join("")}` : ""}
+    ${v.theirs.length ? `<div class="muted">${st.phase === "done" ? "Stiche der Gegner" : "Erster Stich der Gegner (offen)"}</div>${v.theirs.map(trickRow).join("")}${v.hidden ? `<div class="muted">dazu ${v.hidden} verdeckt${v.hidden > 1 ? "e Stiche" : "er Stich"}</div>` : ""}` : ""}
   </details>`;
   }
   var hasPair = (h, c) => (c.r === 2 || c.r === 3) && h.some((x) => x.s === c.s && x.r === (c.r === 2 ? 3 : 2));
@@ -3597,9 +4118,9 @@ button.link {
         return;
       }
       el.innerHTML = `<div class="msg">${st.auction.cur ? `Aktuell: <b>${C[st.auction.cur].name}</b> von ${seatName(st.auction.holder)}.` : "Du er\xF6ffnest. Normalspiel oder mehr?"}</div>
-      <div class="row" style="justify-content:center">${opts.map((k) => `<button type="button" data-bid="${k}"${k === "spritzer" ? ' title="Du verdoppelst das Normalspiel der Gegner: 2 bis 6 Punkte. Ein Bettler kann das nicht mehr \xFCberbieten."' : ""}>${C[k].name} \xB7 ${k === "spritzer" ? "2\u20136" : value(st, k)}</button>`).join("")}
+      <div class="row" style="justify-content:center">${opts.map((k) => `<button type="button" data-bid="${k}"${k === "spritzer" ? ` title="${st.auction.cur === "bettler" ? "Die Vorhand muss statt Bettler ein Normalspiel spielen, doppelt: 2 bis 6 Punkte." : "Du verdoppelst das Normalspiel der Gegner: 2 bis 6 Punkte."} Ein Bettler kann das nicht mehr \xFCberbieten."` : ""}>${C[k].name} \xB7 ${k === "spritzer" ? "2\u20136" : value(st, k)}</button>`).join("")}
       ${(P.lesson ? [] : blockedBids(st, 0)).map(
-        (b) => `<button type="button" class="blocked" disabled title="Hausregel">${C[b.key].name}<small>${b.why === "ace" ? "(nur ohne Ass)" : `(${LOCS2[P.loc].at} verboten)`}</small></button>`
+        (b) => b.why === "noNormal" ? `<button type="button" class="blocked" disabled title="Spritzen geht nur direkt gegen die Er\xF6ffnung der Vorhand: Normalspiel oder Bettler. Hier hat schon jemand h\xF6her angesagt.">${C[b.key].name}<small>(nur gegen Vorhand)</small></button>` : `<button type="button" class="blocked" disabled title="Hausregel">${C[b.key].name}<small>${b.why === "ace" ? "(nur ohne Ass)" : `(${LOCS2[P.loc].at} verboten)`}</small></button>`
       ).join("")}
       ${canPass(st, 0) ? '<button class="primary" type="button" data-bid="">Weiter</button>' : ""}</div>`;
       el.querySelectorAll("[data-bid]").forEach(
@@ -3755,6 +4276,7 @@ button.link {
   }
   function render() {
     coachButton();
+    if (P) talk();
     $("where").textContent = LOCS2[P ? P.loc : W.loc].name;
     if (P) renderTable();
     else renderMap();
@@ -3800,6 +4322,54 @@ button.link {
     meleeButton();
   };
   meleeButton();
+  function banterOn() {
+    try {
+      return localStorage.getItem("schnapsertal-banter") !== "off";
+    } catch {
+      return true;
+    }
+  }
+  function hideBubble() {
+    clearTimeout(chat.timer);
+    chat.line = null;
+    const b = document.querySelector(".bubble");
+    if (b) b.remove();
+  }
+  function talk() {
+    const st = P.hand;
+    if (chat.hand !== st) {
+      hideBubble();
+      chat.hand = st;
+      chat.mem = banterMemory(st);
+      return;
+    }
+    const line = banter(st, chat.mem, { loc: P.loc, temper: W.ferdl || "treu" });
+    if (!line || !banterOn()) return;
+    clearTimeout(chat.timer);
+    chat.line = line;
+    chat.fresh = true;
+    chat.timer = setTimeout(hideBubble, 2600 + line.text.length * 25);
+  }
+  function bubbleHTML(seat) {
+    if (!chat.line || chat.line.seat !== seat) return "";
+    const pop = chat.fresh ? " pop" : "";
+    chat.fresh = false;
+    return `<div class="bubble${pop}" role="status">${chat.line.text}</div>`;
+  }
+  function banterButton() {
+    const on = banterOn();
+    $("banter").textContent = "Spr\xFCche: " + (on ? "an" : "aus");
+    $("banter").setAttribute("aria-pressed", on);
+  }
+  $("banter").onclick = () => {
+    try {
+      localStorage.setItem("schnapsertal-banter", banterOn() ? "off" : "on");
+    } catch {
+    }
+    banterButton();
+    if (!banterOn()) hideBubble();
+  };
+  banterButton();
   function ferdlButton() {
     $("ferdl").textContent = "Ferdl: " + TEMPER2[W.ferdl || "treu"];
   }
@@ -3836,7 +4406,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "7c332df615" : "dev";
+  var BUILD = true ? "acb9c099e5" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
@@ -3881,7 +4451,7 @@ button.link {
         P,
         env: {
           build: BUILD,
-          settings: { coach: coachOn(), ferdl: W.ferdl || "treu", melee: meleeOn() },
+          settings: { coach: coachOn(), ferdl: W.ferdl || "treu", melee: meleeOn(), banter: banterOn() },
           ua: navigator.userAgent,
           screen: `${innerWidth}x${innerHeight}`,
           errors: recentErrors

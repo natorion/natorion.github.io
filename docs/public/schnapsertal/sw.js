@@ -1,7 +1,7 @@
 // Service worker: precaches every file of dist/ so the game runs fully offline once installed.
 // The build replaces VERSION (content hash of all files) and ASSETS (file list); a new hash means a new
 // cache, the old one is dropped on activation. Strategy: cache first, network as fallback.
-const VERSION = 'ad48846d79f8';
+const VERSION = 'b8d33e02f4a0';
 const ASSETS = ["./","manifest.webmanifest","fonts/alegreya-sans-latin-400-normal.woff2","fonts/alegreya-sans-latin-500-normal.woff2","fonts/alegreya-sans-latin-700-normal.woff2","fonts/germania-one-latin-400-normal.woff2","icons/apple-touch-icon.png","icons/icon-192.png","icons/icon-512.png","icons/icon-maskable-512.png","icons/icon.svg"];
 const CACHE = `schnapsertal-${VERSION}`;
 
