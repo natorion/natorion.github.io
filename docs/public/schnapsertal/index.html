@@ -2464,6 +2464,7 @@ button.link {
     freshWorld: () => freshWorld,
     handOptions: () => handOptions,
     hasNextLevel: () => hasNextLevel,
+    idleNote: () => idleNote,
     lessonById: () => lessonById,
     lessonPartie: () => lessonPartie,
     levelOf: () => levelOf,
@@ -2909,6 +2910,18 @@ button.link {
       exp: { 1: exp, 2: ferdlExp(W2), 3: exp }
     };
   }
+  function idleNote(P2, def) {
+    const own = P2 && P2.specials && P2.specials.find((x) => x.key === def.key);
+    const opp = P2 ? seatNames(P2.loc) : [];
+    if (def.against && own && own.team === 1)
+      return {
+        stamp: "ohne Wirkung",
+        tip: `wirkt nur f\xFCr ${opp[1]} und ${opp[3]}, und nur gegen Spiele, die ihr angesagt habt. Hier eine gew\xF6hnliche Karte.`
+      };
+    if (own && own.team === 1)
+      return { stamp: "nur f\xFCr Gegner", tip: `wirkt nur, wenn ${opp[1]} oder ${opp[3]} sie spielt. Hier eine gew\xF6hnliche Karte.` };
+    return { stamp: "nur f\xFCr dich", tip: "deine Beutekarte, wirkt nur, wenn du sie selbst spielst. Hier eine gew\xF6hnliche Karte." };
+  }
   var seatNames = (loc) => ["Du", LOCS[loc].opp[0], PARTNER, LOCS[loc].opp[1]];
   function countHand(W2, P2) {
     const r = P2.hand.result;
@@ -3141,18 +3154,6 @@ button.link {
     const d = SPECIALS[key];
     return `<div class="spec">${cardHTML(spCard(key), { small })}<div class="small"><b>${who2}${d.name}</b><br>${d.text}</div></div>`;
   }
-  function idleNote(def) {
-    const own = P && P.specials && P.specials.find((x) => x.key === def.key);
-    const opp = P ? seatNames(P.loc) : [];
-    if (def.against && own && own.team === 1)
-      return {
-        stamp: "ohne Wirkung",
-        tip: `wirkt nur f\xFCr ${opp[1]} und ${opp[3]}, und nur gegen Spiele, die ihr angesagt habt. Hier eine gew\xF6hnliche Karte.`
-      };
-    if (own && own.team === 1)
-      return { stamp: "nur f\xFCr Gegner", tip: `wirkt nur, wenn ${opp[1]} oder ${opp[3]} sie spielt. Hier eine gew\xF6hnliche Karte.` };
-    return { stamp: "nur f\xFCr dich", tip: "deine Beutekarte, wirkt nur, wenn du sie selbst spielst. Hier eine gew\xF6hnliche Karte." };
-  }
   function cardHTML(c, opts) {
     opts = opts || {};
     if (!c) return '<div class="card back"></div>';
@@ -3166,7 +3167,7 @@ button.link {
     if (c.sp) cls.push("spc");
     if (c.spIdle) cls.push("spc", "idle");
     const tag = opts.play ? "button" : "div";
-    const lbl = cname(c), idle = c.spIdle && idleNote(c.spIdle), tip2 = c.sp ? lbl + ": " + c.sp.text : idle ? `${c.spIdle.name}: ${idle.tip}` : lbl;
+    const lbl = cname(c), idle = c.spIdle && idleNote(P, c.spIdle), tip2 = c.sp ? lbl + ": " + c.sp.text : idle ? `${c.spIdle.name}: ${idle.tip}` : lbl;
     return `<${tag} class="${cls.join(" ")}" ${opts.play ? `data-cid="${c.id}" type="button"` : ""}${idle ? ` data-idle="${idle.stamp}"` : ""} aria-label="${tip2}" title="${tip2}">
     <span class="rk">${SHORT[c.r]}</span>${SUITSVG[c.s]}<span class="rk2">${SHORT[c.r]}</span>${c.sp || c.spIdle ? `<span class="star">\u2605</span><span class="nm">${(c.sp || c.spIdle).name}${c.sp ? `<i>${c.sp.short}</i>` : ""}</span>` : ""}${opts.m ? `<span class="m">${opts.m}!</span>` : ""}${opts.pair && !opts.m ? `<span class="pr">Paar</span>` : ""}</${tag}>`;
   }
@@ -3835,7 +3836,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "2168f855f7" : "dev";
+  var BUILD = true ? "59d2c963ed" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
