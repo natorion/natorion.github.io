@@ -1342,7 +1342,7 @@ button.link {
       </div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a></footer>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version 7c332df615 · 24.11.2026, 09:21</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -3836,7 +3836,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "59d2c963ed" : "dev";
+  var BUILD = true ? "7c332df615" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
