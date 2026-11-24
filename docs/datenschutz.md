@@ -40,7 +40,7 @@ Weitere Informationen: [Google Analytics Datenschutz](https://support.google.com
 
 Ihre Cookie-Einstellung wird in Ihrem Browser (localStorage) gespeichert, damit Sie nicht bei jedem Besuch erneut gefragt werden. Dies ist technisch notwendig und erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.
 
-Einzelne Anwendungen auf dieser Website (z. B. Spiele unter „Experiments“) speichern Spielstände und Einstellungen ebenfalls nur im localStorage Ihres Browsers. Diese Daten verlassen Ihr Gerät nicht und werden weder an den Betreiber noch an Dritte übertragen, außer Sie schicken sie ausdrücklich mit einer Feedback-Meldung mit (siehe unten). Sie können sie jederzeit löschen, indem Sie die Website-Daten für diese Seite in Ihrem Browser entfernen.
+Einzelne Anwendungen auf dieser Website (z. B. Spiele unter „Experiments“) speichern Spielstände und Einstellungen ebenfalls nur im localStorage Ihres Browsers. Diese Daten verlassen Ihr Gerät nicht und werden weder an den Betreiber noch an Dritte übertragen, außer Sie schicken sie ausdrücklich mit einer Feedback-Meldung mit (siehe unten). Davon getrennt ist die anonyme Spielstatistik von Schnapsertal (siehe unten): Sie liest keine gespeicherten Daten aus, sondern beschreibt nur die gerade beendete Hand. Sie können sie jederzeit löschen, indem Sie die Website-Daten für diese Seite in Ihrem Browser entfernen.
 
 ## Feedback in Schnapsertal
 
@@ -57,6 +57,20 @@ Im Spiel Schnapsertal können Sie über „⚑ Feedback“ eine Meldung (Fehler,
 **Zweck und Rechtsgrundlage:** Fehlerbehebung und Verbesserung des Spiels, berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).
 
 **Speicherdauer:** Bearbeitete Meldungen werden 90 Tage nach der Bearbeitung automatisch gelöscht, auf Wunsch auch früher. Für eine Löschung oder Auskunft schreiben Sie an die oben genannte E-Mail-Adresse.
+
+## Spielstatistik in Schnapsertal
+
+Nach jeder gespielten Hand (außer in den Lektionen) schickt Schnapsertal einen anonymen Datensatz an denselben Cloudflare Worker wie das Feedback.
+
+**Was übertragen wird:** die ausgeteilten Karten, Trumpf, Ansagen, die gespielten Stiche und das Ergebnis der Hand, dazu Ort im Spiel, Hausregeln und Spezialkarten, Spielversion und einige Spieleinstellungen (Coach an/aus, Ferdls Verhalten). Der Datensatz enthält keine Kennung, keinen Namen, keine Browserkennung und keine IP-Adresse und lässt sich keiner Person zuordnen. Es werden keine Cookies gesetzt und keine Daten auf Ihrem Gerät dafür gespeichert.
+
+**IP-Adresse:** Um Missbrauch zu begrenzen, zählt Cloudflare kurzzeitig, wie viele Datensätze pro Minute von einer IP-Adresse kommen. Die IP-Adresse wird dabei nicht gespeichert.
+
+**Zweck und Rechtsgrundlage:** Spiel-KI und Spielbalance verbessern, indem echte Spiele mit Simulationen verglichen werden; berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO). Zur Übermittlung an Cloudflare gilt das oben beim Feedback Gesagte.
+
+**Speicherdauer:** höchstens ein Jahr.
+
+**Abschalten:** jederzeit im Spiel mit dem Knopf „Statistik: aus“. Die Einstellung wird im localStorage Ihres Browsers gespeichert.
 
 ## Ihre Rechte
 
