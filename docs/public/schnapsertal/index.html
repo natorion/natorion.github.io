@@ -1530,7 +1530,7 @@ button.link {
       <div class="row fb-actions"><button value="close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version acb9c099e5 · 24.11.2026, 12:04</span></footer>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version cae5cba73f · 24.11.2026, 12:16</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -4406,7 +4406,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "acb9c099e5" : "dev";
+  var BUILD = true ? "cae5cba73f" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
@@ -4481,8 +4481,15 @@ button.link {
   if (P) pump();
   if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
     const hadController = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (hadController) $("update").hidden = false;
+    navigator.serviceWorker.addEventListener("controllerchange", async () => {
+      if (!hadController) return;
+      let current = null;
+      try {
+        const page = await (await fetch("./")).text();
+        current = (page.match(/<span class="build">Version ([0-9a-f]+)/) || [])[1] || null;
+      } catch {
+      }
+      if (current !== BUILD) $("update").hidden = false;
     });
     navigator.serviceWorker.register("sw.js").then((reg) => {
       document.addEventListener("visibilitychange", () => {
