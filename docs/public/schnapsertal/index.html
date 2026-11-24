@@ -1495,7 +1495,7 @@ button.link {
       <li><b>Zeichen:</b> Reden ist verboten, gedeutet wird indirekt. <i>Abwerfen:</i> Wer nicht bedienen kann und einen Ober oder Unter einer Nebenfarbe abwirft, sagt damit „da hab ich nichts“. <i>Klopfen</i> (nur wo die Hausregel es erlaubt, höchstens einmal pro Stich): Du klopfst auf die Karte, die du gerade spielst, egal ob du ausspielst oder zugibst. Beim <i>Bettler</i> klopfen die zwei Gegner des Bettlers untereinander: Die geklopfte Farbe hat man nicht mehr, der Partner soll sie nachspielen. In <i>allen anderen Spielen</i> heißt Klopfen: In dieser Farbe bin ich stark, du musst sie nicht halten und kannst sie abwerfen. Alle am Tisch hören das Klopfen.</li>
       <li><b>Coach:</b> Oben einschalten. Er erklärt, warum nur bestimmte Karten erlaubt sind, zeigt auf Wunsch, was Ferdl spielen würde, rechnet beim Ansagen die Gewinnchancen aus und gibt nach jeder Hand bis zu drei Hinweise.</li>
       <li><b>Ferdl:</b> Im Kopf der Seite stellst du ein, wie dein Partner mit Zeichen umgeht. <i>Treu</i> klopft nur mit Grund und folgt deinen Zeichen. <i>Stur</i> klopft nie und ignoriert deine Zeichen. <i>Schlitzohr</i> folgt deinen Zeichen, klopft aber manchmal auch zum Bluff. Ob jemand ein Zeichen bemerkt, hängt von seiner Erfahrung ab: Die Stammtischler übersehen viel, der Graf fast nichts. Ferdl lernt mit jeder Partie dazu (von 50 % bis 95 %).</li>
-      <li><b>Spritzen:</b> Hat jemand Normalspiel angesagt, kann ein Gegner schon beim Ansagen spritzen. Das Normalspiel zählt dann doppelt (2 bis 6 Punkte) und kann nicht mehr mit einem Bettler überboten werden, nur mit Schnapser oder höher. Das Team des Ansagers kann danach noch Re sagen.</li>
+      <li><b>Spritzen:</b> Hat jemand Normalspiel angesagt, kann ein Gegner schon beim Ansagen spritzen. Das geht auch, wenn die Vorhand gleich Bettler ansagt: Dann muss sie stattdessen ein Normalspiel spielen. Das Normalspiel zählt dann doppelt (2 bis 6 Punkte) und kann nicht mehr mit einem Bettler überboten werden, nur mit Schnapser oder höher. Das Team des Ansagers kann danach noch Re sagen.</li>
       <li><b>Kontra / Re:</b> verdoppeln jeweils. Subkontra ist im Prototyp weggelassen.</li>
       <li><b>Hausregeln:</b> Jeder Ort verbietet einzelne Ansagen oder schränkt sie ein (zum Beispiel kein Bettler) oder ändert, was sie zählen.</li>
       <li><b>Spezialkarten:</b> Die Gegner spielen immer mit ihrer Spezialkarte. Sie ersetzt im Deck die normale Karte gleicher Farbe und Höhe und wird ganz normal ausgeteilt. Ihr Effekt wirkt nur, wenn ihr Besitzer sie spielt (bei Gegner-Karten einer der beiden Gegner, bei deinen erbeuteten Karten du oder Ferdl). Bei allen anderen ist sie eine gewöhnliche Karte (grau markiert). Schlägst du sie, gehört die Karte dir: Alle erbeuteten Karten werden ab dann in jeder Partie mitgemischt. Der Graf im Schloss spielt mit drei Spezialkarten.</li>
@@ -1530,7 +1530,7 @@ button.link {
       <div class="row fb-actions"><button value="close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version a3f65681fe · 24.11.2026, 12:01</span></footer>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version acb9c099e5 · 24.11.2026, 12:04</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -1605,6 +1605,7 @@ button.link {
   var C = {
     normal: { key: "normal", name: "Normalspiel", val: 1, rank: 0, who: "F", trump: true, goal: "normal" },
     // Spritzer: an opponent of the Normalspiel caller doubles it during the auction (2-6 points), so it outranks the Bettler.
+    // Also allowed against forehand opening straight with Bettler: forehand then plays Normalspiel ×2 (house rule 2026-11-24).
     spritzer: { key: "spritzer", name: "Spritzer", val: 6, rank: 1.5, who: "any", trump: true, goal: "normal", bid: true },
     bettler: { key: "bettler", name: "Bettler", val: 4, rank: 1, who: "any", trump: false, out: true, goal: "none" },
     schnapser: { key: "schnapser", name: "Schnapser", val: 6, rank: 2, who: "FT", trump: true, goal: "three" },
@@ -1625,7 +1626,7 @@ button.link {
   var isTen = (st) => !!(st.contract && C[st.contract.key].ten);
   var GOALS = {
     normal: "Mit dem Partner zuerst 66 Augen sammeln.",
-    spritzer: "Das Normalspiel der Gegner verdoppeln: Ihr glaubt, sie schaffen keine 66.",
+    spritzer: "Das Normalspiel der Gegner verdoppeln (auch gegen einen Bettler der Vorhand): Ihr glaubt, sie schaffen keine 66.",
     bettler: "Allein spielen und keinen einzigen Stich machen.",
     schnapser: "Die ersten drei Stiche machen und dabei 66 Augen haben.",
     gang: "Alle f\xFCnf Stiche machen, ohne Trumpf.",
@@ -2034,6 +2035,10 @@ button.link {
     const rel = (seat - st.dealer + 4) % 4;
     return { 1: 4, 2: 3, 3: 2, 0: 1 }[rel];
   }
+  var spritzable = (st) => {
+    const a = st.auction;
+    return a.cur === "normal" || a.cur === "bettler" && a.holder === st.fh;
+  };
   function mayBidKey(st, seat, key) {
     const c = C[key];
     const fh = st.fh;
@@ -2042,7 +2047,7 @@ button.link {
     if (c.who === "OT" && team(seat) === team(fh)) return false;
     if (c.who === "notF" && seat === fh) return false;
     if (key === "normal" && st.auction.cur) return false;
-    if (key === "spritzer") return !st.rules.noKontra && st.auction.cur === "normal" && team(seat) !== team(st.auction.holder);
+    if (key === "spritzer") return !st.rules.noKontra && spritzable(st) && team(seat) !== team(st.auction.holder);
     const h = st.hands[seat];
     if ((st.rules.banned || []).includes(key)) return false;
     if (key === "bettler" && st.rules.bettlerNoAce && h.some((x) => x.r === 0)) return false;
@@ -2056,9 +2061,13 @@ button.link {
   var bidOptions = (st, seat) => ORDER.filter((k) => mayBidKey(st, seat, k));
   function blockedBids(st, seat) {
     const plain = { ...st, rules: {} };
-    return ORDER.filter((k) => k !== "normal" && k !== "spritzer" && mayBidKey(plain, seat, k) && !mayBidKey(st, seat, k)).map(
+    const out = ORDER.filter((k) => k !== "normal" && k !== "spritzer" && mayBidKey(plain, seat, k) && !mayBidKey(st, seat, k)).map(
       (key) => ({ key, why: (st.rules.banned || []).includes(key) ? "banned" : "ace" })
     );
+    const a = st.auction;
+    if (!st.rules.noKontra && a.cur && a.cur !== "spritzer" && !spritzable(st) && team(seat) !== team(st.fh))
+      out.push({ key: "spritzer", why: "noNormal" });
+    return out;
   }
   var canPass = (st, seat) => !(seat === st.fh && !st.auction.cur);
   function applyBid(st, seat, key) {
@@ -2071,7 +2080,7 @@ button.link {
       st.log.push(`${seatName(seat)}: weiter.`);
     } else {
       if (!mayBidKey(st, seat, key)) throw new Error("Ansage nicht erlaubt: " + key);
-      a.spritz = key === "spritzer" ? { seat, caller: a.holder } : null;
+      a.spritz = key === "spritzer" ? { seat, caller: a.holder, from: a.cur } : null;
       a.cur = key;
       a.holder = seat;
       if (a.said) a.said[seat] = key;
@@ -2093,7 +2102,7 @@ button.link {
       st.mult = 2;
       (st.kontraSaid = st.kontraSaid || {})[a.spritz.seat] = "Spritzer";
       st.log.push(
-        `Der Spritzer von ${seatName(a.spritz.seat)} bleibt stehen: ${subj(a.spritz.caller, "spielst", "spielt")} das Normalspiel doppelt (\xD72).`
+        `Der Spritzer von ${seatName(a.spritz.seat)} bleibt stehen: ${subj(a.spritz.caller, "spielst", "spielt")} ${a.spritz.from === "bettler" ? "statt Bettler " : ""}das Normalspiel doppelt (\xD72).`
       );
       st.phase = "kontra";
       st.kontraQ = [a.spritz.caller, partnerOf(a.spritz.caller)].map((s) => ({ seat: s, kind: "re" }));
@@ -2421,7 +2430,8 @@ button.link {
     for (const k of opts) {
       if (k === "spritzer") {
         const p2 = estimate(st, seat, "normal", st.auction.holder, 24);
-        if (p2 < 0.3 && 3 > bestEv) {
+        const keep = st.auction.cur === "bettler" ? value(st, "bettler") * (1 - 2 * estimate(st, seat, "bettler", st.auction.holder, 24)) : -Infinity;
+        if (p2 < 0.3 && 3 > bestEv && 3 * (1 - 2 * p2) > keep) {
           best = k;
           bestEv = 3;
         }
@@ -2952,7 +2962,7 @@ button.link {
         "Bei <b>Gang</b> (9 Punkte, ohne Trumpf) und <b>Bauernschnapser</b> (12, mit Trumpf) musst du alle Stiche machen. <b>Zehnerloch</b> ist wie Gang, nur ist der Zehner die h\xF6chste und das Ass die niedrigste Karte.",
         "Noch h\xF6her: Farbengang (alle f\xFCnf Karten einer Farbe), Herrenschnapser (alle f\xFCnf Tr\xFCmpfe) und die Kontra-Spiele, die nur die Gegner der Vorhand ansagen d\xFCrfen.",
         "Glaubst du, der Ansager schafft sein Spiel nicht, sag <b>Kontra</b>: Die Punkte verdoppeln sich. Er kann mit <b>Re</b> noch einmal verdoppeln.",
-        "<b>Spritzen</b> (Hausregel): Gegen ein Normalspiel kann ein Gegner schon beim Ansagen verdoppeln."
+        "<b>Spritzen</b> (Hausregel): Gegen ein Normalspiel kann ein Gegner schon beim Ansagen verdoppeln. Sagt die Vorhand gleich Bettler an, zwingt ein Spritzer sie stattdessen zum doppelten Normalspiel."
       ],
       tips: ["Ein einziger Stich der Gegner bricht ein Spiel, bei dem man alle Stiche machen muss."]
     },
@@ -4108,9 +4118,9 @@ button.link {
         return;
       }
       el.innerHTML = `<div class="msg">${st.auction.cur ? `Aktuell: <b>${C[st.auction.cur].name}</b> von ${seatName(st.auction.holder)}.` : "Du er\xF6ffnest. Normalspiel oder mehr?"}</div>
-      <div class="row" style="justify-content:center">${opts.map((k) => `<button type="button" data-bid="${k}"${k === "spritzer" ? ' title="Du verdoppelst das Normalspiel der Gegner: 2 bis 6 Punkte. Ein Bettler kann das nicht mehr \xFCberbieten."' : ""}>${C[k].name} \xB7 ${k === "spritzer" ? "2\u20136" : value(st, k)}</button>`).join("")}
+      <div class="row" style="justify-content:center">${opts.map((k) => `<button type="button" data-bid="${k}"${k === "spritzer" ? ` title="${st.auction.cur === "bettler" ? "Die Vorhand muss statt Bettler ein Normalspiel spielen, doppelt: 2 bis 6 Punkte." : "Du verdoppelst das Normalspiel der Gegner: 2 bis 6 Punkte."} Ein Bettler kann das nicht mehr \xFCberbieten."` : ""}>${C[k].name} \xB7 ${k === "spritzer" ? "2\u20136" : value(st, k)}</button>`).join("")}
       ${(P.lesson ? [] : blockedBids(st, 0)).map(
-        (b) => `<button type="button" class="blocked" disabled title="Hausregel">${C[b.key].name}<small>${b.why === "ace" ? "(nur ohne Ass)" : `(${LOCS2[P.loc].at} verboten)`}</small></button>`
+        (b) => b.why === "noNormal" ? `<button type="button" class="blocked" disabled title="Spritzen geht nur direkt gegen die Er\xF6ffnung der Vorhand: Normalspiel oder Bettler. Hier hat schon jemand h\xF6her angesagt.">${C[b.key].name}<small>(nur gegen Vorhand)</small></button>` : `<button type="button" class="blocked" disabled title="Hausregel">${C[b.key].name}<small>${b.why === "ace" ? "(nur ohne Ass)" : `(${LOCS2[P.loc].at} verboten)`}</small></button>`
       ).join("")}
       ${canPass(st, 0) ? '<button class="primary" type="button" data-bid="">Weiter</button>' : ""}</div>`;
       el.querySelectorAll("[data-bid]").forEach(
@@ -4396,7 +4406,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "a3f65681fe" : "dev";
+  var BUILD = true ? "acb9c099e5" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
