@@ -323,8 +323,8 @@ button:disabled {
   color: var(--felt-ink);
   display: grid;
   grid-template-columns: 1fr 1.6fr 1fr;
-  grid-template-rows: auto auto auto minmax(150px, auto) auto auto;
-  grid-template-areas: 'r r r' 'm m m' 'n n n' 'w c e' 's s s' 'a a a';
+  grid-template-rows: auto auto auto auto minmax(150px, auto) auto auto;
+  grid-template-areas: 't t t' 'r r r' 'm m m' 'n n n' 'w c e' 's s s' 'a a a';
   gap: 10px;
   padding: 14px;
   min-width: 0;
@@ -474,6 +474,31 @@ button.pile:focus-visible {
   background: #f3d36b;
   color: #2a2208;
 }
+/* pinned while scrolling, so trump and contract are visible next to the hand on phones */
+.trumpbar {
+  grid-area: t;
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 6px);
+  z-index: 20;
+  justify-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
+.gamebadge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #2a2208;
+  color: #f6e7b0;
+  border: 1px solid rgba(243, 211, 107, 0.55);
+  font-size: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.gamebadge.none {
+  background: var(--felt-dark);
+}
 .trumpbadge {
   display: inline-flex;
   align-items: center;
@@ -490,7 +515,8 @@ button.pile:focus-visible {
   height: 20px;
 }
 .trumpbadge.none {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--felt-dark);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: var(--felt-ink);
   box-shadow: none;
 }
@@ -1532,7 +1558,7 @@ button.link {
       <div class="row fb-actions"><button value="close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version f1e83b5cac · 24.11.2026, 15:07</span></footer>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version efbdd5fff8 · 24.11.2026, 15:09</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -3992,9 +4018,13 @@ button.link {
       hr.push(`bis ${r.target}`);
     }
     if (P.rules.klopfen) hr.push("Klopfen erlaubt");
-    $("view").innerHTML = `<div class="tablegrid"><div class="felt">
+    const shortContract = st.contract ? `${C[st.contract.key].name} \xB7 ${decl2 === 0 ? "du" : seatName(decl2).split(" ").pop()}${st.mult > 1 ? " \xD7" + st.mult : ""}` : st.auction && st.auction.cur ? `Gebot: ${C[st.auction.cur].name}` : "Ansage l\xE4uft";
+    const trumpBar = `<div class="trumpbar" id="trumpbar" aria-live="polite">
+      <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div>
+      <div class="gamebadge${st.contract ? "" : " none"}">${shortContract}</div></div>`;
+    $("view").innerHTML = `<div class="tablegrid"><div class="felt">${trumpBar}
     <div class="houserules" aria-label="Hausregeln" style="flex-direction:column;align-items:center">
-      <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
       ${lesson ? `<button type="button" id="skipLesson" class="skiplesson" title="Lektion als geschafft abhaken">${nextLesson(P.lesson) ? "Verstanden, n\xE4chste Lektion" : "Verstanden, Lernpfad beenden"}</button>` : ""}
       ${P.specials.length ? `<div class="spchips">${P.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : `dir und ${PARTNER2}`}</span>`).join("")}</div>` : ""}</div>
     ${seatBox(2)}${seatBox(1)}${center}${seatBox(3)}${seatBox(0)}
@@ -4506,7 +4536,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "f1e83b5cac" : "dev";
+  var BUILD = true ? "efbdd5fff8" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
