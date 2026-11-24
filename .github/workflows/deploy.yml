@@ -10,10 +10,9 @@ jobs:
     permissions:
       pages: write
       id-token: write
-      actions: read
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,18 +28,16 @@ jobs:
       - uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
-      # deploy-pages looks up the artifact right after the upload; GitHub sometimes does not list it yet
-      # ("No artifacts named github-pages"). Wait until the run's artifact list contains it.
-      - name: Wait for artifact
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          for i in $(seq 1 30); do
-            n=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" --jq '[.artifacts[] | select(.name == "github-pages")] | length')
-            if [ "$n" -gt 0 ]; then echo "Artifact listed after $i attempt(s)"; exit 0; fi
-            sleep 2
-          done
-          echo "::warning::Artifact github-pages not listed after 60 s, deploying anyway"
+      # deploy-pages sometimes does not find the artifact it was just given ("No artifacts named
+      # github-pages", even though the REST API already lists it). A re-run always worked, so retry once.
       - name: Deploy
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+      - name: Wait before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 30
+      - name: Deploy (retry)
+        id: deployment_retry
+        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v4
