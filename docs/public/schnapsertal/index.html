@@ -323,8 +323,8 @@ button:disabled {
   color: var(--felt-ink);
   display: grid;
   grid-template-columns: 1fr 1.6fr 1fr;
-  grid-template-rows: auto auto auto minmax(150px, auto) auto auto;
-  grid-template-areas: 'r r r' 'm m m' 'n n n' 'w c e' 's s s' 'a a a';
+  grid-template-rows: auto auto auto auto minmax(150px, auto) auto auto;
+  grid-template-areas: 't t t' 'r r r' 'm m m' 'n n n' 'w c e' 's s s' 'a a a';
   gap: 10px;
   padding: 14px;
   min-width: 0;
@@ -474,6 +474,31 @@ button.pile:focus-visible {
   background: #f3d36b;
   color: #2a2208;
 }
+/* pinned while scrolling, so trump and contract are visible next to the hand on phones */
+.trumpbar {
+  grid-area: t;
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 6px);
+  z-index: 20;
+  justify-self: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+}
+.gamebadge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #2a2208;
+  color: #f6e7b0;
+  border: 1px solid rgba(243, 211, 107, 0.55);
+  font-size: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+.gamebadge.none {
+  background: var(--felt-dark);
+}
 .trumpbadge {
   display: inline-flex;
   align-items: center;
@@ -490,7 +515,8 @@ button.pile:focus-visible {
   height: 20px;
 }
 .trumpbadge.none {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--felt-dark);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   color: var(--felt-ink);
   box-shadow: none;
 }
@@ -1383,6 +1409,7 @@ button.link {
   text-decoration: underline;
 }
 .no-feedback #fb-open,
+.no-feedback #stats,
 .no-feedback #fb-hand {
   display: none;
 }
@@ -1475,6 +1502,7 @@ button.link {
     <button id="ferdl" type="button" title="Wie Ferdl mit Zeichen umgeht">Ferdl: treu</button>
     <button id="melee" type="button" aria-pressed="true">Stichkampf: an</button>
     <button id="banter" type="button" aria-pressed="true" title="Ferdl und die Gegner kommentieren das Spiel">Sprüche: an</button>
+    <button id="stats" type="button" aria-pressed="true" title="Schickt nach jeder Hand anonym Karten, Ansage und Ergebnis, damit wir die Simulationen mit echten Spielen vergleichen können. Nichts über dich.">Statistik: an</button>
     <button id="reset" type="button">Neue Reise</button>
     <button id="fb-open" type="button" title="Fehler oder Idee melden">⚑ Feedback</button>
   </header>
@@ -1491,7 +1519,7 @@ button.link {
       <li><b>Stichregeln:</b> Farbe bedienen, wenn möglich überstechen (auch den Partner), ohne Farbe mit Trumpf stechen.</li>
       <li><b>Normalspiel (1–3):</b> Das Team mit zuerst 66 Augen dreht automatisch zu. 1 Punkt, 2 wenn die Gegner unter 33 haben, 3 wenn sie stichlos sind. Erreicht keiner 66, bekommt der letzte Stich 1 Punkt.</li>
       <li><b>20er/40er:</b> König oder Ober ausspielen und das Gegenstück halten (Trumpf 40). Erst nach einem Stich deines Teams, Vorhand schon im ersten Stich. Wird beim Ausspielen automatisch gemeldet.</li>
-      <li><b>Ansagen:</b> Bettler 4 (keinen Stich), Schnapser 6 (die ersten drei Stiche mit 66 Augen), Gang 9 (alle Stiche, ohne Trumpf), Zehnerloch 10 (wie Gang, Zehner höchste Karte, Ass niedrigste), Kontraschnapser 12, Bauernschnapser 12 (alle Stiche mit Trumpf), Farbengang 18, Kontra-Bauernschnapser 24, Herrenschnapser 24. „Kontra“-Ansagen dürfen nur die Gegner der Vorhand machen. Beim Bettler sitzt der Partner des Ansagers aus. Bei den Gang-Spielen spielt er mit, darf aber keinen Stich machen.</li>
+      <li><b>Ansagen:</b> Bettler 4 (keinen Stich), Schnapser 6 (alle Stiche, bis 66 Augen erreicht sind, spätestens im dritten Stich), Gang 9 (alle Stiche, ohne Trumpf), Zehnerloch 10 (wie Gang, Zehner höchste Karte, Ass niedrigste), Kontraschnapser 12, Bauernschnapser 12 (alle Stiche mit Trumpf), Farbengang 18, Kontra-Bauernschnapser 24, Herrenschnapser 24. „Kontra“-Ansagen dürfen nur die Gegner der Vorhand machen. Beim Bettler sitzt der Partner des Ansagers aus. Bei den Gang-Spielen spielt er mit, darf aber keinen Stich machen.</li>
       <li><b>Zeichen:</b> Reden ist verboten, gedeutet wird indirekt. <i>Abwerfen:</i> Wer nicht bedienen kann und einen Ober oder Unter einer Nebenfarbe abwirft, sagt damit „da hab ich nichts“. <i>Klopfen</i> (nur wo die Hausregel es erlaubt, höchstens einmal pro Stich): Du klopfst auf die Karte, die du gerade spielst, egal ob du ausspielst oder zugibst. Beim <i>Bettler</i> klopfen die zwei Gegner des Bettlers untereinander: Die geklopfte Farbe hat man nicht mehr, der Partner soll sie nachspielen. In <i>allen anderen Spielen</i> heißt Klopfen: In dieser Farbe bin ich stark, du musst sie nicht halten und kannst sie abwerfen. Alle am Tisch hören das Klopfen.</li>
       <li><b>Coach:</b> Oben einschalten. Er erklärt, warum nur bestimmte Karten erlaubt sind, zeigt auf Wunsch, was Ferdl spielen würde, rechnet beim Ansagen die Gewinnchancen aus und gibt nach jeder Hand bis zu drei Hinweise.</li>
       <li><b>Ferdl:</b> Im Kopf der Seite stellst du ein, wie dein Partner mit Zeichen umgeht. <i>Treu</i> klopft nur mit Grund und folgt deinen Zeichen. <i>Stur</i> klopft nie und ignoriert deine Zeichen. <i>Schlitzohr</i> folgt deinen Zeichen, klopft aber manchmal auch zum Bluff. Ob jemand ein Zeichen bemerkt, hängt von seiner Erfahrung ab: Die Stammtischler übersehen viel, der Graf fast nichts. Ferdl lernt mit jeder Partie dazu (von 50 % bis 95 %).</li>
@@ -1530,7 +1558,7 @@ button.link {
       <div class="row fb-actions"><button value="close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version cae5cba73f · 24.11.2026, 12:16</span></footer>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version efbdd5fff8 · 24.11.2026, 15:09</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -1628,7 +1656,7 @@ button.link {
     normal: "Mit dem Partner zuerst 66 Augen sammeln.",
     spritzer: "Das Normalspiel der Gegner verdoppeln (auch gegen einen Bettler der Vorhand): Ihr glaubt, sie schaffen keine 66.",
     bettler: "Allein spielen und keinen einzigen Stich machen.",
-    schnapser: "Die ersten drei Stiche machen und dabei 66 Augen haben.",
+    schnapser: "In den ersten drei Stichen 66 Augen holen und dabei jeden Stich machen. Mit 66 ist er sofort gewonnen.",
     gang: "Alle f\xFCnf Stiche machen, ohne Trumpf.",
     zehnergang: "Alle f\xFCnf Stiche ohne Trumpf, der Zehner ist die h\xF6chste Karte, das Ass die niedrigste.",
     kschnapser: "Wie Schnapser, aber als Gegner der Vorhand.",
@@ -1732,19 +1760,10 @@ button.link {
       key: "masskrug",
       short: "mit Trumpf: holt die Augen",
       name: "Ma\xDFkrug",
-      s: 2,
-      r: 0,
-      when: [{ trump: true, nil: true, steal: true }],
-      text: "Eichel-Ass. In Spielen mit Trumpf sticht er nie, aber die Augen des Stichs gehen an sein Team. Wer nur Stiche z\xE4hlt, lacht dar\xFCber."
-    },
-    bierfass: {
-      key: "bierfass",
-      short: "mit Trumpf: holt die Augen",
-      name: "Bierfass",
       s: 3,
       r: 2,
       when: [{ trump: true, steal: true }],
-      text: "Pik-K\xF6nig. In Spielen mit Trumpf gehen die Augen des Stichs, in dem es liegt, an sein Team, egal wer sticht."
+      text: "Pik-K\xF6nig. In Spielen mit Trumpf gehen die Augen des Stichs, in dem er liegt, an sein Team, egal wer sticht."
     },
     primadonna: {
       key: "primadonna",
@@ -1941,7 +1960,7 @@ button.link {
     fx.forEach((x) => st.log.push(x + "."));
     st.teamTricks[team(w.seat)]++;
     st.seatTricks[w.seat]++;
-    st.done.push({ cards: st.trick, winner: w.seat, pts, fx });
+    st.done.push({ cards: st.trick, winner: w.seat, pts, to: ptsTeam, fx });
     st.lastTrick = st.trick;
     st.trick = [];
     st.leader = st.turn = w.seat;
@@ -1965,7 +1984,8 @@ button.link {
       for (const t of [0, 1]) {
         if (st.teamPts[t] >= 66 && st.teamTricks[t] > 0) {
           const o = 1 - t;
-          const gp = st.teamTricks[o] === 0 ? 3 : st.teamPts[o] < 33 ? 2 : 1;
+          const schwarz = st.teamTricks[o] === 0 && !st.done.some((d) => d.to === o);
+          const gp = schwarz ? 3 : st.teamPts[o] < 33 ? 2 : 1;
           return finish(
             t === dt,
             `${teamSubj(t, "habt", "haben")} ${st.teamPts[t]} Augen und ${t === 0 ? "dreht" : "drehen"} zu`,
@@ -1989,11 +2009,12 @@ button.link {
     }
     if (last.winner !== decl2)
       return fin(false, `${subj(last.winner, "stichst", "sticht")} \u2013 ${C[k].name} von ${seatDat(decl2)} verloren`);
-    if (g === "three" && n === 3) {
+    if (g === "three" && (st.teamPts[dt] >= 66 || n === 3)) {
       const p = st.teamPts[dt];
+      const nach = n === 1 ? "einem Stich" : n === 2 ? "zwei Stichen" : "drei Stichen";
       return fin(
         p >= 66,
-        p >= 66 ? `${subj(decl2, "hast", "hat")} nach drei Stichen ${p} Augen \u2013 ${C[k].name} gewonnen` : `Nur ${p} Augen nach drei Stichen \u2013 ${C[k].name} verloren`
+        p >= 66 ? `${subj(decl2, "hast", "hat")} nach ${nach} ${p} Augen \u2013 ${C[k].name} gewonnen` : `Nur ${p} Augen nach drei Stichen \u2013 ${C[k].name} verloren`
       );
     }
     if (n === 5) return fin(true, `${subj(decl2, "machst", "macht")} alle Stiche \u2013 ${C[k].name} gewonnen`);
@@ -2148,11 +2169,16 @@ button.link {
   // src/engine/deal.js
   function newHand(o) {
     const rng = o.rng || Math.random;
-    const d = shuffle(fullDeck(), rng);
-    const hands = [[], [], [], []];
     const fh = (o.dealer + 1) % 4;
-    for (let k = 0; k < 4; k++) hands[(fh + k) % 4].push(...d.slice(k * 3, k * 3 + 3));
-    for (let k = 0; k < 4; k++) hands[(fh + k) % 4].push(...d.slice(12 + k * 2, 14 + k * 2));
+    let hands = [[], [], [], []];
+    if (o.deal) {
+      const deck = fullDeck();
+      hands = o.deal.map((h) => h.map((id) => deck[id]));
+    } else {
+      const d = shuffle(fullDeck(), rng);
+      for (let k = 0; k < 4; k++) hands[(fh + k) % 4].push(...d.slice(k * 3, k * 3 + 3));
+      for (let k = 0; k < 4; k++) hands[(fh + k) % 4].push(...d.slice(12 + k * 2, 14 + k * 2));
+    }
     for (const sp of o.specials || []) {
       const def = SPECIALS[sp.key];
       const owners = sp.team === 0 ? [0, 2] : [1, 3];
@@ -2511,7 +2537,7 @@ button.link {
       );
     else if ((g === "all" || g === "three") && seat === decl2)
       out.push(
-        g === "three" ? "Du spielst Schnapser: Mach die ersten drei Stiche und komm dabei auf 66 Augen." : `Du spielst ${C[k].name}: Du musst jeden Stich machen.`
+        g === "three" ? "Du spielst Schnapser: Mach alle Stiche, bis du 66 Augen hast, sp\xE4testens nach dem dritten Stich." : `Du spielst ${C[k].name}: Du musst jeden Stich machen.`
       );
     else if ((g === "all" || g === "three") && team(seat) !== team(decl2))
       out.push(`${seatName(decl2)} spielt ${C[k].name}. Ein einziger Stich von euch reicht, um es zu brechen.`);
@@ -2676,6 +2702,7 @@ button.link {
     lessonById: () => lessonById,
     lessonPartie: () => lessonPartie,
     levelOf: () => levelOf,
+    migratePartie: () => migratePartie,
     migrateWorld: () => migrateWorld,
     neighbors: () => neighbors,
     newPartie: () => newPartie,
@@ -2685,6 +2712,7 @@ button.link {
     oppSpecial: () => oppSpecial,
     oppSpecials: () => oppSpecials,
     partieResult: () => partieResult,
+    reachable: () => reachable,
     seatNames: () => seatNames,
     speckName: () => speckName,
     travel: () => travel
@@ -2834,7 +2862,6 @@ button.link {
       exp: 0.7,
       text: "Beim Br\xE4u wird mit Trumpf gespielt und nicht gebettelt. Wer Augen z\xE4hlt, verliert sie an den Ma\xDFkrug.",
       special: "masskrug",
-      extra: ["bierfass"],
       rules: { target: 15, banned: ["bettler", "gang", "zehnergang", "farbengang"] },
       ruleText: "Nur Spiele mit Trumpf.",
       lose: "Der Br\xE4u schenkt dir zum Trost noch eins ein."
@@ -2945,7 +2972,7 @@ button.link {
       hands: 4,
       rules: { banned: only("bettler", "schnapser"), noKontra: true },
       intro: [
-        "Beim <b>Schnapser</b> musst du die ersten drei Stiche machen und dabei 66 Augen holen (Meldungen z\xE4hlen mit). Er bringt 6 Punkte.",
+        "Beim <b>Schnapser</b> musst du in den ersten drei Stichen 66 Augen holen und dabei jeden Stich machen (Meldungen z\xE4hlen mit). Sobald du 66 hast, ist er gewonnen, auch schon nach zwei Stichen. Er bringt 6 Punkte.",
         "Nur das Team der Vorhand darf Schnapser ansagen. Dein Partner spielt mit, darf aber keinen Stich machen. Er gibt dir m\xF6glichst viele Augen.",
         "Gut f\xFCr den Schnapser sind Trumpf-Ass, Trumpf-Zehner und ein Paar zum Melden.",
         "Ein h\xF6heres Spiel schl\xE4gt ein niedrigeres: Schnapser geht \xFCber Bettler."
@@ -3039,7 +3066,12 @@ button.link {
     delete W2.ruf;
     delete W2.need;
     for (const k in ROUTES) if (!ROUTES[k].hidden) W2.routes[k].open = true;
+    W2.loot = W2.loot.filter((k) => SPECIALS[k]);
     return W2;
+  }
+  function migratePartie(P2) {
+    if (!P2 || !(P2.specials || []).every((x) => SPECIALS[x.key])) return null;
+    return P2;
   }
   var hasNextLevel = (W2) => W2.won && !!LEVELS[W2.level + 1];
   function nextLevel(W2, carry) {
@@ -3069,6 +3101,21 @@ button.link {
     }
     return out;
   }
+  function reachable(W2, loc) {
+    const seen = /* @__PURE__ */ new Set([loc]);
+    const queue = [loc];
+    while (queue.length) {
+      const cur = queue.shift();
+      if (cur !== loc && !W2.beaten[cur]) continue;
+      for (const n of neighbors(W2, cur)) {
+        if (seen.has(n)) continue;
+        seen.add(n);
+        queue.push(n);
+      }
+    }
+    seen.delete(loc);
+    return [...seen];
+  }
   var oppSpecial = (W2, loc) => {
     const k = LOCS[loc].special;
     return k && !W2.loot.includes(k) ? k : null;
@@ -3076,7 +3123,7 @@ button.link {
   var oppSpecials = (W2, loc) => [oppSpecial(W2, loc), ...LOCS[loc].extra || []].filter(Boolean);
   function canChallenge(W2, loc) {
     if (W2.won) return { ok: false, why: "won" };
-    if (!neighbors(W2, W2.loc).includes(loc)) return { ok: false, why: "noroute" };
+    if (!reachable(W2, W2.loc).includes(loc)) return { ok: false, why: "noroute" };
     return { ok: true };
   }
   function travel(W2, loc) {
@@ -3572,6 +3619,68 @@ button.link {
     };
   }
 
+  // src/ui/stats.js
+  var STATS_KEY = "schnapsertal-stats";
+  var STATS_VERSION = 1;
+  function statsOn(storage) {
+    try {
+      return storage.getItem(STATS_KEY) !== "off";
+    } catch {
+      return true;
+    }
+  }
+  var statsUrl = (feedbackUrl) => feedbackUrl ? feedbackUrl.replace(/\/api\/feedback$/, "/api/stats") : "";
+  function handRecord({ P: P2, build = "dev", coach = false, now = Date.now(), id }) {
+    const st = P2.hand;
+    const r = st.result;
+    const deal = st.hands.map((h) => h.map((c) => c.id));
+    for (const t of [...st.done.flatMap((d) => d.cards), ...st.trick]) deal[t.seat].unshift(t.card.id);
+    deal.forEach((h) => h.sort((a, b) => a - b));
+    const count = (kind) => st.signals.filter((x) => x.kind === kind).length;
+    return {
+      v: STATS_VERSION,
+      id: id || `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+      build,
+      mode: P2.practice ? "uebung" : "kampagne",
+      loc: P2.loc,
+      rules: P2.rules || {},
+      specials: (P2.specials || []).map((x) => ({ key: x.key, team: x.team })),
+      coach: !!coach,
+      temper: st.temper || {},
+      exp: st.exp || {},
+      dealer: st.dealer,
+      deal,
+      trump: st.trump,
+      contract: r.contract,
+      declarer: r.declarer,
+      said: st.auction ? st.auction.said : null,
+      mult: st.mult,
+      ok: r.ok,
+      winTeam: r.winTeam,
+      points: r.points,
+      teamPts: st.teamPts,
+      tricks: st.done.map((d) => ({ l: d.cards[0].seat, c: d.cards.map((t) => t.card.id), w: d.winner, p: d.pts })),
+      melds: st.marriages.map((m) => ({ seat: m.seat, suit: m.suit, pts: m.pts })),
+      knocks: count("klopf"),
+      discards: count("weg")
+    };
+  }
+  async function sendRecord(url, rec, fetchFn = globalThis.fetch) {
+    if (!url) return false;
+    try {
+      const res = await fetchFn(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(rec),
+        credentials: "omit",
+        keepalive: true
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  }
+
   // src/ui/app.js
   var { LOCS: LOCS2, ROUTES: ROUTES2, LEVELS: LEVELS2, PARTNER: PARTNER2, TEMPER: TEMPER2 } = world_exports;
   var $ = (id) => document.getElementById(id);
@@ -3620,8 +3729,8 @@ button.link {
     try {
       const s = localStorage.getItem("schnapsertal-partie");
       if (!s) return null;
-      const p = JSON.parse(s);
-      p.hand.rng = Math.random;
+      const p = migratePartie(JSON.parse(s));
+      if (p && p.hand) p.hand.rng = Math.random;
       return p;
     } catch {
       return null;
@@ -3629,7 +3738,6 @@ button.link {
   }
   var note3 = (t, c) => note2(W, t, c);
   var ferdlExp2 = () => ferdlExp(W);
-  var neighbors2 = (loc) => neighbors(W, loc);
   function ruleHTML(l) {
     const r = l.rules, parts = [];
     if (l.ruleText) parts.push(l.ruleText);
@@ -3678,7 +3786,7 @@ button.link {
     <g fill="var(--paper-ink)" opacity=".16"><path d="M250 60 h30 v-20 l15 -12 l15 12 v20 h30 v40 h-90z"/><path d="M360 90 h25 v-25 l12 -10 l12 10 v25 h25 v30 h-74z"/><path d="M120 60 h40 v35 h-40z"/><path d="M455 330 h35 v-22 l17 -14 l17 14 v22 h20 v30 h-89z"/></g>
     <g fill="var(--laub)" opacity=".25"><circle cx="40" cy="120" r="14"/><circle cx="62" cy="108" r="11"/><circle cx="560" cy="250" r="13"/><circle cx="582" cy="262" r="10"/></g>`;
   function renderMap() {
-    const reach = W.won ? [] : neighbors2(W.loc);
+    const reach = W.won ? [] : reachable(W, W.loc);
     const onMap = (k2) => levelOf(k2) === W.level;
     const routes = Object.entries(ROUTES2).filter(([k2, r]) => W.routes[k2].known && onMap(r.a)).map(([k2, r]) => {
       const a = LOCS2[r.a], b = LOCS2[r.b], st = W.routes[k2];
@@ -3910,9 +4018,13 @@ button.link {
       hr.push(`bis ${r.target}`);
     }
     if (P.rules.klopfen) hr.push("Klopfen erlaubt");
-    $("view").innerHTML = `<div class="tablegrid"><div class="felt">
+    const shortContract = st.contract ? `${C[st.contract.key].name} \xB7 ${decl2 === 0 ? "du" : seatName(decl2).split(" ").pop()}${st.mult > 1 ? " \xD7" + st.mult : ""}` : st.auction && st.auction.cur ? `Gebot: ${C[st.auction.cur].name}` : "Ansage l\xE4uft";
+    const trumpBar = `<div class="trumpbar" id="trumpbar" aria-live="polite">
+      <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div>
+      <div class="gamebadge${st.contract ? "" : " none"}">${shortContract}</div></div>`;
+    $("view").innerHTML = `<div class="tablegrid"><div class="felt">${trumpBar}
     <div class="houserules" aria-label="Hausregeln" style="flex-direction:column;align-items:center">
-      <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
       ${lesson ? `<button type="button" id="skipLesson" class="skiplesson" title="Lektion als geschafft abhaken">${nextLesson(P.lesson) ? "Verstanden, n\xE4chste Lektion" : "Verstanden, Lernpfad beenden"}</button>` : ""}
       ${P.specials.length ? `<div class="spchips">${P.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : `dir und ${PARTNER2}`}</span>`).join("")}</div>` : ""}</div>
     ${seatBox(2)}${seatBox(1)}${center}${seatBox(3)}${seatBox(0)}
@@ -4265,7 +4377,25 @@ button.link {
   function countHand2() {
     countHand(W, P);
     save();
+    sendStats();
   }
+  function sendStats() {
+    if (P.lesson || !statsOn(localStorage)) return;
+    sendRecord(statsUrl(fbUrl), handRecord({ P, build: BUILD, coach: coachOn() }));
+  }
+  function statsButton() {
+    const on = statsOn(localStorage);
+    $("stats").textContent = "Statistik: " + (on ? "an" : "aus");
+    $("stats").setAttribute("aria-pressed", on);
+  }
+  $("stats").onclick = () => {
+    try {
+      localStorage.setItem(STATS_KEY, statsOn(localStorage) ? "off" : "on");
+    } catch {
+    }
+    statsButton();
+  };
+  statsButton();
   function endPartie2(won) {
     endPartie(W, P, won);
     save();
@@ -4406,7 +4536,7 @@ button.link {
   var recentErrors = [];
   addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
   addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "cae5cba73f" : "dev";
+  var BUILD = true ? "efbdd5fff8" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var fbPost = httpPost(fbUrl);
   var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
