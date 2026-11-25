@@ -1558,7 +1558,7 @@ button.link {
       <div class="row fb-actions"><button value="close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version efbdd5fff8 · 24.11.2026, 15:09</span></footer>
+  <footer class="small"><a href="https://hablich.dev/impressum">Impressum</a> · <a href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version acd8b452d1 · 25.11.2026, 15:30</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -1968,18 +1968,18 @@ button.link {
   function checkEnd(st) {
     const k = st.contract.key;
     const g = C[k].goal;
-    const decl2 = st.contract.declarer;
+    const decl = st.contract.declarer;
     const n = st.done.length;
     const last = st.done[n - 1];
     const finish = (ok, outcome, winTeam, base) => {
       const points = base * st.mult;
       const why = `${outcome}: ${punkte(base)}${st.mult > 1 ? ` \xD7${st.mult} = ${punkte(points)}` : ""}.`;
-      st.result = { ok, winTeam, points, why, contract: k, declarer: decl2 };
+      st.result = { ok, winTeam, points, why, contract: k, declarer: decl };
       st.phase = "done";
       st.log.push(why);
       return true;
     };
-    const dt = team(decl2);
+    const dt = team(decl);
     if (g === "normal") {
       for (const t of [0, 1]) {
         if (st.teamPts[t] >= 66 && st.teamTricks[t] > 0) {
@@ -2003,21 +2003,21 @@ button.link {
     if (!last) return false;
     const fin = (ok, why) => finish(ok, why, ok ? dt : 1 - dt, value(st, k));
     if (g === "none") {
-      if (last.winner === decl2) return fin(false, `${subj(decl2, "musst", "muss")} einen Stich nehmen \u2013 Bettler verloren`);
-      if (n === 5) return fin(true, `${subj(decl2, "bleibst", "bleibt")} stichlos \u2013 Bettler gewonnen`);
+      if (last.winner === decl) return fin(false, `${subj(decl, "musst", "muss")} einen Stich nehmen \u2013 Bettler verloren`);
+      if (n === 5) return fin(true, `${subj(decl, "bleibst", "bleibt")} stichlos \u2013 Bettler gewonnen`);
       return false;
     }
-    if (last.winner !== decl2)
-      return fin(false, `${subj(last.winner, "stichst", "sticht")} \u2013 ${C[k].name} von ${seatDat(decl2)} verloren`);
+    if (last.winner !== decl)
+      return fin(false, `${subj(last.winner, "stichst", "sticht")} \u2013 ${C[k].name} von ${seatDat(decl)} verloren`);
     if (g === "three" && (st.teamPts[dt] >= 66 || n === 3)) {
       const p = st.teamPts[dt];
       const nach = n === 1 ? "einem Stich" : n === 2 ? "zwei Stichen" : "drei Stichen";
       return fin(
         p >= 66,
-        p >= 66 ? `${subj(decl2, "hast", "hat")} nach ${nach} ${p} Augen \u2013 ${C[k].name} gewonnen` : `Nur ${p} Augen nach drei Stichen \u2013 ${C[k].name} verloren`
+        p >= 66 ? `${subj(decl, "hast", "hat")} nach ${nach} ${p} Augen \u2013 ${C[k].name} gewonnen` : `Nur ${p} Augen nach drei Stichen \u2013 ${C[k].name} verloren`
       );
     }
-    if (n === 5) return fin(true, `${subj(decl2, "machst", "macht")} alle Stiche \u2013 ${C[k].name} gewonnen`);
+    if (n === 5) return fin(true, `${subj(decl, "machst", "macht")} alle Stiche \u2013 ${C[k].name} gewonnen`);
     return false;
   }
   function visibleTricks(st, seat = 0) {
@@ -2136,8 +2136,8 @@ button.link {
       st.log.push(st.rules.lesson ? "In dieser Lektion gibt es kein Kontra." : "Hausregel: kein Kontra.");
       return startPlay(st);
     }
-    const decl2 = st.contract.declarer;
-    st.kontraQ = [1, 3].map((d) => ({ seat: (decl2 + d) % 4, kind: "kontra" }));
+    const decl = st.contract.declarer;
+    st.kontraQ = [1, 3].map((d) => ({ seat: (decl + d) % 4, kind: "kontra" }));
     st.turn = st.kontraQ[0].seat;
   }
   function setContract(st, key, declarer) {
@@ -2158,8 +2158,8 @@ button.link {
       (st.kontraSaid = st.kontraSaid || {})[seat] = q.kind === "kontra" ? "Kontra" : "Re";
       st.log.push(`${seatName(seat)}: ${q.kind === "kontra" ? "Kontra" : "Re"}!`);
       if (q.kind === "kontra") {
-        const decl2 = st.contract.declarer;
-        st.kontraQ = [decl2, partnerOf(decl2)].map((s) => ({ seat: s, kind: "re" }));
+        const decl = st.contract.declarer;
+        st.kontraQ = [decl, partnerOf(decl)].map((s) => ({ seat: s, kind: "re" }));
       } else st.kontraQ = [];
     }
     if (!st.kontraQ.length) return startPlay(st);
@@ -2256,7 +2256,7 @@ button.link {
     const R = (c, why, suit) => ({ id: c.id, why, ...suit != null ? { suit } : {} });
     if (L.length === 1) return R(L[0], "only");
     const g = C[st.contract.key].goal;
-    const decl2 = st.contract.declarer;
+    const decl = st.contract.declarer;
     const ten = isTen(st);
     const trump = st.trump;
     const S = (c) => str(c, ten, trump, st.done.length);
@@ -2287,7 +2287,7 @@ button.link {
       return R(low(arr), "discard-low");
     };
     if (g === "none") {
-      if (seat === decl2) {
+      if (seat === decl) {
         if (!st.trick.length) return R(low(L), "bettler-lead-low");
         const w = trickWinner(st.trick, trump, ten, st.done.length).card;
         const under = L.filter((c) => !beats(c, w, trump, ten, st.done.length));
@@ -2307,8 +2307,8 @@ button.link {
       return R(L.slice().sort((a, b) => S(a) - S(b))[0], st.trick.length ? "bettler-def-low" : "bettler-def-lead");
     }
     if (g === "all" || g === "three") {
-      const myTeam = team(seat) === team(decl2);
-      if (seat === decl2) {
+      const myTeam = team(seat) === team(decl);
+      if (seat === decl) {
         if (!st.trick.length) {
           const m = L.find((c) => marriageFor(st, seat, c) && c.r === 2);
           if (m) return R(m, "meld");
@@ -2323,7 +2323,7 @@ button.link {
         const w = trickWinner(st.trick, trump, ten, st.done.length);
         const safe = L.filter((c) => !beats(c, w.card, trump, ten, st.done.length));
         if (!safe.length) return R(lowest, "mate-forced");
-        if (w.seat === decl2 || g === "three") return R(safe.slice().sort((a, b) => P2(b) - P2(a) || S(a) - S(b))[0], "mate-feed");
+        if (w.seat === decl || g === "three") return R(safe.slice().sort((a, b) => P2(b) - P2(a) || S(a) - S(b))[0], "mate-feed");
         return R(safe.slice().sort((a, b) => S(a) - S(b))[0], "mate-under");
       }
       const W3 = winners();
@@ -2397,7 +2397,7 @@ button.link {
     while (st.phase === "play" && guard++ < 40) playCard(st, st.turn, aiPlay(st, st.turn));
     return st.result;
   }
-  function estimate(st, seat, key, decl2, n, plausible) {
+  function estimate(st, seat, key, decl, n, plausible) {
     n = n || 30;
     const mine = st.hands[seat];
     let ok = 0;
@@ -2413,9 +2413,9 @@ button.link {
       hands[seat] = mine.slice();
       if (st.upcard && seat !== st.fh) hands[st.fh].push(st.upcard);
       for (let s = 0; s < 4; s++) while (hands[s].length < 5) hands[s].push(pool.pop());
-      if (plausible && decl2 !== seat && key !== "normal") {
+      if (plausible && decl !== seat && key !== "normal") {
         const view = { ...st, hands };
-        if (estimate(view, decl2, key, decl2, 6) < 0.5) continue;
+        if (estimate(view, decl, key, decl, 6) < 0.5) continue;
       }
       used++;
       const sim = {
@@ -2437,14 +2437,14 @@ button.link {
         marriages: [],
         log: [],
         result: null,
-        auction: { cur: key, holder: decl2, passed: [] },
+        auction: { cur: key, holder: decl, passed: [] },
         signals: [],
         temper: {}
       };
-      setContract(sim, key, decl2);
+      setContract(sim, key, decl);
       sim.turn = sim.leader;
       const r = rollout(sim);
-      if (r && r.winTeam === team(decl2)) ok++;
+      if (r && r.winTeam === team(decl)) ok++;
     }
     return used ? ok / used : 0.5;
   }
@@ -2520,27 +2520,27 @@ button.link {
     const h = st.hands[seat];
     const k = st.contract.key;
     const g = C[k].goal;
-    const decl2 = st.contract.declarer;
+    const decl = st.contract.declarer;
     const trump = st.trump;
     const ten = isTen(st);
     const sf = (c) => suitOf(c, trump);
     const out = [];
-    if (g === "none" && seat === decl2)
+    if (g === "none" && seat === decl)
       out.push("Du spielst Bettler: Du darfst keinen einzigen Stich machen. Bleib immer unter der h\xF6chsten Karte im Stich.");
     else if (g === "none")
       out.push(
-        `${seatName(decl2)} spielt Bettler. Euer Ziel: ihn zu einem Stich zwingen. Spielt Farben, in denen er hohe Karten haben k\xF6nnte.`
+        `${seatName(decl)} spielt Bettler. Euer Ziel: ihn zu einem Stich zwingen. Spielt Farben, in denen er hohe Karten haben k\xF6nnte.`
       );
-    else if ((g === "all" || g === "three") && seat !== decl2 && team(seat) === team(decl2))
+    else if ((g === "all" || g === "three") && seat !== decl && team(seat) === team(decl))
       out.push(
         `Dein Partner spielt ${C[k].name}. Du darfst keinen Stich machen${g === "three" ? ", aber gib ihm m\xF6glichst viele Augen" : ""}.`
       );
-    else if ((g === "all" || g === "three") && seat === decl2)
+    else if ((g === "all" || g === "three") && seat === decl)
       out.push(
         g === "three" ? "Du spielst Schnapser: Mach alle Stiche, bis du 66 Augen hast, sp\xE4testens nach dem dritten Stich." : `Du spielst ${C[k].name}: Du musst jeden Stich machen.`
       );
-    else if ((g === "all" || g === "three") && team(seat) !== team(decl2))
-      out.push(`${seatName(decl2)} spielt ${C[k].name}. Ein einziger Stich von euch reicht, um es zu brechen.`);
+    else if ((g === "all" || g === "three") && team(seat) !== team(decl))
+      out.push(`${seatName(decl)} spielt ${C[k].name}. Ein einziger Stich von euch reicht, um es zu brechen.`);
     if (!st.trick.length) {
       out.push("Du spielst aus: Jede Karte ist erlaubt.");
       const m = L.filter((c) => marriageFor(st, seat, c));
@@ -2701,6 +2701,7 @@ button.link {
     idleNote: () => idleNote,
     lessonById: () => lessonById,
     lessonPartie: () => lessonPartie,
+    lessonsShown: () => lessonsShown,
     levelOf: () => levelOf,
     migratePartie: () => migratePartie,
     migrateWorld: () => migrateWorld,
@@ -3010,6 +3011,7 @@ button.link {
     }
   ];
   var lessonById = (id) => LESSONS.find((x) => x.id === id);
+  var lessonsShown = (W2) => (W2.level || 1) === 1;
   function nextLesson(id) {
     const i = LESSONS.findIndex((x) => x.id === id);
     return i >= 0 && i < LESSONS.length - 1 ? LESSONS[i + 1] : null;
@@ -3681,9 +3683,10 @@ button.link {
     }
   }
 
-  // src/ui/app.js
-  var { LOCS: LOCS2, ROUTES: ROUTES2, LEVELS: LEVELS2, PARTNER: PARTNER2, TEMPER: TEMPER2 } = world_exports;
+  // src/ui/dom.js
+  var { PARTNER: PARTNER2 } = world_exports;
   var $ = (id) => document.getElementById(id);
+  var SEATPOS = ["s", "w", "n", "e"];
   var SUITSVG = [
     '<svg viewBox="0 0 24 24"><path fill="var(--herz)" d="M12 21C5 15 2 11.5 2 7.6A4.6 4.6 0 0 1 12 5a4.6 4.6 0 0 1 10 2.6C22 11.5 19 15 12 21z"/></svg>',
     '<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8.5" fill="var(--schellen)"/><rect x="3.5" y="10.5" width="17" height="2.6" fill="#8a5d06"/><circle cx="12" cy="17.3" r="1.6" fill="#5a3c02"/><rect x="10.8" y="2.6" width="2.4" height="2.6" fill="#8a5d06"/></svg>',
@@ -3691,53 +3694,11 @@ button.link {
     '<svg viewBox="0 0 24 24"><path fill="var(--laub)" d="M12 2C19.5 7.5 19 15.5 12 20.5 5 15.5 4.5 7.5 12 2z"/><path d="M12 6v17" stroke="#1d4f24" stroke-width="1.6"/></svg>'
   ];
   var pct100 = (x) => Math.round(x * 100) + "%";
-  var W = migrateWorld(load() || freshWorld());
-  var sel = null;
-  var selLesson = null;
-  var P = null;
-  var busy = false;
-  var showTrick = null;
-  var chat = { hand: null, mem: null, line: null, fresh: false, timer: 0 };
-  function load() {
-    try {
-      const s = localStorage.getItem("schnapsertal");
-      return s ? JSON.parse(s) : null;
-    } catch {
-      return null;
-    }
-  }
-  function save() {
-    try {
-      localStorage.setItem("schnapsertal", JSON.stringify(W));
-    } catch {
-    }
-  }
-  function saveP() {
-    try {
-      if (!P) {
-        localStorage.removeItem("schnapsertal-partie");
-        return;
-      }
-      localStorage.setItem(
-        "schnapsertal-partie",
-        JSON.stringify(Object.assign({}, P, { hand: Object.assign({}, P.hand, { rng: null }) }))
-      );
-    } catch {
-    }
-  }
-  function loadP() {
-    try {
-      const s = localStorage.getItem("schnapsertal-partie");
-      if (!s) return null;
-      const p = migratePartie(JSON.parse(s));
-      if (p && p.hand) p.hand.rng = Math.random;
-      return p;
-    } catch {
-      return null;
-    }
-  }
-  var note3 = (t, c) => note2(W, t, c);
-  var ferdlExp2 = () => ferdlExp(W);
+  var who = (seat) => seat === 0 ? "Du" : seat === 2 ? PARTNER2 : seatName(seat).split(" ").pop();
+  var sortHand = (h, trump) => h.slice().sort((a, b) => {
+    const sa = suitOf(a, trump), sb = suitOf(b, trump);
+    return (sb === trump) - (sa === trump) || sa - sb || a.r - b.r;
+  });
   function ruleHTML(l) {
     const r = l.rules, parts = [];
     if (l.ruleText) parts.push(l.ruleText);
@@ -3746,17 +3707,11 @@ button.link {
     parts.push(`Partie bis ${r.target}.`);
     return `<div class="rule small"><b>Hausregel:</b> ${parts.join(" ")}</div>`;
   }
-  var oppSpecial2 = (loc) => oppSpecial(W, loc);
-  var oppSpecials2 = (loc) => oppSpecials(W, loc);
   var spCard = (key) => {
     const d = SPECIALS[key];
     return { s: d.s, r: d.r, sp: d };
   };
-  function specHTML(key, who2, small) {
-    const d = SPECIALS[key];
-    return `<div class="spec">${cardHTML(spCard(key), { small })}<div class="small"><b>${who2}${d.name}</b><br>${d.text}</div></div>`;
-  }
-  function cardHTML(c, opts) {
+  function cardHTML(c, opts, P2 = null) {
     opts = opts || {};
     if (!c) return '<div class="card back"></div>';
     const cls = ["card"];
@@ -3769,14 +3724,128 @@ button.link {
     if (c.sp) cls.push("spc");
     if (c.spIdle) cls.push("spc", "idle");
     const tag = opts.play ? "button" : "div";
-    const lbl = cname(c), idle = c.spIdle && idleNote(P, c.spIdle), tip2 = c.sp ? lbl + ": " + c.sp.text : idle ? `${c.spIdle.name}: ${idle.tip}` : lbl;
+    const lbl = cname(c), idle = c.spIdle && P2 && idleNote(P2, c.spIdle), tip2 = c.sp ? lbl + ": " + c.sp.text : idle ? `${c.spIdle.name}: ${idle.tip}` : lbl;
     return `<${tag} class="${cls.join(" ")}" ${opts.play ? `data-cid="${c.id}" type="button"` : ""}${idle ? ` data-idle="${idle.stamp}"` : ""} aria-label="${tip2}" title="${tip2}">
     <span class="rk">${SHORT[c.r]}</span>${SUITSVG[c.s]}<span class="rk2">${SHORT[c.r]}</span>${c.sp || c.spIdle ? `<span class="star">\u2605</span><span class="nm">${(c.sp || c.spIdle).name}${c.sp ? `<i>${c.sp.short}</i>` : ""}</span>` : ""}${opts.m ? `<span class="m">${opts.m}!</span>` : ""}${opts.pair && !opts.m ? `<span class="pr">Paar</span>` : ""}</${tag}>`;
   }
-  var sortHand = (h, trump) => h.slice().sort((a, b) => {
-    const sa = suitOf(a, trump), sb = suitOf(b, trump);
-    return (sb === trump) - (sa === trump) || sa - sb || a.r - b.r;
-  });
+  function specHTML(key, ownerLabel, small, P2 = null) {
+    const d = SPECIALS[key];
+    return `<div class="spec">${cardHTML(spCard(key), { small }, P2)}<div class="small"><b>${ownerLabel}${d.name}</b><br>${d.text}</div></div>`;
+  }
+  var coachBox = (lines, extra) => `<div class="coach"><b>Coach</b>${lines.map((x) => `<div>${x}</div>`).join("")}${extra || ""}</div>`;
+
+  // src/ui/storage.js
+  function loadWorld() {
+    try {
+      const s = localStorage.getItem("schnapsertal");
+      return s ? JSON.parse(s) : null;
+    } catch {
+      return null;
+    }
+  }
+  function saveWorld(W2) {
+    try {
+      localStorage.setItem("schnapsertal", JSON.stringify(W2));
+    } catch {
+    }
+  }
+  function savePartie(P2) {
+    try {
+      if (!P2) {
+        localStorage.removeItem("schnapsertal-partie");
+        return;
+      }
+      localStorage.setItem(
+        "schnapsertal-partie",
+        JSON.stringify(Object.assign({}, P2, { hand: Object.assign({}, P2.hand, { rng: null }) }))
+      );
+    } catch {
+    }
+  }
+  function loadPartie() {
+    try {
+      const s = localStorage.getItem("schnapsertal-partie");
+      if (!s) return null;
+      const p = migratePartie(JSON.parse(s));
+      if (p && p.hand) p.hand.rng = Math.random;
+      return p;
+    } catch {
+      return null;
+    }
+  }
+  function meleeOn() {
+    try {
+      return localStorage.getItem("schnapsertal-melee") !== "off";
+    } catch {
+      return true;
+    }
+  }
+  function setMelee(on) {
+    try {
+      localStorage.setItem("schnapsertal-melee", on ? "on" : "off");
+    } catch {
+    }
+  }
+  function banterOn() {
+    try {
+      return localStorage.getItem("schnapsertal-banter") !== "off";
+    } catch {
+      return true;
+    }
+  }
+  function setBanter(on) {
+    try {
+      localStorage.setItem("schnapsertal-banter", on ? "on" : "off");
+    } catch {
+    }
+  }
+  function coachOn(P2) {
+    if (P2 && P2.lesson) return true;
+    try {
+      return localStorage.getItem("schnapsertal-coach") === "on";
+    } catch {
+      return false;
+    }
+  }
+  function setCoach(on) {
+    try {
+      localStorage.setItem("schnapsertal-coach", on ? "on" : "off");
+    } catch {
+    }
+  }
+
+  // src/ui/banter.js
+  var chat = { hand: null, mem: null, line: null, fresh: false, timer: 0 };
+  function hideBubble() {
+    clearTimeout(chat.timer);
+    chat.line = null;
+    const b = document.querySelector(".bubble");
+    if (b) b.remove();
+  }
+  function talk(P2, W2) {
+    const st = P2.hand;
+    if (chat.hand !== st) {
+      hideBubble();
+      chat.hand = st;
+      chat.mem = banterMemory(st);
+      return;
+    }
+    const line = banter(st, chat.mem, { loc: P2.loc, temper: W2.ferdl || "treu" });
+    if (!line || !banterOn()) return;
+    clearTimeout(chat.timer);
+    chat.line = line;
+    chat.fresh = true;
+    chat.timer = setTimeout(hideBubble, 2600 + line.text.length * 25);
+  }
+  function bubbleHTML(seat) {
+    if (!chat.line || chat.line.seat !== seat) return "";
+    const pop = chat.fresh ? " pop" : "";
+    chat.fresh = false;
+    return `<div class="bubble${pop}" role="status">${chat.line.text}</div>`;
+  }
+
+  // src/ui/map.js
+  var { LOCS: LOCS2, ROUTES: ROUTES2, LEVELS: LEVELS2, PARTNER: PARTNER3 } = world_exports;
   var VALLEY = `
     <path d="M0 250 C70 235 120 270 150 255 S230 205 250 230" fill="none" stroke="var(--water)" stroke-width="9" stroke-linecap="round" opacity=".8"/>
     <g fill="var(--paper-ink)" opacity=".18"><path d="M230 120 l45 -80 l45 80z"/><path d="M290 125 l55 -100 l55 100z"/><path d="M380 110 l35 -60 l35 60z"/></g>
@@ -3785,11 +3854,24 @@ button.link {
     <path d="M0 270 C90 250 140 290 210 265 S330 230 360 280 S470 330 620 300" fill="none" stroke="var(--water)" stroke-width="9" stroke-linecap="round" opacity=".7"/>
     <g fill="var(--paper-ink)" opacity=".16"><path d="M250 60 h30 v-20 l15 -12 l15 12 v20 h30 v40 h-90z"/><path d="M360 90 h25 v-25 l12 -10 l12 10 v25 h25 v30 h-74z"/><path d="M120 60 h40 v35 h-40z"/><path d="M455 330 h35 v-22 l17 -14 l17 14 v22 h20 v30 h-89z"/></g>
     <g fill="var(--laub)" opacity=".25"><circle cx="40" cy="120" r="14"/><circle cx="62" cy="108" r="11"/><circle cx="560" cy="250" r="13"/><circle cx="582" cy="262" r="10"/></g>`;
-  function renderMap() {
-    const reach = W.won ? [] : reachable(W, W.loc);
-    const onMap = (k2) => levelOf(k2) === W.level;
-    const routes = Object.entries(ROUTES2).filter(([k2, r]) => W.routes[k2].known && onMap(r.a)).map(([k2, r]) => {
-      const a = LOCS2[r.a], b = LOCS2[r.b], st = W.routes[k2];
+  function lessonHTML(W2, activeLesson) {
+    const done = W2.lessons || {};
+    const nDone = LESSONS.filter((x) => done[x.id]).length;
+    const L = activeLesson && lessonById(activeLesson);
+    return `<h2 style="font-size:1.05rem">Lernpfad${nDone ? ` <small class="muted">${nDone} von ${LESSONS.length} geschafft</small>` : ""}</h2>
+    <div class="small muted">${nDone ? "W\xE4hl eine Lektion zum Wiederholen oder spiel weiter." : "Neu beim Schnapsen? Fang mit Lektion 1 an. Wer die Regeln kennt, kann jede Lektion \xFCberspringen."}</div>
+    <div class="lessons">${LESSONS.map(
+      (x, i) => `<button type="button" data-lesson="${x.id}" class="${done[x.id] ? "done" : ""}${x.id === activeLesson ? " sel" : ""}" aria-expanded="${x.id === activeLesson}">${i + 1}. ${x.title}${done[x.id] ? " \u2713" : ""}</button>`
+    ).join("")}</div>
+    ${L ? `<div class="lessonintro"><div><b>Ziel:</b> ${L.goal} <span class="muted">(${L.hands} Spiele, der Coach hilft mit)</span></div>
+      <ul>${L.intro.map((t) => `<li>${t}</li>`).join("")}</ul>
+      <div class="row"><button class="primary" id="startLesson" type="button">Lektion starten</button></div></div>` : ""}`;
+  }
+  function renderMap({ W: W2, sel: sel2, selLesson: selLesson2, onSelect, onTravel, onPlayHere, onCarry, onSelectLesson, onStartLesson }) {
+    const reach = W2.won ? [] : reachable(W2, W2.loc);
+    const onMap = (k2) => levelOf(k2) === W2.level;
+    const routes = Object.entries(ROUTES2).filter(([k2, r]) => W2.routes[k2].known && onMap(r.a)).map(([k2, r]) => {
+      const a = LOCS2[r.a], b = LOCS2[r.b], st = W2.routes[k2];
       const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.12, my = (a.y + b.y) / 2 - (b.x - a.x) * 0.12;
       return `<path class="route ${st.open ? "" : "closed"}" d="M${a.x} ${a.y} Q${mx} ${my} ${b.x} ${b.y}"/>
       <text class="routelbl" x="${(a.x + b.x) / 4 + mx / 2}" y="${(a.y + b.y) / 4 + my / 2 - 6}" text-anchor="middle">${r.name}${st.open ? "" : " (gesperrt)"}</text>`;
@@ -3797,34 +3879,39 @@ button.link {
     const locs = Object.entries(LOCS2).filter(([k2]) => onMap(k2)).map(([k2, l2]) => {
       const cls = ["loc"];
       if (reach.includes(k2)) cls.push("reach");
-      if (sel === k2) cls.push("sel");
-      else if (W.beaten[k2] && !l2.home) cls.push("beaten");
+      if (sel2 === k2) cls.push("sel");
+      else if (W2.beaten[k2] && !l2.home) cls.push("beaten");
       return `<g class="${cls.join(" ")}" data-loc="${k2}" tabindex="0" role="button" aria-label="${l2.name}">
       <circle class="base" cx="${l2.x}" cy="${l2.y}" r="13"/>
-      ${W.loc === k2 ? `<circle cx="${l2.x}" cy="${l2.y}" r="6" fill="var(--you)"/>` : ""}
+      ${W2.loc === k2 ? `<circle cx="${l2.x}" cy="${l2.y}" r="6" fill="var(--you)"/>` : ""}
       <text x="${l2.x}" y="${l2.y + 32}" text-anchor="middle">${l2.name}</text>
-      <text class="sub" x="${l2.x}" y="${l2.y + 46}" text-anchor="middle">${l2.home ? "Zuhause" : W.beaten[k2] ? "geschlagen" : "bis " + l2.rules.target}</text>
+      <text class="sub" x="${l2.x}" y="${l2.y + 46}" text-anchor="middle">${l2.home ? "Zuhause" : W2.beaten[k2] ? "geschlagen" : "bis " + l2.rules.target}</text>
     </g>`;
     }).join("");
-    const terrain = W.level === 2 ? CITY : VALLEY;
-    const l = sel ? LOCS2[sel] : LOCS2[W.loc];
-    const k = sel || W.loc;
+    const terrain = W2.level === 2 ? CITY : VALLEY;
+    const l = sel2 ? LOCS2[sel2] : LOCS2[W2.loc];
+    const k = sel2 || W2.loc;
+    const oppSpecial2 = (loc) => oppSpecial(W2, loc);
+    const oppSpecials2 = (loc) => oppSpecials(W2, loc);
     let action;
-    const lv = LEVELS2[W.level];
-    if (W.won && hasNextLevel(W))
-      action = `<div class="banner"><h2>${lv.title}</h2><div>Weiter geht es in ${LEVELS2[W.level + 1].name.replace(/^Die /, "die ")}. Eine deiner Spezialkarten nimmst du mit, die anderen bleiben hier.</div></div>
-      <div class="row carry">${W.loot.map((key) => `<button class="primary" type="button" data-carry="${key}">${SPECIALS[key].name} mitnehmen</button>`).join("")}</div>`;
-    else if (W.won) action = `<div class="banner"><h2>${lv.title}</h2><div>${lv.won} \u201ENeue Reise\u201C startet von vorn.</div></div>`;
-    else if (k === W.loc)
+    const lv = LEVELS2[W2.level];
+    if (W2.won && hasNextLevel(W2))
+      action = `<div class="banner"><h2>${lv.title}</h2><div>Weiter geht es in ${LEVELS2[W2.level + 1].name.replace(/^Die /, "die ")}. Eine deiner Spezialkarten nimmst du mit, die anderen bleiben hier.</div></div>
+      <div class="row carry">${W2.loot.map((key) => `<button class="primary" type="button" data-carry="${key}">${SPECIALS[key].name} mitnehmen</button>`).join("")}</div>`;
+    else if (W2.won) action = `<div class="banner"><h2>${lv.title}</h2><div>${lv.won} \u201ENeue Reise\u201C startet von vorn.</div></div>`;
+    else if (k === W2.loc)
       action = `<div class="row"><button class="primary" id="playHere" type="button">${l.home ? "\xDCbungspartie spielen" : "Revanche hier spielen"}</button></div>`;
     else if (reach.includes(k)) {
-      if (W.beaten[k])
+      if (W2.beaten[k])
         action = `<div class="row"><button class="primary" id="travel" type="button">Hinreisen</button><span class="muted small">Schon geschlagen, kein Spiel n\xF6tig.</span></div>`;
       else
         action = `<div class="row"><button class="primary" id="travel" type="button">Hinreisen und herausfordern</button></div>
       <div class="muted small">Sieg: du reist hin${oppSpecial2(k) ? ", und ihre Spezialkarte geh\xF6rt dir" : ""}. Niederlage: du bleibst. ${l.lose}</div>`;
-    } else action = `<div class="muted">Von ${LOCS2[W.loc].name} aus kein offener Weg dorthin.</div>`;
-    const lessons = l.home ? lessonHTML() : "";
+    } else action = `<div class="muted">Von ${LOCS2[W2.loc].name} aus kein offener Weg dorthin.</div>`;
+    const done = W2.lessons || {};
+    const nDone = LESSONS.filter((x) => done[x.id]).length;
+    const activeLesson = selLesson2 === null && !nDone && !W2.partien ? LESSONS[0].id : selLesson2;
+    const lessons = l.home && lessonsShown(W2) ? lessonHTML(W2, activeLesson) : "";
     $("view").innerHTML = `<div class="mapgrid">
     <div class="mapbox"><svg viewBox="0 0 620 400" role="img" aria-label="Karte: ${lv.name}">${terrain}${routes}${locs}</svg></div>
     <div class="panel">
@@ -3837,18 +3924,15 @@ button.link {
       ${l.special && !oppSpecial2(k) ? `<div class="small muted">Ihre Spezialkarte ${SPECIALS[l.special].name} hast du schon erbeutet.</div>` : ""}
       ${action}
       <h2 style="font-size:1.05rem">Deine Spezialkarten</h2>
-      ${W.loot.length ? `${W.loot.map((key) => specHTML(key, "", true)).join("")}
-        <div class="small muted">Alle erbeuteten Karten werden in jeder Partie mitgemischt. Ihr Effekt wirkt, wenn du oder ${PARTNER2} sie spielt.</div>` : '<div class="small muted">Noch keine. Schl\xE4gst du einen Ort, erbeutest du die Spezialkarte der Gegner.</div>'}
-      ${W.speck ? `<div class="small">Im Rucksack: ${speckName(W)} (+2 zum Start der n\xE4chsten Partie).</div>` : ""}
-      <div class="small muted">Schlag die Orte auf dem Weg zum Ziel. ${W.level === 2 ? "Ein gewonnener Gang" : "Ein gewonnener Bauernschnapser"} spricht sich herum.</div>
+      ${W2.loot.length ? `${W2.loot.map((key) => specHTML(key, "", true)).join("")}
+        <div class="small muted">Alle erbeuteten Karten werden in jeder Partie mitgemischt. Ihr Effekt wirkt, wenn du oder ${PARTNER3} sie spielt.</div>` : '<div class="small muted">Noch keine. Schl\xE4gst du einen Ort, erbeutest du die Spezialkarte der Gegner.</div>'}
+      ${W2.speck ? `<div class="small">Im Rucksack: ${speckName(W2)} (+2 zum Start der n\xE4chsten Partie).</div>` : ""}
+      <div class="small muted">Schlag die Orte auf dem Weg zum Ziel. ${W2.level === 2 ? "Ein gewonnener Gang" : "Ein gewonnener Bauernschnapser"} spricht sich herum.</div>
       <h2 style="font-size:1.05rem">Reisetagebuch</h2>
-      <div class="hist">${W.hist.map((h) => `<div class="${h.c}">${h.t}</div>`).join("")}</div>
+      <div class="hist">${W2.hist.map((h) => `<div class="${h.c}">${h.t}</div>`).join("")}</div>
     </div></div>`;
     document.querySelectorAll(".loc").forEach((g) => {
-      const pick2 = () => {
-        sel = g.dataset.loc === W.loc ? null : g.dataset.loc;
-        render();
-      };
+      const pick2 = () => onSelect(g.dataset.loc === W2.loc ? null : g.dataset.loc);
       g.addEventListener("click", pick2);
       g.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -3858,210 +3942,21 @@ button.link {
       });
     });
     const t = $("travel");
-    if (t)
-      t.onclick = () => {
-        if (W.beaten[k]) {
-          travel(W, k);
-          sel = null;
-          save();
-          render();
-        } else startPartie(k);
-      };
+    if (t) t.onclick = () => onTravel(k);
     const ph = $("playHere");
-    if (ph) ph.onclick = () => startPartie(W.loc, true);
-    document.querySelectorAll("[data-carry]").forEach(
-      (b) => b.onclick = () => {
-        nextLevel(W, b.dataset.carry);
-        sel = null;
-        save();
-        render();
-      }
-    );
+    if (ph) ph.onclick = () => onPlayHere();
+    document.querySelectorAll("[data-carry]").forEach((b) => b.onclick = () => onCarry(b.dataset.carry));
     document.querySelectorAll("[data-lesson]").forEach(
       (b) => b.onclick = () => {
-        selLesson = selLesson === b.dataset.lesson ? null : b.dataset.lesson;
-        render();
+        onSelectLesson(activeLesson === b.dataset.lesson ? false : b.dataset.lesson);
       }
     );
     const sl = $("startLesson");
-    if (sl) sl.onclick = () => startLesson(selLesson);
+    if (sl) sl.onclick = () => onStartLesson(activeLesson);
   }
-  function lessonHTML() {
-    const done = W.lessons || {};
-    const nDone = LESSONS.filter((x) => done[x.id]).length;
-    if (selLesson === null && !nDone && !W.partien) selLesson = LESSONS[0].id;
-    const L = selLesson && lessonById(selLesson);
-    return `<h2 style="font-size:1.05rem">Lernpfad${nDone ? ` <small class="muted">${nDone} von ${LESSONS.length} geschafft</small>` : ""}</h2>
-    <div class="small muted">${nDone ? "W\xE4hl eine Lektion zum Wiederholen oder spiel weiter." : "Neu beim Schnapsen? Fang mit Lektion 1 an. Wer die Regeln kennt, kann jede Lektion \xFCberspringen."}</div>
-    <div class="lessons">${LESSONS.map(
-      (x, i) => `<button type="button" data-lesson="${x.id}" class="${done[x.id] ? "done" : ""}${x.id === selLesson ? " sel" : ""}" aria-expanded="${x.id === selLesson}">${i + 1}. ${x.title}${done[x.id] ? " \u2713" : ""}</button>`
-    ).join("")}</div>
-    ${L ? `<div class="lessonintro"><div><b>Ziel:</b> ${L.goal} <span class="muted">(${L.hands} Spiele, der Coach hilft mit)</span></div>
-      <ul>${L.intro.map((t) => `<li>${t}</li>`).join("")}</ul>
-      <div class="row"><button class="primary" id="startLesson" type="button">Lektion starten</button></div></div>` : ""}`;
-  }
-  function startPartie(loc, practice) {
-    P = newPartie(W, loc, practice);
-    save();
-    setNames(seatNames(loc));
-    newDeal();
-  }
-  function startLesson(id) {
-    selLesson = null;
-    P = lessonPartie(W, id);
-    save();
-    setNames(seatNames(P.loc));
-    newDeal();
-  }
-  function newDeal() {
-    P.hand = newHand(handOptions(W, P));
-    P.counted = false;
-    P.notes = [];
-    coachHint = null;
-    coachBidCache = null;
-    showTrick = null;
-    saveP();
-    render();
-    pump();
-  }
-  var SEATPOS = ["s", "w", "n", "e"];
-  function renderTable() {
-    const st = P.hand, a = actor(st), l = LOCS2[P.loc];
-    const trumpKnown = st.phase !== "trump";
-    const decl2 = st.contract ? st.contract.declarer : null;
-    const seatBox = (seat) => {
-      const pos = SEATPOS[seat];
-      const tags = [];
-      if (seat === st.dealer) tags.push('<span class="tag">Geber</span>');
-      if (seat === st.fh) tags.push('<span class="tag">Vorhand</span>');
-      if (a.seat === seat && st.phase !== "done") tags.push('<span class="tag turn">am Zug</span>');
-      const kn = (st.signals || []).filter((x) => x.seat === seat && x.kind === "klopf").pop();
-      if (kn)
-        tags.push(
-          `<span class="tag knock${kn.t === st.done.length ? " fresh" : ""}" title="${kn.mean === "blank" ? "Hat die Farbe nicht mehr: nachspielen" : "Stark in der Farbe: Partner muss sie nicht halten"}">klopft \xB7 ${SUITS[kn.suit]}</span>`
-        );
-      const calls = [];
-      const said = st.auction && st.auction.said ? st.auction.said[seat] : null;
-      if (decl2 === seat) calls.push(`<span class="call decl">${C[st.contract.key].name}</span>`);
-      else if (st.phase === "bid" && said)
-        calls.push(said === "pass" ? '<span class="call pass">weiter</span>' : `<span class="call">${C[said].name}</span>`);
-      if (st.kontraSaid && st.kontraSaid[seat]) calls.push(`<span class="call kontra">${st.kontraSaid[seat]}!</span>`);
-      const name = `<div class="seatname"><b>${seatName(seat)}</b>${tags.join("")}${bubbleHTML(seat)}</div>${calls.length ? `<div class="calls">${calls.join("")}</div>` : ""}`;
-      if (seat === 0)
-        return `<div class="seat s">${st.done.length ? `<div class="srow">${pilesHTML(st, "us")}<div>${name}</div>${pilesHTML(st, "them")}</div>` : name}<div class="hand" id="myhand"></div></div>`;
-      const n = st.hands[seat].length;
-      let body;
-      if (st.outSeat === seat) body = '<div class="small">sitzt aus</div>';
-      else if (st.phase === "done")
-        body = `<div class="hand">${sortHand(st.hands[seat], st.trump).map((c) => cardHTML(c, { small: true })).join("")}</div>`;
-      else body = `<div class="backs">${Array.from({ length: n }, () => '<div class="cb"></div>').join("")}</div>`;
-      const up = st.upcard && st.upcard && seat === st.fh && st.hands[seat].some((c) => c.id === st.upcard.id) ? `<div class="small">aufgeschlagen: ${cardHTML(st.upcard, { small: true })}</div>` : "";
-      return `<div class="seat ${pos}">${name}${body}${up}</div>`;
-    };
-    const lastDone = st.done[st.done.length - 1];
-    const trick = showTrick || (st.phase === "done" && !st.trick.length && lastDone ? lastDone : st.trick);
-    const live = !showTrick && trick === st.trick && st.trick.length;
-    const winSeat = showTrick ? showTrick.winner : trick === lastDone ? lastDone.winner : live ? currentWinner(st).seat : null;
-    const leadTag = (seat) => `<span class="leadtag">${live ? "liegt vorne" : "sticht"}: ${team(seat) === 0 ? seat === 0 ? "du" : PARTNER2 : seatName(seat).split(" ").pop()}</span>`;
-    const trickIdx = showTrick ? st.done.indexOf(showTrick) : trick === lastDone ? st.done.length - 1 : st.done.length;
-    const meld = st.marriages.find((m) => m.t === trickIdx);
-    const shownTrick = showTrick || (trick === lastDone ? lastDone : null);
-    const liveSp = !shownTrick && st.trick.filter((t) => t.card.sp);
-    const fxText = shownTrick && shownTrick.fx && shownTrick.fx.length ? shownTrick.fx.join(" \xB7 ") : liveSp && liveSp.length ? liveSp.map(
-      (t) => `\u2605 ${t.card.sp.name} von ${t.seat === 0 ? "dir" : seatName(t.seat).split(" ").pop()} wirkt: ${t.card.sp.short}`
-    ).join(" \xB7 ") : "";
-    const fxBanner = fxText && !meld ? `<div class="fxbanner">${fxText}</div>` : "";
-    const meldBanner = meld ? `<div class="meldbanner"><b>${meld.seat === 0 ? "Du meldest" : seatName(meld.seat).split(" ").pop() + " meldet"} ${meld.pts}er</b><span>zeigt</span>${cardHTML({ s: meld.suit, r: meld.led === 2 ? 3 : 2 }, { small: true })}</div>` : "";
-    const melee = meleeOn() && (showTrick || meleeFinal === st.done.length - 1) && trick === (showTrick || lastDone);
-    meleeFinal = -1;
-    const center = `${meldBanner}${fxBanner}<div class="center${melee ? " melee" : ""}">${melee ? '<div class="spark"></div>' : ""}${(trick.cards || trick).map(
-      (t) => `<div class="trickslot ${SEATPOS[t.seat]} ${team(t.seat) === 0 ? "us" : "them"} ${winSeat === t.seat ? "win" : ""}">${winSeat === t.seat ? leadTag(t.seat) : ""}${cardHTML(t.card, { trump: st.trump != null && suitOf(t.card, st.trump) === st.trump })}</div>`
-    ).join("")}</div>`;
-    const contract = st.contract ? `${C[st.contract.key].name} von ${seatName(decl2)}${st.mult > 1 ? " \xB7 \xD7" + st.mult : ""}` : st.auction && st.auction.cur ? `Gebot: ${C[st.auction.cur].name} (${seatName(st.auction.holder)})` : "noch keine Ansage (es wird angesagt)";
-    const meldSum = (t) => {
-      const x = st.marriages.filter((m) => team(m.seat) === t).reduce((a2, m) => a2 + m.pts, 0);
-      return x ? ` <small class="muted">(davon ${x} gemeldet)</small>` : "";
-    };
-    const lesson = P.lesson && lessonById(P.lesson);
-    const pct = (t) => Math.min(100, P.score[t] / P.target * 100);
-    const lessonBox = lesson ? `<details class="lessonintro small"${P.played ? "" : " open"}><summary>Spiel ${Math.min(P.played + 1, lesson.hands)} von ${lesson.hands} \xB7 ${lesson.goal}</summary>
-      <ul>${lesson.intro.map((t) => `<li>${t}</li>`).join("")}</ul>
-      ${lesson.tips.map((t) => `<div><b>Merke:</b> ${t}</div>`).join("")}</details>` : "";
-    const side = `<div class="panel">
-    <div class="ptitle"><h2>${lesson ? `Lektion ${LESSONS.indexOf(lesson) + 1}: ${lesson.title}` : l.name + (P.practice ? " \xB7 \xDCbung" : "")}</h2>
-    <button type="button" id="leave" class="leave" title="${P.practice ? "\xDCbung abbrechen, ohne Folgen" : "Z\xE4hlt als verlorene Partie"}">${P.practice ? "Tisch verlassen" : "Tisch verlassen (gilt als verloren)"}</button></div>
-    ${lessonBox}
-    ${l.home ? "" : ruleHTML(l)}
-    ${P.specials.map((x) => specHTML(x.key, x.team ? "Gegner: " : "Eure: ", true)).join("")}
-    <div class="score">
-      <span class="h">${lesson ? "Punkte zum \xDCben" : "Partie bis " + P.target}</span><span class="h">Punkte</span><span class="h">Augen</span>
-      <span style="color:var(--you)">Du & ${PARTNER2}</span><b>${P.score[0]}</b><span>${st.teamPts[0]}${meldSum(0)}</span>
-      <span style="color:var(--them)">${l.opp[0].split(" ").pop()} & ${l.opp[1].split(" ").pop()}</span><b>${P.score[1]}</b><span>${st.teamPts[1]}${meldSum(1)}</span>
-    </div>
-    ${lesson ? "" : `<div class="bar"><i style="width:${pct(0)}%;background:var(--you)"></i></div>
-    <div class="bar"><i style="width:${pct(1)}%;background:var(--them)"></i></div>`}
-    <div class="small">Spiel: <b>${contract}</b></div>
-    ${P.rules.klopfen ? `<div class="small muted" title="Wie wahrscheinlich jemand ein Zeichen bemerkt und richtig deutet">Erfahrung mit Zeichen: ${PARTNER2} ${pct100(ferdlExp2())}, Gegner ${pct100(l.exp)}</div>` : ""}
-    ${sigHTML(st)}
-    ${tricksHTML(st)}
-    <div class="log" id="log">${st.log.map((x) => `<div>${x}</div>`).join("")}</div>
-  </div>`;
-    const hr = [];
-    if (!l.home) {
-      const r = P.rules;
-      if (r.fixedTrump != null) hr.push(`${SUITS[r.fixedTrump]} ist immer Trumpf`);
-      if (r.noKontra) hr.push("kein Kontra");
-      (r.banned || []).forEach((k) => hr.push(`kein ${C[k].name}`));
-      if (r.bettlerNoAce) hr.push("Bettler nur ohne Ass");
-      if (r.bettlerValue) hr.push(`Bettler z\xE4hlt ${r.bettlerValue}`);
-      Object.entries(r.values || {}).forEach(([k, v]) => hr.push(`${C[k].name} z\xE4hlt ${v}`));
-      hr.push(`bis ${r.target}`);
-    }
-    if (P.rules.klopfen) hr.push("Klopfen erlaubt");
-    const shortContract = st.contract ? `${C[st.contract.key].name} \xB7 ${decl2 === 0 ? "du" : seatName(decl2).split(" ").pop()}${st.mult > 1 ? " \xD7" + st.mult : ""}` : st.auction && st.auction.cur ? `Gebot: ${C[st.auction.cur].name}` : "Ansage l\xE4uft";
-    const trumpBar = `<div class="trumpbar" id="trumpbar" aria-live="polite">
-      <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div>
-      <div class="gamebadge${st.contract ? "" : " none"}">${shortContract}</div></div>`;
-    $("view").innerHTML = `<div class="tablegrid"><div class="felt">${trumpBar}
-    <div class="houserules" aria-label="Hausregeln" style="flex-direction:column;align-items:center">
-      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
-      ${lesson ? `<button type="button" id="skipLesson" class="skiplesson" title="Lektion als geschafft abhaken">${nextLesson(P.lesson) ? "Verstanden, n\xE4chste Lektion" : "Verstanden, Lernpfad beenden"}</button>` : ""}
-      ${P.specials.length ? `<div class="spchips">${P.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : `dir und ${PARTNER2}`}</span>`).join("")}</div>` : ""}</div>
-    ${seatBox(2)}${seatBox(1)}${center}${seatBox(3)}${seatBox(0)}
-    <div class="actions" id="actions"></div></div>${side}</div>`;
-    const lg = $("log");
-    lg.scrollTop = lg.scrollHeight;
-    if ($("skipLesson"))
-      $("skipLesson").onclick = () => {
-        const nx = nextLesson(P.lesson);
-        busy = false;
-        showTrick = null;
-        endPartie2(true);
-        if (nx) startLesson(nx.id);
-      };
-    $("leave").onclick = () => {
-      const b = $("leave");
-      if (!b.dataset.armed) {
-        b.dataset.armed = "1";
-        b.textContent = P.practice ? "Wirklich gehen?" : `Wirklich aufgeben? ${l.lose || ""}`;
-        setTimeout(() => {
-          if (b.isConnected) {
-            delete b.dataset.armed;
-            b.textContent = P.practice ? "Tisch verlassen" : "Tisch verlassen (gilt als verloren)";
-          }
-        }, 4e3);
-        return;
-      }
-      busy = false;
-      showTrick = null;
-      if (!P.practice) note3(`Du stehst ${l.at} vorzeitig auf.`, "bad");
-      endPartie2(false);
-    };
-    document.querySelectorAll("[data-pile]").forEach((b) => b.onclick = () => openTricks(b.dataset.pile));
-    renderMyHand();
-    renderActions();
-  }
-  var who = (seat) => seat === 0 ? "Du" : seat === 2 ? PARTNER2 : seatName(seat).split(" ").pop();
+
+  // src/ui/table.js
+  var { LOCS: LOCS3, PARTNER: PARTNER4 } = world_exports;
   function sigHTML(st) {
     const sig = st.signals || [];
     if (!sig.length) return "";
@@ -4099,8 +3994,8 @@ button.link {
     const done = st.phase === "done";
     return `<h3>Stiche der Gegner</h3><p class="small muted">${done ? "Die Hand ist vorbei: alle Stiche liegen offen." : "Nur ihr erster Stich liegt offen, die anderen verdeckt."}</p>${v.theirs.map((d) => trickRow(d, true)).join("")}${v.hidden ? `<p class="small muted">dazu ${v.hidden} verdeckt${v.hidden > 1 ? "e Stiche" : "er Stich"}</p>` : ""}`;
   }
-  function openTricks(side) {
-    $("tr-body").innerHTML = trickListHTML(P.hand, side);
+  function openTricks(st, side) {
+    $("tr-body").innerHTML = trickListHTML(st, side);
     $("tr-dlg").showModal();
   }
   function tricksHTML(st) {
@@ -4125,94 +4020,233 @@ button.link {
       return `<div class="msg small" style="opacity:.8">Dein Paar in ${pairs.map(name).join(", ")} z\xE4hlt in diesem Spiel nicht.</div>`;
     return `<div class="msg small" style="opacity:.8">Paar in ${pairs.map(name).join(", ")}: Melden geht, wenn du ausspielst${st.teamTricks[0] ? "" : " und dein Team schon einen Stich hat"}.</div>`;
   }
-  function renderMyHand() {
-    const st = P.hand, a = actor(st);
+  function renderMyHand(P2, { busy: busy2, showTrick: showTrick2, coachHint: coachHint2, onSetTrump, onPlay }) {
+    const st = P2.hand, a = actor(st);
     const h = st.hands[0];
     let html;
     if (st.phase === "trump") {
-      const mine = actor(st).seat === 0 && !busy;
+      const mine = actor(st).seat === 0 && !busy2;
       html = h.map(
-        (c, i) => i < 3 ? mine ? cardHTML(c, { play: true }).replace(
+        (c, i) => i < 3 ? mine ? cardHTML(c, { play: true }, P2).replace(
           "data-cid",
           `data-tr="${c.s}" title="${SUITS[c.s]} als Trumpf ansagen" data-cid`
-        ) : cardHTML(c) : mine ? `<button type="button" class="card back play" data-auf="${i}" title="Aufschlagen: diese Karte bestimmt Trumpf" aria-label="Verdeckte Karte aufschlagen"></button>` : cardHTML(null)
+        ) : cardHTML(c, {}, P2) : mine ? `<button type="button" class="card back play" data-auf="${i}" title="Aufschlagen: diese Karte bestimmt Trumpf" aria-label="Verdeckte Karte aufschlagen"></button>` : cardHTML(null)
       ).join("");
       $("myhand").innerHTML = html;
       if (mine) {
-        document.querySelectorAll("#myhand [data-tr]").forEach(
-          (b) => b.onclick = () => {
-            setTrump(st, +b.dataset.tr);
-            after();
-          }
-        );
-        document.querySelectorAll("#myhand [data-auf]").forEach(
-          (b) => b.onclick = () => {
-            setTrump(st, { auf: +b.dataset.auf });
-            after();
-          }
-        );
+        document.querySelectorAll("#myhand [data-tr]").forEach((b) => b.onclick = () => onSetTrump(+b.dataset.tr));
+        document.querySelectorAll("#myhand [data-auf]").forEach((b) => b.onclick = () => onSetTrump({ auf: +b.dataset.auf }));
       }
       return;
     } else if (st.outSeat === 0) html = '<div class="small">Du sitzt dieses Spiel aus.</div>';
     else {
-      const myTurn = a.phase === "play" && a.seat === 0 && !busy && !showTrick;
+      const myTurn = a.phase === "play" && a.seat === 0 && !busy2 && !showTrick2;
       const L = myTurn ? legal(st, 0).map((c) => c.id) : [];
       html = sortHand(h, st.trump).map(
-        (c) => cardHTML(c, {
-          trump: st.trump != null && suitOf(c, st.trump) === st.trump,
-          play: myTurn && L.includes(c.id),
-          dim: myTurn && !L.includes(c.id),
-          m: myTurn && L.includes(c.id) ? marriageFor(st, 0, c) : 0,
-          pair: hasPair(h, c),
-          hint: myTurn && coachHint && coachHint.id === c.id && coachHint.n === h.length
-        })
+        (c) => cardHTML(
+          c,
+          {
+            trump: st.trump != null && suitOf(c, st.trump) === st.trump,
+            play: myTurn && L.includes(c.id),
+            dim: myTurn && !L.includes(c.id),
+            m: myTurn && L.includes(c.id) ? marriageFor(st, 0, c) : 0,
+            pair: hasPair(h, c),
+            hint: myTurn && coachHint2 && coachHint2.id === c.id && coachHint2.n === h.length
+          },
+          P2
+        )
       ).join("");
     }
     $("myhand").innerHTML = html;
-    document.querySelectorAll("#myhand .card.play").forEach((b) => b.onclick = () => humanPlay(+b.dataset.cid));
+    document.querySelectorAll("#myhand .card.play").forEach((b) => b.onclick = () => onPlay(+b.dataset.cid));
   }
-  function renderActions() {
-    const st = P.hand, a = actor(st), el = $("actions");
+  function renderTable(P2, { W: W2, busy: busy2, showTrick: showTrick2, meleeFinal: meleeFinal2, onClearMeleeFinal, onSkipLesson, onLeave, onSetTrump, onPlay, coachHint: coachHint2 }) {
+    const st = P2.hand, a = actor(st), l = LOCS3[P2.loc];
+    const trumpKnown = st.phase !== "trump";
+    const decl = st.contract ? st.contract.declarer : null;
+    const seatBox = (seat) => {
+      const pos = SEATPOS[seat];
+      const tags = [];
+      if (seat === st.dealer) tags.push('<span class="tag">Geber</span>');
+      if (seat === st.fh) tags.push('<span class="tag">Vorhand</span>');
+      if (a.seat === seat && st.phase !== "done") tags.push('<span class="tag turn">am Zug</span>');
+      const kn = (st.signals || []).filter((x) => x.seat === seat && x.kind === "klopf").pop();
+      if (kn)
+        tags.push(
+          `<span class="tag knock${kn.t === st.done.length ? " fresh" : ""}" title="${kn.mean === "blank" ? "Hat die Farbe nicht mehr: nachspielen" : "Stark in der Farbe: Partner muss sie nicht halten"}">klopft \xB7 ${SUITS[kn.suit]}</span>`
+        );
+      const calls = [];
+      const said = st.auction && st.auction.said ? st.auction.said[seat] : null;
+      if (decl === seat) calls.push(`<span class="call decl">${C[st.contract.key].name}</span>`);
+      else if (st.phase === "bid" && said)
+        calls.push(said === "pass" ? '<span class="call pass">weiter</span>' : `<span class="call">${C[said].name}</span>`);
+      if (st.kontraSaid && st.kontraSaid[seat]) calls.push(`<span class="call kontra">${st.kontraSaid[seat]}!</span>`);
+      const name = `<div class="seatname"><b>${seatName(seat)}</b>${tags.join("")}${bubbleHTML(seat)}</div>${calls.length ? `<div class="calls">${calls.join("")}</div>` : ""}`;
+      if (seat === 0)
+        return `<div class="seat s">${st.done.length ? `<div class="srow">${pilesHTML(st, "us")}<div>${name}</div>${pilesHTML(st, "them")}</div>` : name}<div class="hand" id="myhand"></div></div>`;
+      const n = st.hands[seat].length;
+      let body;
+      if (st.outSeat === seat) body = '<div class="small">sitzt aus</div>';
+      else if (st.phase === "done")
+        body = `<div class="hand">${sortHand(st.hands[seat], st.trump).map((c) => cardHTML(c, { small: true }, P2)).join("")}</div>`;
+      else body = `<div class="backs">${Array.from({ length: n }, () => '<div class="cb"></div>').join("")}</div>`;
+      const up = st.upcard && st.upcard && seat === st.fh && st.hands[seat].some((c) => c.id === st.upcard.id) ? `<div class="small">aufgeschlagen: ${cardHTML(st.upcard, { small: true }, P2)}</div>` : "";
+      return `<div class="seat ${pos}">${name}${body}${up}</div>`;
+    };
+    const lastDone = st.done[st.done.length - 1];
+    const trick = showTrick2 || (st.phase === "done" && !st.trick.length && lastDone ? lastDone : st.trick);
+    const live = !showTrick2 && trick === st.trick && st.trick.length;
+    const winSeat = showTrick2 ? showTrick2.winner : trick === lastDone ? lastDone.winner : live ? currentWinner(st).seat : null;
+    const leadTag = (seat) => `<span class="leadtag">${live ? "liegt vorne" : "sticht"}: ${team(seat) === 0 ? seat === 0 ? "du" : PARTNER4 : seatName(seat).split(" ").pop()}</span>`;
+    const trickIdx = showTrick2 ? st.done.indexOf(showTrick2) : trick === lastDone ? st.done.length - 1 : st.done.length;
+    const meld = st.marriages.find((m) => m.t === trickIdx);
+    const shownTrick = showTrick2 || (trick === lastDone ? lastDone : null);
+    const liveSp = !shownTrick && st.trick.filter((t) => t.card.sp);
+    const fxText = shownTrick && shownTrick.fx && shownTrick.fx.length ? shownTrick.fx.join(" \xB7 ") : liveSp && liveSp.length ? liveSp.map(
+      (t) => `\u2605 ${t.card.sp.name} von ${t.seat === 0 ? "dir" : seatName(t.seat).split(" ").pop()} wirkt: ${t.card.sp.short}`
+    ).join(" \xB7 ") : "";
+    const fxBanner = fxText && !meld ? `<div class="fxbanner">${fxText}</div>` : "";
+    const meldBanner = meld ? `<div class="meldbanner"><b>${meld.seat === 0 ? "Du meldest" : seatName(meld.seat).split(" ").pop() + " meldet"} ${meld.pts}er</b><span>zeigt</span>${cardHTML({ s: meld.suit, r: meld.led === 2 ? 3 : 2 }, { small: true })}</div>` : "";
+    const melee = meleeOn() && (showTrick2 || meleeFinal2 === st.done.length - 1) && trick === (showTrick2 || lastDone);
+    onClearMeleeFinal();
+    const center = `${meldBanner}${fxBanner}<div class="center${melee ? " melee" : ""}">${melee ? '<div class="spark"></div>' : ""}${(trick.cards || trick).map(
+      (t) => `<div class="trickslot ${SEATPOS[t.seat]} ${team(t.seat) === 0 ? "us" : "them"} ${winSeat === t.seat ? "win" : ""}">${winSeat === t.seat ? leadTag(t.seat) : ""}${cardHTML(t.card, { trump: st.trump != null && suitOf(t.card, st.trump) === st.trump }, P2)}</div>`
+    ).join("")}</div>`;
+    const contract = st.contract ? `${C[st.contract.key].name} von ${seatName(decl)}${st.mult > 1 ? " \xB7 \xD7" + st.mult : ""}` : st.auction && st.auction.cur ? `Gebot: ${C[st.auction.cur].name} (${seatName(st.auction.holder)})` : "noch keine Ansage (es wird angesagt)";
+    const meldSum = (t) => {
+      const x = st.marriages.filter((m) => team(m.seat) === t).reduce((a2, m) => a2 + m.pts, 0);
+      return x ? ` <small class="muted">(davon ${x} gemeldet)</small>` : "";
+    };
+    const lesson = P2.lesson && lessonById(P2.lesson);
+    const pct = (t) => Math.min(100, P2.score[t] / P2.target * 100);
+    const lessonBox = lesson ? `<details class="lessonintro small"${P2.played ? "" : " open"}><summary>Spiel ${Math.min(P2.played + 1, lesson.hands)} von ${lesson.hands} \xB7 ${lesson.goal}</summary>
+      <ul>${lesson.intro.map((t) => `<li>${t}</li>`).join("")}</ul>
+      ${lesson.tips.map((t) => `<div><b>Merke:</b> ${t}</div>`).join("")}</details>` : "";
+    const side = `<div class="panel">
+    <div class="ptitle"><h2>${lesson ? `Lektion ${LESSONS.indexOf(lesson) + 1}: ${lesson.title}` : l.name + (P2.practice ? " \xB7 \xDCbung" : "")}</h2>
+    <button type="button" id="leave" class="leave" title="${P2.practice ? "\xDCbung abbrechen, ohne Folgen" : "Z\xE4hlt als verlorene Partie"}">${P2.practice ? "Tisch verlassen" : "Tisch verlassen (gilt als verloren)"}</button></div>
+    ${lessonBox}
+    ${l.home ? "" : ruleHTML(l)}
+    ${P2.specials.map((x) => specHTML(x.key, x.team ? "Gegner: " : "Eure: ", true, P2)).join("")}
+    <div class="score">
+      <span class="h">${lesson ? "Punkte zum \xDCben" : "Partie bis " + P2.target}</span><span class="h">Punkte</span><span class="h">Augen</span>
+      <span style="color:var(--you)">Du & ${PARTNER4}</span><b>${P2.score[0]}</b><span>${st.teamPts[0]}${meldSum(0)}</span>
+      <span style="color:var(--them)">${l.opp[0].split(" ").pop()} & ${l.opp[1].split(" ").pop()}</span><b>${P2.score[1]}</b><span>${st.teamPts[1]}${meldSum(1)}</span>
+    </div>
+    ${lesson ? "" : `<div class="bar"><i style="width:${pct(0)}%;background:var(--you)"></i></div>
+    <div class="bar"><i style="width:${pct(1)}%;background:var(--them)"></i></div>`}
+    <div class="small">Spiel: <b>${contract}</b></div>
+    ${P2.rules.klopfen ? `<div class="small muted" title="Wie wahrscheinlich jemand ein Zeichen bemerkt und richtig deutet">Erfahrung mit Zeichen: ${PARTNER4} ${pct100(ferdlExp(W2))}, Gegner ${pct100(l.exp)}</div>` : ""}
+    ${sigHTML(st)}
+    ${tricksHTML(st)}
+    <div class="log" id="log">${st.log.map((x) => `<div>${x}</div>`).join("")}</div>
+  </div>`;
+    const hr = [];
+    if (!l.home) {
+      const r = P2.rules;
+      if (r.fixedTrump != null) hr.push(`${SUITS[r.fixedTrump]} ist immer Trumpf`);
+      if (r.noKontra) hr.push("kein Kontra");
+      (r.banned || []).forEach((k) => hr.push(`kein ${C[k].name}`));
+      if (r.bettlerNoAce) hr.push("Bettler nur ohne Ass");
+      if (r.bettlerValue) hr.push(`Bettler z\xE4hlt ${r.bettlerValue}`);
+      Object.entries(r.values || {}).forEach(([k, v]) => hr.push(`${C[k].name} z\xE4hlt ${v}`));
+      hr.push(`bis ${r.target}`);
+    }
+    if (P2.rules.klopfen) hr.push("Klopfen erlaubt");
+    const shortContract = st.contract ? `${C[st.contract.key].name} \xB7 ${decl === 0 ? "du" : seatName(decl).split(" ").pop()}${st.mult > 1 ? " \xD7" + st.mult : ""}` : st.auction && st.auction.cur ? `Gebot: ${C[st.auction.cur].name}` : "Ansage l\xE4uft";
+    const trumpBar = `<div class="trumpbar" id="trumpbar" aria-live="polite">
+      <div class="trumpbadge${trumpKnown && st.trump != null ? "" : " none"}">${!trumpKnown ? "Trumpf: noch offen" : st.trump == null ? "kein Trumpf" : `Trumpf ${SUITSVG[st.trump]} <b>${SUITS[st.trump]}</b>`}</div>
+      <div class="gamebadge${st.contract ? "" : " none"}">${shortContract}</div></div>`;
+    $("view").innerHTML = `<div class="tablegrid"><div class="felt">${trumpBar}
+    <div class="houserules" aria-label="Hausregeln" style="flex-direction:column;align-items:center">
+      <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">${hr.length ? `<span><b>Hausregeln ${l.name}:</b></span>${hr.map((x) => `<span>${x}</span>`).join("")}` : ""}</div>
+      ${lesson ? `<button type="button" id="skipLesson" class="skiplesson" title="Lektion als geschafft abhaken">${nextLesson(P2.lesson) ? "Verstanden, n\xE4chste Lektion" : "Verstanden, Lernpfad beenden"}</button>` : ""}
+      ${P2.specials.length ? `<div class="spchips">${P2.specials.map((x) => `<span class="${x.team ? "them" : ""}" title="${SPECIALS[x.key].text}">\u2605 ${SPECIALS[x.key].name} (${cname({ s: SPECIALS[x.key].s, r: SPECIALS[x.key].r })}): ${SPECIALS[x.key].short}, wirkt nur bei ${x.team ? "Gegnern" : `dir und ${PARTNER4}`}</span>`).join("")}</div>` : ""}</div>
+    ${seatBox(2)}${seatBox(1)}${center}${seatBox(3)}${seatBox(0)}
+    <div class="actions" id="actions"></div></div>${side}</div>`;
+    const lg = $("log");
+    lg.scrollTop = lg.scrollHeight;
+    if ($("skipLesson")) $("skipLesson").onclick = onSkipLesson;
+    $("leave").onclick = () => {
+      const b = $("leave");
+      if (!b.dataset.armed) {
+        b.dataset.armed = "1";
+        b.textContent = P2.practice ? "Wirklich gehen?" : `Wirklich aufgeben? ${l.lose || ""}`;
+        setTimeout(() => {
+          if (b.isConnected) {
+            delete b.dataset.armed;
+            b.textContent = P2.practice ? "Tisch verlassen" : "Tisch verlassen (gilt als verloren)";
+          }
+        }, 4e3);
+        return;
+      }
+      onLeave(l);
+    };
+    document.querySelectorAll("[data-pile]").forEach((b) => b.onclick = () => openTricks(st, b.dataset.pile));
+    renderMyHand(P2, { busy: busy2, showTrick: showTrick2, coachHint: coachHint2, onSetTrump, onPlay });
+  }
+
+  // src/ui/actions.js
+  var { LOCS: LOCS4, PARTNER: PARTNER5 } = world_exports;
+  function renderActions(P2, {
+    busy: busy2,
+    showTrick: showTrick2,
+    knockArmed: knockArmed2,
+    coachHint: coachHint2,
+    coachBidCache: coachBidCache2,
+    coachOn: coachOn2,
+    onAfter,
+    onNewDeal,
+    onEndPartie,
+    onStartLesson,
+    onOpenFeedback,
+    onToggleKnock,
+    onCoachTip,
+    onCacheBid,
+    onRenderActions
+  }) {
+    const st = P2.hand, a = actor(st), el = $("actions");
+    const decl = () => st.contract.declarer;
     if (st.phase === "done") {
       const r = st.result, ours = r.winTeam === 0;
-      const over = partieResult(P) !== null;
+      const over = partieResult(P2) !== null;
       el.innerHTML = `<div class="msg">${r.why}</div>
       <div class="msg"><b>${ours ? "Ihr bekommt" : "Die Gegner bekommen"} ${r.points} Punkt${r.points > 1 ? "e" : ""}.</b></div>
       <div><button class="link" id="fb-hand" type="button">\u2691 Stimmt etwas nicht? Feedback zu dieser Hand</button></div>
-      ${coachOn() && P.notes && P.notes.length ? (() => {
-        const t = coach_exports.review(st, 0, P.notes);
+      ${coachOn2 && P2.notes && P2.notes.length ? (() => {
+        const t = coach_exports.review(st, 0, P2.notes);
         return coachBox(
           t.length ? ["R\xFCckblick auf deine Hand:", ...t] : ["R\xFCckblick: Sauber gespielt, mir ist nichts aufgefallen."]
         );
       })() : ""}
-      ${over && P.lesson ? (() => {
-        const nx = nextLesson(P.lesson);
+      ${over && P2.lesson ? (() => {
+        const nx = nextLesson(P2.lesson);
         return `<div class="msg"><b>Lektion geschafft!</b> ${nx ? `Weiter geht es mit \u201E${nx.title}\u201C.` : "Du kennst jetzt alle Regeln. Auf der Karte warten die anderen Wirtsh\xE4user."}</div>
         <div class="row" style="justify-content:center">${nx ? `<button class="primary" id="nextLesson" type="button">N\xE4chste Lektion</button>` : ""}<button${nx ? "" : ' class="primary"'} id="next" type="button">Zur\xFCck zur Karte</button></div>`;
-      })() : over ? `<div class="msg"><b>${P.score[0] >= P.target ? "Partie gewonnen!" : "Partie verloren."}</b></div>
+      })() : over ? `<div class="msg"><b>${P2.score[0] >= P2.target ? "Partie gewonnen!" : "Partie verloren."}</b></div>
         <button class="primary" id="next" type="button">Zur\xFCck zur Karte</button>` : '<button class="primary" id="next" type="button">N\xE4chstes Spiel</button>'}`;
-      $("fb-hand").onclick = () => openFeedback("Regel stimmt nicht");
-      $("next").onclick = () => over ? endPartie2(partieResult(P)) : (P.dealer = (P.dealer + 1) % 4, newDeal());
+      $("fb-hand").onclick = () => onOpenFeedback("Regel stimmt nicht");
+      $("next").onclick = () => over ? onEndPartie(partieResult(P2)) : (P2.dealer = (P2.dealer + 1) % 4, onNewDeal());
       if ($("nextLesson"))
         $("nextLesson").onclick = () => {
-          const nx = nextLesson(P.lesson);
-          endPartie2(true);
-          startLesson(nx.id);
+          const nx = nextLesson(P2.lesson);
+          onEndPartie(true);
+          onStartLesson(nx.id);
         };
       return;
     }
-    if (busy || showTrick || a.seat !== 0) {
+    if (busy2 || showTrick2 || a.seat !== 0) {
       const what = {
         trump: ["sagst Trumpf an", "sagt Trumpf an"],
         bid: ["\xFCberlegst eine Ansage", "\xFCberlegt eine Ansage"],
         kontra: ["\xFCberlegst Kontra", "\xFCberlegt Kontra"],
         play: ["spielst", "spielt"]
       }[a.phase];
-      el.innerHTML = `<div class="msg muted" style="color:var(--felt-ink);opacity:.8">${showTrick ? `${subj(showTrick.winner, "stichst", "sticht")} (${showTrick.pts} Augen).` : `${subj(a.seat, ...what)} \u2026`}</div>`;
+      el.innerHTML = `<div class="msg muted" style="color:var(--felt-ink);opacity:.8">${showTrick2 ? `${subj(showTrick2.winner, "stichst", "sticht")} (${showTrick2.pts} Augen).` : `${subj(a.seat, ...what)} \u2026`}</div>`;
       return;
     }
     if (a.phase === "trump") {
-      el.innerHTML = `<div class="msg">Du bist Vorhand. Klick auf eine deiner drei Karten: Ihre Farbe wird Trumpf. Oder klick auf eine verdeckte Karte, um sie aufzuschlagen.</div>` + (coachOn() ? coachBox([
+      el.innerHTML = `<div class="msg">Du bist Vorhand. Klick auf eine deiner drei Karten: Ihre Farbe wird Trumpf. Oder klick auf eine verdeckte Karte, um sie aufzuschlagen.</div>` + (coachOn2 ? coachBox([
         "Trumpf sticht jede andere Farbe. Nimm die Farbe, von der du die meisten oder die h\xF6chsten Karten hast (Ass, Zehner).",
         "Passt keine, schlag eine verdeckte Karte auf: Dann entscheidet der Zufall."
       ]) : "");
@@ -4220,40 +4254,40 @@ button.link {
     }
     if (a.phase === "bid") {
       const opts = bidOptions(st, 0);
-      if (P.lesson && opts.every((k) => k === "normal")) {
+      if (P2.lesson && opts.every((k) => k === "normal")) {
         el.innerHTML = `<div class="msg muted" style="color:var(--felt-ink);opacity:.8">Ansagen kommen in einer sp\xE4teren Lektion. Gespielt wird Normalspiel.</div>`;
         setTimeout(() => {
-          if (!P || P.hand !== st || st.phase !== "bid" || actor(st).seat !== 0) return;
+          if (!P2 || P2.hand !== st || st.phase !== "bid" || actor(st).seat !== 0) return;
           applyBid(st, 0, opts.length ? "normal" : null);
-          after();
+          onAfter();
         }, 700);
         return;
       }
       el.innerHTML = `<div class="msg">${st.auction.cur ? `Aktuell: <b>${C[st.auction.cur].name}</b> von ${seatName(st.auction.holder)}.` : "Du er\xF6ffnest. Normalspiel oder mehr?"}</div>
       <div class="row" style="justify-content:center">${opts.map((k) => `<button type="button" data-bid="${k}"${k === "spritzer" ? ` title="${st.auction.cur === "bettler" ? "Die Vorhand muss statt Bettler ein Normalspiel spielen, doppelt: 2 bis 6 Punkte." : "Du verdoppelst das Normalspiel der Gegner: 2 bis 6 Punkte."} Ein Bettler kann das nicht mehr \xFCberbieten."` : ""}>${C[k].name} \xB7 ${k === "spritzer" ? "2\u20136" : value(st, k)}</button>`).join("")}
-      ${(P.lesson ? [] : blockedBids(st, 0)).map(
-        (b) => b.why === "noNormal" ? `<button type="button" class="blocked" disabled title="Spritzen geht nur direkt gegen die Er\xF6ffnung der Vorhand: Normalspiel oder Bettler. Hier hat schon jemand h\xF6her angesagt.">${C[b.key].name}<small>(nur gegen Vorhand)</small></button>` : `<button type="button" class="blocked" disabled title="Hausregel">${C[b.key].name}<small>${b.why === "ace" ? "(nur ohne Ass)" : `(${LOCS2[P.loc].at} verboten)`}</small></button>`
+      ${(P2.lesson ? [] : blockedBids(st, 0)).map(
+        (b) => b.why === "noNormal" ? `<button type="button" class="blocked" disabled title="Spritzen geht nur direkt gegen die Er\xF6ffnung der Vorhand: Normalspiel oder Bettler. Hier hat schon jemand h\xF6her angesagt.">${C[b.key].name}<small>(nur gegen Vorhand)</small></button>` : `<button type="button" class="blocked" disabled title="Hausregel">${C[b.key].name}<small>${b.why === "ace" ? "(nur ohne Ass)" : `(${LOCS4[P2.loc].at} verboten)`}</small></button>`
       ).join("")}
       ${canPass(st, 0) ? '<button class="primary" type="button" data-bid="">Weiter</button>' : ""}</div>`;
       el.querySelectorAll("[data-bid]").forEach(
         (b) => b.onclick = () => {
-          coachBidCache = null;
+          onCacheBid(null);
           applyBid(st, 0, b.dataset.bid || null);
-          after();
+          onAfter();
         }
       );
-      if (coachOn()) {
+      if (coachOn2) {
         const key = st.log.length + ":" + st.auction.cur;
-        if (!coachBidCache || coachBidCache.key !== key) {
+        if (!coachBidCache2 || coachBidCache2.key !== key) {
           el.insertAdjacentHTML("beforeend", coachBox(["Ich rechne die Gewinnchancen aus \u2026"]));
           setTimeout(() => {
-            if (!P || P.hand !== st || st.phase !== "bid") return;
-            coachBidCache = { key, data: coach_exports.bids(st, 0) };
-            renderActions();
+            if (!P2 || P2.hand !== st || st.phase !== "bid") return;
+            onCacheBid({ key, data: coach_exports.bids(st, 0) });
+            onRenderActions();
           }, 30);
           return;
         }
-        const data = coachBidCache.data.slice().sort((a2, b) => b.p - a2.p);
+        const data = coachBidCache2.data.slice().sort((a2, b) => b.p - a2.p);
         const shown = data.filter((x) => x.p >= 0.3 || x.key === "normal"), rest = data.filter((x) => !shown.includes(x));
         const rows = shown.map(
           (x) => `<div><b>${C[x.key].name}</b>: ${Math.round(x.p * 100)} % Gewinnchance. <span class="muted">${coach_exports.GOALS[x.key] || ""}</span></div>`
@@ -4271,9 +4305,9 @@ button.link {
       <div class="row"><button type="button" id="ky">${kind === "kontra" ? "Kontra" : "Re"} (\xD72)</button><button class="primary" type="button" id="kn">Nein</button></div>`;
       $("ky").onclick = () => {
         applyKontra(st, 0, true);
-        after();
+        onAfter();
       };
-      if (coachOn()) {
+      if (coachOn2) {
         const p = estimate(st, 0, st.contract.key, decl(), 24, true);
         el.insertAdjacentHTML(
           "beforeend",
@@ -4284,51 +4318,180 @@ button.link {
       }
       $("kn").onclick = () => {
         applyKontra(st, 0, false);
-        after();
+        onAfter();
       };
       return;
     }
     if (a.phase === "play") {
       const cw = currentWinner(st);
       const kmean = C[st.contract.key].goal === "none" ? "Hei\xDFt: Diese Farbe hab ich nicht mehr, spielt sie nach." : "Hei\xDFt: In dieser Farbe bin ich stark, du musst sie nicht halten.";
-      const kb = canKnock(st, 0) ? `<div class="row" style="justify-content:center"><button type="button" id="knock" class="${knockArmed ? "armed" : ""}" aria-pressed="${knockArmed}" title="${kmean}">${knockArmed ? "Klopfen: jetzt die Karte w\xE4hlen (nochmal klicken = doch nicht)" : "Klopfen auf die n\xE4chste Karte"}</button></div><div class="small" style="text-align:center;opacity:.8">${knockArmed ? kmean : ""}</div>` : "";
-      el.innerHTML = `<div class="msg">Du bist am Zug. ${cw ? `Vorne liegt ${cw.seat === 2 ? "dein Partner " + PARTNER2 : seatName(cw.seat)} (${team(cw.seat) === 0 ? "dein Team" : "Gegner"}).` : "Du spielst aus."}</div>${kb}${coachOn() ? "" : meldHint(st)}`;
-      if (kb)
-        $("knock").onclick = () => {
-          knockArmed = !knockArmed;
-          renderActions();
-        };
-      if (coachOn()) {
+      const kb = canKnock(st, 0) ? `<div class="row" style="justify-content:center"><button type="button" id="knock" class="${knockArmed2 ? "armed" : ""}" aria-pressed="${knockArmed2}" title="${kmean}">${knockArmed2 ? "Klopfen: jetzt die Karte w\xE4hlen (nochmal klicken = doch nicht)" : "Klopfen auf die n\xE4chste Karte"}</button></div><div class="small" style="text-align:center;opacity:.8">${knockArmed2 ? kmean : ""}</div>` : "";
+      el.innerHTML = `<div class="msg">Du bist am Zug. ${cw ? `Vorne liegt ${cw.seat === 2 ? "dein Partner " + PARTNER5 : seatName(cw.seat)} (${team(cw.seat) === 0 ? "dein Team" : "Gegner"}).` : "Du spielst aus."}</div>${kb}${coachOn2 ? "" : meldHint(st)}`;
+      if (kb) $("knock").onclick = onToggleKnock;
+      if (coachOn2) {
         const n = st.hands[0].length;
-        const tip2 = coachHint && coachHint.n === n ? `<div class="tipline">Tipp: <b>${cname(st.hands[0].find((c) => c.id === coachHint.id))}</b>. ${coachHint.why}</div>` : '<button type="button" id="tip">Was w\xFCrde Ferdl spielen?</button>';
+        const tip2 = coachHint2 && coachHint2.n === n ? `<div class="tipline">Tipp: <b>${cname(st.hands[0].find((c) => c.id === coachHint2.id))}</b>. ${coachHint2.why}</div>` : '<button type="button" id="tip">Was w\xFCrde Ferdl spielen?</button>';
         el.insertAdjacentHTML("beforeend", coachBox(coach_exports.explain(st, 0), tip2));
         if ($("tip"))
           $("tip").onclick = () => {
             const t = coach_exports.tip(st, 0);
-            coachHint = { id: t.id, why: t.why, n };
-            renderMyHand();
-            renderActions();
+            onCoachTip({ id: t.id, why: t.why, n });
           };
       }
     }
   }
-  var decl = () => P.hand.contract.declarer;
+
+  // src/ui/feedback-ui.js
+  var { LOCS: LOCS5 } = world_exports;
+  var recentErrors = [];
+  addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
+  addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
+  function fbWhere(W2, P2) {
+    if (!P2) return `Auf der Landkarte (${LOCS5[W2.loc].name}).`;
+    const st = P2.hand;
+    const lesson = P2.lesson && LESSONS.find((l) => l.id === P2.lesson);
+    const what = P2.lesson ? `Lektion \u201E${lesson ? lesson.title : P2.lesson}\u201C` : LOCS5[P2.loc].name;
+    if (!st) return `${what}.`;
+    if (!st.contract) return `${what}, beim Ansagen.`;
+    const c = C[st.contract.key].name;
+    if (st.phase === "done") return `${what}, ${c}, Hand vorbei nach ${st.done.length} Stich${st.done.length === 1 ? "" : "en"}.`;
+    return `${what}, ${c}, Stich ${st.done.length + 1}.`;
+  }
+  function initFeedback({ BUILD: BUILD2, fbUrl: fbUrl2, getW, getP, getSettings }) {
+    const fbPost = httpPost(fbUrl2);
+    const fbFlush = () => fbUrl2 ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
+    document.body.classList.toggle("no-feedback", !fbUrl2);
+    $("fb-reason").innerHTML = REASONS.map((r) => `<option>${r}</option>`).join("");
+    function openFeedback2(reason) {
+      const P2 = getP();
+      $("fb-what").textContent = fbWhere(getW(), P2);
+      $("fb-reason").value = reason || (P2 ? "KI spielt komisch" : "Idee / Wunsch");
+      $("fb-comment").value = "";
+      $("fb-state").checked = true;
+      $("fb-status").textContent = "";
+      $("fb-status").className = "small";
+      $("fb-send").disabled = false;
+      $("fb-dlg").showModal();
+    }
+    $("fb-open").onclick = () => openFeedback2();
+    $("fb-form").addEventListener("submit", async (e) => {
+      if (!e.submitter || e.submitter.value !== "send") return;
+      e.preventDefault();
+      const status = (t, err) => {
+        $("fb-status").textContent = t;
+        $("fb-status").className = "small" + (err ? " err" : "");
+      };
+      let report;
+      try {
+        report = buildReport({
+          reason: $("fb-reason").value,
+          comment: $("fb-comment").value,
+          withState: $("fb-state").checked,
+          W: getW(),
+          P: getP(),
+          env: {
+            build: BUILD2,
+            settings: getSettings(),
+            ua: navigator.userAgent,
+            screen: `${innerWidth}x${innerHeight}`,
+            errors: recentErrors
+          }
+        });
+      } catch (err) {
+        status(err.message, true);
+        return;
+      }
+      if (!enqueue(localStorage, report)) {
+        status("Konnte nicht gespeichert werden (Speicher voll oder gesperrt).", true);
+        return;
+      }
+      $("fb-send").disabled = true;
+      status("Wird gesendet \u2026");
+      await fbFlush();
+      const mine = readQueue(localStorage).find((x) => x.id === report.id);
+      if (mine && mine.sent) status("Danke! Gesendet \u2713");
+      else status("Gerade kein Netz: gespeichert, wird automatisch nachgeschickt. Danke!");
+      setTimeout(() => $("fb-dlg").open && $("fb-dlg").close(), 1600);
+    });
+    addEventListener("online", fbFlush);
+    fbFlush();
+    return { openFeedback: openFeedback2 };
+  }
+
+  // src/ui/pwa.js
+  function initPWA(BUILD2) {
+    if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+      const hadController = !!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener("controllerchange", async () => {
+        if (!hadController) return;
+        let current = null;
+        try {
+          const page = await (await fetch("./")).text();
+          current = (page.match(/<span class="build">Version ([0-9a-f]+)/) || [])[1] || null;
+        } catch {
+        }
+        if (current !== BUILD2) $("update").hidden = false;
+      });
+      navigator.serviceWorker.register("sw.js").then((reg) => {
+        document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState === "visible") reg.update().catch(() => {
+          });
+        });
+      }).catch(() => {
+      });
+    }
+    $("updateReload").onclick = () => location.reload();
+  }
+
+  // src/ui/app.js
+  var { LOCS: LOCS6, TEMPER: TEMPER2 } = world_exports;
+  var BUILD = true ? "acd8b452d1" : "dev";
+  var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
+  var W = migrateWorld(loadWorld() || freshWorld());
+  var sel = null;
+  var selLesson = null;
+  var P = null;
+  var busy = false;
+  var showTrick = null;
+  var knockArmed = false;
+  var coachHint = null;
+  var coachBidCache = null;
+  var meleeFinal = -1;
+  var save = () => saveWorld(W);
+  var saveP = () => savePartie(P);
+  var note3 = (t, c) => note2(W, t, c);
+  function startPartie(loc, practice) {
+    P = newPartie(W, loc, practice);
+    save();
+    setNames(seatNames(loc));
+    newDeal();
+  }
+  function startLesson(id) {
+    selLesson = null;
+    P = lessonPartie(W, id);
+    save();
+    setNames(seatNames(P.loc));
+    newDeal();
+  }
+  function newDeal() {
+    P.hand = newHand(handOptions(W, P));
+    P.counted = false;
+    P.notes = [];
+    coachHint = null;
+    coachBidCache = null;
+    showTrick = null;
+    saveP();
+    render();
+    pump();
+  }
   function humanPlay(cid) {
     const st = P.hand, before = st.done.length;
-    if (coachOn()) (P.notes = P.notes || []).push(coach_exports.note(st, 0, cid));
+    if (coachOn(P)) (P.notes = P.notes || []).push(coach_exports.note(st, 0, cid));
     coachHint = null;
     const k = knockArmed && canKnock(st, 0);
     knockArmed = false;
     playCard(st, 0, cid, { knock: k });
     afterPlay(before);
-  }
-  var meleeFinal = -1;
-  function meleeOn() {
-    try {
-      return localStorage.getItem("schnapsertal-melee") !== "off";
-    } catch {
-      return true;
-    }
   }
   function afterPlay(before) {
     const st = P.hand;
@@ -4381,7 +4544,110 @@ button.link {
   }
   function sendStats() {
     if (P.lesson || !statsOn(localStorage)) return;
-    sendRecord(statsUrl(fbUrl), handRecord({ P, build: BUILD, coach: coachOn() }));
+    sendRecord(statsUrl(fbUrl), handRecord({ P, build: BUILD, coach: coachOn(P) }));
+  }
+  function endPartie2(won) {
+    endPartie(W, P, won);
+    save();
+    P = null;
+    sel = null;
+    saveP();
+    render();
+  }
+  var setTrump2 = (choice) => {
+    setTrump(P.hand, choice);
+    after();
+  };
+  function renderCurrentActions() {
+    renderActions(P, {
+      busy,
+      showTrick,
+      knockArmed,
+      coachHint,
+      coachBidCache,
+      coachOn: coachOn(P),
+      onAfter: after,
+      onNewDeal: newDeal,
+      onEndPartie: endPartie2,
+      onStartLesson: startLesson,
+      onOpenFeedback: openFeedback,
+      onToggleKnock: () => {
+        knockArmed = !knockArmed;
+        renderCurrentActions();
+      },
+      onCoachTip: (tip2) => {
+        coachHint = tip2;
+        renderMyHand(P, { busy, showTrick, coachHint, onSetTrump: setTrump2, onPlay: humanPlay });
+        renderCurrentActions();
+      },
+      onCacheBid: (val) => {
+        coachBidCache = val;
+      },
+      onRenderActions: renderCurrentActions
+    });
+  }
+  function render() {
+    coachButton();
+    if (P) talk(P, W);
+    $("where").textContent = LOCS6[P ? P.loc : W.loc].name;
+    if (P) {
+      renderTable(P, {
+        W,
+        busy,
+        showTrick,
+        meleeFinal,
+        coachHint,
+        onClearMeleeFinal: () => {
+          meleeFinal = -1;
+        },
+        onSkipLesson: () => {
+          const nx = nextLesson(P.lesson);
+          busy = false;
+          showTrick = null;
+          endPartie2(true);
+          if (nx) startLesson(nx.id);
+        },
+        onLeave: (l) => {
+          busy = false;
+          showTrick = null;
+          if (!P.practice) note3(`Du stehst ${l.at} vorzeitig auf.`, "bad");
+          endPartie2(false);
+        },
+        onSetTrump: setTrump2,
+        onPlay: humanPlay
+      });
+      renderCurrentActions();
+    } else {
+      renderMap({
+        W,
+        sel,
+        selLesson,
+        onSelect: (loc) => {
+          sel = loc;
+          render();
+        },
+        onTravel: (k) => {
+          if (W.beaten[k]) {
+            travel(W, k);
+            sel = null;
+            save();
+            render();
+          } else startPartie(k);
+        },
+        onPlayHere: () => startPartie(W.loc, true),
+        onCarry: (key) => {
+          nextLevel(W, key);
+          sel = null;
+          save();
+          render();
+        },
+        onSelectLesson: (id) => {
+          selLesson = id;
+          render();
+        },
+        onStartLesson: startLesson
+      });
+    }
   }
   function statsButton() {
     const on = statsOn(localStorage);
@@ -4396,108 +4662,39 @@ button.link {
     statsButton();
   };
   statsButton();
-  function endPartie2(won) {
-    endPartie(W, P, won);
-    save();
-    P = null;
-    sel = null;
-    saveP();
-    render();
-  }
-  function render() {
-    coachButton();
-    if (P) talk();
-    $("where").textContent = LOCS2[P ? P.loc : W.loc].name;
-    if (P) renderTable();
-    else renderMap();
-  }
-  function coachOn() {
-    if (P && P.lesson) return true;
-    try {
-      return localStorage.getItem("schnapsertal-coach") === "on";
-    } catch {
-      return false;
-    }
-  }
   function coachButton() {
-    const on = coachOn();
+    const on = coachOn(P);
     $("coach").textContent = "Coach: " + (on ? "an" : "aus");
     $("coach").setAttribute("aria-pressed", on);
     $("coach").disabled = !!(P && P.lesson);
     $("coach").title = P && P.lesson ? "In den Lektionen ist der Coach immer an" : "Erkl\xE4rt Regeln und gibt Tipps";
   }
   $("coach").onclick = () => {
-    try {
-      localStorage.setItem("schnapsertal-coach", coachOn() ? "off" : "on");
-    } catch {
-    }
+    setCoach(!coachOn(P));
     coachButton();
     if (P) render();
   };
   coachButton();
-  var knockArmed = false;
-  var coachHint = null;
-  var coachBidCache = null;
-  var coachBox = (lines, extra) => `<div class="coach"><b>Coach</b>${lines.map((x) => `<div>${x}</div>`).join("")}${extra || ""}</div>`;
   function meleeButton() {
     const on = meleeOn();
     $("melee").textContent = "Stichkampf: " + (on ? "an" : "aus");
     $("melee").setAttribute("aria-pressed", on);
   }
   $("melee").onclick = () => {
-    try {
-      localStorage.setItem("schnapsertal-melee", meleeOn() ? "off" : "on");
-    } catch {
-    }
+    setMelee(!meleeOn());
     meleeButton();
   };
   meleeButton();
-  function banterOn() {
-    try {
-      return localStorage.getItem("schnapsertal-banter") !== "off";
-    } catch {
-      return true;
-    }
-  }
-  function hideBubble() {
-    clearTimeout(chat.timer);
-    chat.line = null;
-    const b = document.querySelector(".bubble");
-    if (b) b.remove();
-  }
-  function talk() {
-    const st = P.hand;
-    if (chat.hand !== st) {
-      hideBubble();
-      chat.hand = st;
-      chat.mem = banterMemory(st);
-      return;
-    }
-    const line = banter(st, chat.mem, { loc: P.loc, temper: W.ferdl || "treu" });
-    if (!line || !banterOn()) return;
-    clearTimeout(chat.timer);
-    chat.line = line;
-    chat.fresh = true;
-    chat.timer = setTimeout(hideBubble, 2600 + line.text.length * 25);
-  }
-  function bubbleHTML(seat) {
-    if (!chat.line || chat.line.seat !== seat) return "";
-    const pop = chat.fresh ? " pop" : "";
-    chat.fresh = false;
-    return `<div class="bubble${pop}" role="status">${chat.line.text}</div>`;
-  }
   function banterButton() {
     const on = banterOn();
     $("banter").textContent = "Spr\xFCche: " + (on ? "an" : "aus");
     $("banter").setAttribute("aria-pressed", on);
   }
   $("banter").onclick = () => {
-    try {
-      localStorage.setItem("schnapsertal-banter", banterOn() ? "off" : "on");
-    } catch {
-    }
+    const next = !banterOn();
+    setBanter(next);
     banterButton();
-    if (!banterOn()) hideBubble();
+    if (!next) hideBubble();
   };
   banterButton();
   function ferdlButton() {
@@ -4533,103 +4730,18 @@ button.link {
       $("reset").textContent = "Neue Reise";
     }, 3e3);
   };
-  var recentErrors = [];
-  addEventListener("error", (e) => recentErrors.push(`${e.message} @ ${e.filename}:${e.lineno}`.slice(0, 300)));
-  addEventListener("unhandledrejection", (e) => recentErrors.push(String(e.reason).slice(0, 300)));
-  var BUILD = true ? "efbdd5fff8" : "dev";
-  var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
-  var fbPost = httpPost(fbUrl);
-  var fbFlush = () => fbUrl ? flush(localStorage, fbPost).catch(() => 0) : Promise.resolve(0);
-  document.body.classList.toggle("no-feedback", !fbUrl);
-  $("fb-reason").innerHTML = REASONS.map((r) => `<option>${r}</option>`).join("");
-  function fbWhere() {
-    if (!P) return `Auf der Landkarte (${LOCS2[W.loc].name}).`;
-    const st = P.hand;
-    const lesson = P.lesson && LESSONS.find((l) => l.id === P.lesson);
-    const what = P.lesson ? `Lektion \u201E${lesson ? lesson.title : P.lesson}\u201C` : LOCS2[P.loc].name;
-    if (!st) return `${what}.`;
-    if (!st.contract) return `${what}, beim Ansagen.`;
-    const c = C[st.contract.key].name;
-    if (st.phase === "done") return `${what}, ${c}, Hand vorbei nach ${st.done.length} Stich${st.done.length === 1 ? "" : "en"}.`;
-    return `${what}, ${c}, Stich ${st.done.length + 1}.`;
-  }
-  function openFeedback(reason) {
-    $("fb-what").textContent = fbWhere();
-    $("fb-reason").value = reason || (P ? "KI spielt komisch" : "Idee / Wunsch");
-    $("fb-comment").value = "";
-    $("fb-state").checked = true;
-    $("fb-status").textContent = "";
-    $("fb-status").className = "small";
-    $("fb-send").disabled = false;
-    $("fb-dlg").showModal();
-  }
-  $("fb-open").onclick = () => openFeedback();
-  $("fb-form").addEventListener("submit", async (e) => {
-    if (!e.submitter || e.submitter.value !== "send") return;
-    e.preventDefault();
-    const status = (t, err) => {
-      $("fb-status").textContent = t;
-      $("fb-status").className = "small" + (err ? " err" : "");
-    };
-    let report;
-    try {
-      report = buildReport({
-        reason: $("fb-reason").value,
-        comment: $("fb-comment").value,
-        withState: $("fb-state").checked,
-        W,
-        P,
-        env: {
-          build: BUILD,
-          settings: { coach: coachOn(), ferdl: W.ferdl || "treu", melee: meleeOn(), banter: banterOn() },
-          ua: navigator.userAgent,
-          screen: `${innerWidth}x${innerHeight}`,
-          errors: recentErrors
-        }
-      });
-    } catch (err) {
-      status(err.message, true);
-      return;
-    }
-    if (!enqueue(localStorage, report)) {
-      status("Konnte nicht gespeichert werden (Speicher voll oder gesperrt).", true);
-      return;
-    }
-    $("fb-send").disabled = true;
-    status("Wird gesendet \u2026");
-    await fbFlush();
-    const mine = readQueue(localStorage).find((x) => x.id === report.id);
-    if (mine && mine.sent) status("Danke! Gesendet \u2713");
-    else status("Gerade kein Netz: gespeichert, wird automatisch nachgeschickt. Danke!");
-    setTimeout(() => $("fb-dlg").open && $("fb-dlg").close(), 1600);
+  var { openFeedback } = initFeedback({
+    BUILD,
+    fbUrl,
+    getW: () => W,
+    getP: () => P,
+    getSettings: () => ({ coach: coachOn(P), ferdl: W.ferdl || "treu", melee: meleeOn(), banter: banterOn() })
   });
-  addEventListener("online", fbFlush);
-  fbFlush();
-  P = loadP();
+  initPWA(BUILD);
+  P = loadPartie();
   if (P) setNames(seatNames(P.loc));
   render();
   if (P) pump();
-  if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
-    const hadController = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.addEventListener("controllerchange", async () => {
-      if (!hadController) return;
-      let current = null;
-      try {
-        const page = await (await fetch("./")).text();
-        current = (page.match(/<span class="build">Version ([0-9a-f]+)/) || [])[1] || null;
-      } catch {
-      }
-      if (current !== BUILD) $("update").hidden = false;
-    });
-    navigator.serviceWorker.register("sw.js").then((reg) => {
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible") reg.update().catch(() => {
-        });
-      });
-    }).catch(() => {
-    });
-  }
-  $("updateReload").onclick = () => location.reload();
 })();
 </script>
 </body>
