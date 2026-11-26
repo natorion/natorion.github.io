@@ -1589,7 +1589,7 @@ button.link {
       <div class="row fb-actions"><button value="close" id="tr-close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a id="ft-imprint" href="https://hablich.dev/impressum">Impressum</a> · <a id="ft-privacy" href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version 5ea6a09aee · 26.11.2026, 12:53</span></footer>
+  <footer class="small"><a id="ft-imprint" href="https://hablich.dev/impressum">Impressum</a> · <a id="ft-privacy" href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version fe05e669e6 · 26.11.2026, 18:23</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -1702,7 +1702,7 @@ button.link {
       s: 1,
       r: 4,
       steal: true,
-      text: "Schellen-Unter. Die Augen des Stichs, in dem er liegt, bekommt immer sein Team, egal wer sticht."
+      text: "Schellen-Unter. Wenn ihn sein Besitzer-Team spielt, bekommt es immer die Augen des Stichs, egal wer sticht."
     },
     weihwasser: {
       key: "weihwasser",
@@ -1720,7 +1720,7 @@ button.link {
       s: 1,
       r: 3,
       when: [{ from: 3, steal: true }],
-      text: "Schellen-Ober. Ab dem vierten Stich gehen die Augen des Stichs, in dem er liegt, an sein Team, egal wer sticht."
+      text: "Schellen-Ober. Ab dem vierten Stich gehen die Augen des Stichs an sein Besitzer-Team, wenn es ihn spielt, egal wer sticht."
     },
     kuhglocke: {
       key: "kuhglocke",
@@ -1790,7 +1790,7 @@ button.link {
       s: 3,
       r: 2,
       when: [{ trump: true, steal: true }],
-      text: "Pik-K\xF6nig. In Spielen mit Trumpf gehen die Augen des Stichs, in dem er liegt, an sein Team, egal wer sticht."
+      text: "Pik-K\xF6nig. In Spielen mit Trumpf gehen die Augen des Stichs an sein Besitzer-Team, wenn es ihn spielt, egal wer sticht."
     },
     primadonna: {
       key: "primadonna",
@@ -2314,9 +2314,39 @@ button.link {
       const myTeam = team(seat) === team(decl);
       if (seat === decl) {
         if (!st.trick.length) {
-          const m = L.find((c) => marriageFor(st, seat, c) && c.r === 2);
-          if (m) return R(m, "meld");
-          return R(high(L), "decl-lead-high");
+          const ms = L.filter((c) => marriageFor(st, seat, c) && c.r === 2).sort((a, b) => isTr(b) - isTr(a));
+          if (ms.length) {
+            const winNow = ms.find((c) => st.done.length > 0 && st.teamPts[team(seat)] + marriageFor(st, seat, c) >= 66);
+            if (winNow) return R(winNow, "meld");
+            const tA = L.find((c) => isTr(c) && c.r === 0 && !on(c, "nil"));
+            if (tA) return R(tA, "decl-lead-high");
+            return R(ms[0], "meld");
+          }
+          const ownIds = new Set(st.hands[seat].map((x) => x.id));
+          const isUnseen = (cid) => !ownIds.has(cid) && !isGone(st, cid);
+          const isSuitMaster = (c) => {
+            if (on(c, "nil")) return false;
+            if (on(c, "max")) return true;
+            if (on(c, "top") && trump != null) return !isUnseen(trump * 5);
+            const cs = suitOf(c, trump);
+            const cStr = S(c);
+            for (let r = 0; r < 5; r++) {
+              const cid = cs * 5 + r;
+              if (isUnseen(cid) && str({ s: cs, r, id: cid }, ten, trump, n) > cStr) return false;
+            }
+            return true;
+          };
+          const upBeaten = (c) => !!(st.upcard && seat !== st.fh && !isGone(st, st.upcard.id) && suitOf(st.upcard, trump) === suitOf(c, trump) && beats(st.upcard, c, trump, ten, n));
+          const rankLead = (c) => {
+            if (on(c, "nil") || upBeaten(c)) return 0;
+            if (on(c, "max") || on(c, "top") && trump != null && !isUnseen(trump * 5)) return 4;
+            if (isSuitMaster(c)) return isTr(c) ? 3 : 2;
+            return 1;
+          };
+          const best = L.slice().sort(
+            (a, b) => rankLead(b) - rankLead(a) || (g === "three" ? P(b) - P(a) : 0) || S(b) - S(a) || isTr(b) - isTr(a)
+          )[0];
+          return R(best, "decl-lead-high");
         }
         const W3 = winners();
         return W3.length ? R(W3[0], "win-cheap") : R(low(L), "decl-lost");
@@ -2338,7 +2368,12 @@ button.link {
       const ms = L.filter((c) => marriageFor(st, seat, c)).sort((a, b) => isTr(b) - isTr(a));
       if (ms.length) {
         const pref = (c) => (c.sp ? 2 : 0) + (c.r === 3 ? 0 : 1);
-        return R(ms.slice().sort((a, b) => isTr(b) - isTr(a) || pref(a) - pref(b))[0], "meld");
+        const bestMeld = (arr) => arr.slice().sort((a, b) => isTr(b) - isTr(a) || pref(a) - pref(b))[0];
+        const winNow = st.teamTricks[team(seat)] > 0 ? ms.filter((c) => st.teamPts[team(seat)] + marriageFor(st, seat, c) >= 66) : [];
+        if (winNow.length) return R(bestMeld(winNow), "meld");
+        const tA2 = L.find((c) => isTr(c) && c.r === 0 && !on(c, "nil"));
+        if (tA2 && ms.some(isTr)) return R(tA2, "lead-trump-ace");
+        return R(bestMeld(ms), "meld");
       }
       const aces = L.filter((c) => (c.r === 0 || on(c, "top") || on(c, "max")) && !isTr(c) && !on(c, "nil"));
       if (aces.length) return R(aces[0], "lead-ace");
@@ -2363,8 +2398,25 @@ button.link {
     }
     if (W.length) {
       const cheap = W[0];
-      if (lastToPlay || trickPts >= 10 || !isTr(cheap) || cheap.r >= 2)
-        return R(cheap, isTr(cheap) && !isTr(wt.card) ? "win-trump" : "win-cheap");
+      if (lastToPlay || trickPts >= 10 || !isTr(cheap) || cheap.r >= 2) {
+        const cs = suitOf(cheap, trump);
+        const ownIds = new Set(st.hands[seat].map((x) => x.id));
+        const unseen = [0, 1, 2, 3, 4].map((r) => ({ s: cs, r, id: cs * 5 + r })).filter((u) => !ownIds.has(u.id) && !isGone(st, u.id));
+        const isMasterTr = isTr(cheap) && !unseen.some((u) => str(u, ten, trump, n) > S(cheap));
+        let pick2 = cheap;
+        if (lastToPlay || isMasterTr) {
+          const isPairCard = (c) => (c.r === 2 || c.r === 3) && st.hands[seat].some((x) => x.s === c.s && x.r === (c.r === 2 ? 3 : 2));
+          for (const cand of W) {
+            if (suitOf(cand, trump) !== cs || keep(cand) || P(cand) <= P(pick2) || isPairCard(cand)) continue;
+            const lo = Math.min(S(cheap), S(cand));
+            const hi = Math.max(S(cheap), S(cand));
+            if (unseen.some((u) => str(u, ten, trump, n) > lo && str(u, ten, trump, n) < hi)) continue;
+            pick2 = cand;
+          }
+        }
+        const why = pick2.id !== cheap.id ? "win-points" : isTr(pick2) && !isTr(wt.card) ? "win-trump" : "win-cheap";
+        return R(pick2, why);
+      }
     }
     const d = lowDiscard(L);
     return W.length && !W.some((c) => c.id === d.id) ? { ...d, why: "save-trump" } : d;
@@ -2579,7 +2631,7 @@ button.link {
       muehlstein: {
         name: "M\xFChlstein",
         short: "holt die Augen",
-        text: "Schellen-Unter. Die Augen des Stichs, in dem er liegt, bekommt immer sein Team, egal wer sticht."
+        text: "Schellen-Unter. Wenn ihn sein Besitzer-Team spielt, bekommt es immer die Augen des Stichs, egal wer sticht."
       },
       weihwasser: {
         name: "Weihwasser",
@@ -2589,7 +2641,7 @@ button.link {
       klingelbeutel: {
         name: "Klingelbeutel",
         short: "ab Stich 4: holt die Augen",
-        text: "Schellen-Ober. Ab dem vierten Stich gehen die Augen des Stichs, in dem er liegt, an sein Team, egal wer sticht."
+        text: "Schellen-Ober. Ab dem vierten Stich gehen die Augen des Stichs an sein Besitzer-Team, wenn es ihn spielt, egal wer sticht."
       },
       kuhglocke: {
         name: "Kuhglocke",
@@ -2624,7 +2676,7 @@ button.link {
       masskrug: {
         name: "Ma\xDFkrug",
         short: "mit Trumpf: holt die Augen",
-        text: "Pik-K\xF6nig. In Spielen mit Trumpf gehen die Augen des Stichs, in dem er liegt, an sein Team, egal wer sticht."
+        text: "Pik-K\xF6nig. In Spielen mit Trumpf gehen die Augen des Stichs an sein Besitzer-Team, wenn es ihn spielt, egal wer sticht."
       },
       primadonna: {
         name: "Primadonna",
@@ -3024,12 +3076,12 @@ button.link {
         tip: `eure Beutekarte, wirkt nur gegen Spiele, die ${o1} oder ${o3} angesagt haben. Hier eine gew\xF6hnliche Karte.`
       }),
       oppOnly: ({ o1, o3 }) => ({
-        stamp: "nur f\xFCr Gegner",
-        tip: `wirkt nur, wenn ${o1} oder ${o3} sie spielt. Hier eine gew\xF6hnliche Karte.`
+        stamp: "ohne Wirkung",
+        tip: `Gegner-Karte: wirkt nur, wenn ${o1} oder ${o3} sie spielt. Hier eine gew\xF6hnliche Karte.`
       }),
       ownOnly: ({ mate }) => ({
-        stamp: "nur f\xFCr euch",
-        tip: `eure Beutekarte, wirkt nur, wenn du oder ${mate} sie spielt. Hier eine gew\xF6hnliche Karte.`
+        stamp: "ohne Wirkung",
+        tip: `eure Beutekarte: wirkt nur, wenn du oder ${mate} sie spielt. Hier eine gew\xF6hnliche Karte.`
       })
     },
     coach: {
@@ -3064,6 +3116,7 @@ button.link {
         schmier: () => "Dein Team holt diesen Stich sicher. Gib viele Augen dazu (schmieren), aber keinen Trumpf.",
         "win-trump": () => "Du kannst nicht bedienen. Mit Trumpf stechen holt dir den Stich.",
         "win-cheap": () => "Damit holst du den Stich. Es ist die kleinste Karte, die reicht.",
+        "win-points": () => "Damit holst du den Stich sicher und bringst mehr Augen heim \u2013 die kleinere Nachbarkarte beh\xE4lt dieselbe Stichkraft.",
         "save-trump": () => "Stechen ginge nur mit einem hohen Trumpf. F\xFCr so wenige Augen lohnt sich das nicht, heb ihn dir auf.",
         "discard-low": () => "Den Stich holst du nicht. Gib die kleinste Karte ab, damit die Gegner wenig Augen bekommen.",
         "sp-steal": () => "Die Gegner holen einen reichen Stich. Deine Spezialkarte nimmt ihnen die Augen weg.",
@@ -3417,7 +3470,7 @@ button.link {
       muehlstein: {
         name: "Millstone",
         short: "takes card pts",
-        text: "Jack of Bells. Its team always gets the card points of the trick it is played in, no matter who wins the trick."
+        text: "Jack of Bells. When played by its owning team, they always get the card points of the trick, no matter who wins it."
       },
       weihwasser: {
         name: "Holy Water",
@@ -3427,7 +3480,7 @@ button.link {
       klingelbeutel: {
         name: "Collection Bag",
         short: "trick 4+: takes pts",
-        text: "Queen of Bells. From trick 4 onward its team takes the card points of the trick it is played in, no matter who wins."
+        text: "Queen of Bells. From trick 4 onward, when played by its owning team, they take the trick\u2019s card points, no matter who wins."
       },
       kuhglocke: {
         name: "Cowbell",
@@ -3462,7 +3515,7 @@ button.link {
       masskrug: {
         name: "Beer Stein",
         short: "w/ trump: takes pts",
-        text: "King of Leaves. In trump games its team takes the card points of the trick it is played in, no matter who wins."
+        text: "King of Leaves. In trump games, when played by its owning team, they take the trick\u2019s card points, no matter who wins."
       },
       primadonna: {
         name: "Prima Donna",
@@ -3857,12 +3910,12 @@ button.link {
         tip: `your loot card, only works against contracts declared by ${o1} or ${o3}. Ordinary card here.`
       }),
       oppOnly: ({ o1, o3 }) => ({
-        stamp: "opponents only",
-        tip: `only works when played by ${o1} or ${o3}. Ordinary card here.`
+        stamp: "no effect",
+        tip: `opponents\u2019 card: only works when played by ${o1} or ${o3}. Ordinary card here.`
       }),
       ownOnly: ({ mate }) => ({
-        stamp: "your team only",
-        tip: `your loot card, only works when played by you or ${mate}. Ordinary card here.`
+        stamp: "no effect",
+        tip: `your loot card: only works when played by you or ${mate}. Ordinary card here.`
       })
     },
     coach: {
@@ -3897,6 +3950,7 @@ button.link {
         schmier: () => "Your team is sure to win this trick. Feed high card points (smear), but don\u2019t waste a trump.",
         "win-trump": () => "You cannot follow suit. Trumping wins you the trick.",
         "win-cheap": () => "Wins the trick with the cheapest card that gets the job done.",
+        "win-points": () => "Wins the trick safely and locks in more card points\u2014your lower adjacent card keeps the same trick-taking power.",
         "save-trump": () => "Winning would cost a high trump. Not worth it for so few card points\u2014save it.",
         "discard-low": () => "You won\u2019t win this trick. Give up your lowest card so the opponents get few card points.",
         "sp-steal": () => "The opponents are winning a rich trick. Your special card takes its card points away from them.",
@@ -4499,6 +4553,7 @@ button.link {
     "schmier",
     "win-trump",
     "win-cheap",
+    "win-points",
     "save-trump",
     "discard-low",
     "sp-steal",
@@ -4549,14 +4604,45 @@ button.link {
       return { key, p };
     });
   }
+  function unseenInSuit(st, seat, suit) {
+    const own = new Set(st.hands[seat].map((x) => x.id));
+    const out = [];
+    for (let r = 0; r < 5; r++) {
+      const id = suit * 5 + r;
+      if (!own.has(id) && !isGone(st, id)) out.push({ s: suit, r, id });
+    }
+    return out;
+  }
   function note(st, seat, cid) {
     const L = legal(st, seat);
     const c = L.find((x) => x.id === cid);
     const ten = isTen(st);
-    const w = st.trick.length ? trickWinner(st.trick, st.trump, ten, st.done.length) : null;
+    const n = st.done.length;
+    const w = st.trick.length ? trickWinner(st.trick, st.trump, ten, n) : null;
     const isTr = (x) => st.trump != null && suitOf(x, st.trump) === st.trump;
+    const lastToPlay = st.trick.length === playersPerTrick(st) - 1;
+    let cheaperWin = [];
+    if (w && lastToPlay) {
+      const cs = suitOf(c, st.trump);
+      const cStr = str(c, ten, st.trump, n);
+      const unseen = unseenInSuit(st, seat, cs);
+      const suitExhausted = !isTr(c) && unseen.length <= 1;
+      if (!suitExhausted) {
+        cheaperWin = L.filter((x) => {
+          if (x.id === cid || x.sp) return false;
+          if (suitOf(x, st.trump) !== cs) return false;
+          if (!beats(x, w.card, st.trump, ten, n)) return false;
+          const xStr = str(x, ten, st.trump, n);
+          if (xStr >= cStr) return false;
+          return unseen.some((u) => {
+            const uStr = str(u, ten, st.trump, n);
+            return uStr > xStr && uStr < cStr;
+          });
+        }).map(cardRef);
+      }
+    }
     return {
-      t: st.done.length,
+      t: n,
       cid,
       lead: !st.trick.length,
       key: st.contract.key,
@@ -4565,10 +4651,8 @@ button.link {
       partnerAhead: !!(w && team(w.seat) === team(seat) && w.seat !== seat),
       legal: L.map((x) => ({ id: x.id, pts: ptsOf(x), tr: isTr(x), s: x.s, r: x.r, sp: !!x.sp })),
       card: { pts: ptsOf(c), tr: isTr(c), ...cardRef(c) },
-      cheaperWin: w ? L.filter(
-        (x) => x.id !== cid && beats(x, w.card, st.trump, ten, st.done.length) && str(x, ten, st.trump, st.done.length) < str(c, ten, st.trump, st.done.length) && suitOf(x, st.trump) === suitOf(c, st.trump)
-      ).map(cardRef) : [],
-      wins: w ? beats(c, w.card, st.trump, ten, st.done.length) : null
+      cheaperWin,
+      wins: w ? beats(c, w.card, st.trump, ten, n) : null
     };
   }
   function review(st, seat, notes) {
@@ -4586,7 +4670,7 @@ button.link {
         tips.push(R.wastedPoints({ nr, card: playedName, pts: n.card.pts }));
       else if (ours && n.partnerAhead && n.key === "normal" && n.card.pts < 10 && n.legal.some((x) => x.pts >= 10 && !x.tr))
         tips.push(R.missedSmear({ nr }));
-      else if (n.wins && n.cheaperWin.length && n.key === "normal") tips.push(R.overkill({ nr, cheaper: cheaperName }));
+      else if (ours && n.wins && n.cheaperWin.length && n.key === "normal") tips.push(R.overkill({ nr, cheaper: cheaperName }));
       if (tips.length >= 3) break;
     }
     return tips;
@@ -6378,7 +6462,7 @@ button.link {
   }
 
   // src/ui/app.js
-  var BUILD = true ? "5ea6a09aee" : "dev";
+  var BUILD = true ? "fe05e669e6" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var ui = createState(migrateWorld(loadWorld() || freshWorld()));
   var save = () => saveWorld(ui.W);
