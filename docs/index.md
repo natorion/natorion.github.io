@@ -16,7 +16,7 @@ Articles:
 * [Your agent experience has no dashboard](/articles/observability-agent-experience)
 
 Experiments:
-*  [Schnapsertal](/schnapsertal/){target="_self"}: card game prototype, Bauernschnapsen against the computer (in German)
+*  [Schnapsertal](/schnapsertal/){target="_self"}: card game prototype, Bauernschnapsen against the computer (German & English)
 
 Downloads:
 *  Meetup talk: [10 DevTools features you could be using](/downloads/10_DevTools_features_you_could_be_using.pdf)
