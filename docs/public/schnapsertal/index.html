@@ -336,6 +336,12 @@ button:disabled {
   padding: 8px 10px;
   font-size: 0.92rem;
 }
+.tip {
+  background: color-mix(in srgb, var(--ok) 12%, transparent);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 0.92rem;
+}
 
 /* ---------- table ---------- */
 .tablegrid {
@@ -1589,7 +1595,7 @@ button.link {
       <div class="row fb-actions"><button value="close" id="tr-close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a id="ft-imprint" href="https://hablich.dev/impressum">Impressum</a> · <a id="ft-privacy" href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version fe05e669e6 · 26.11.2026, 18:23</span></footer>
+  <footer class="small"><a id="ft-imprint" href="https://hablich.dev/impressum">Impressum</a> · <a id="ft-privacy" href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version 757b6d383e · 27.11.2026, 01:46</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -1706,12 +1712,12 @@ button.link {
     },
     weihwasser: {
       key: "weihwasser",
-      short: "ab Stich 4 unschlagbar",
+      short: "ab Stich 4: schl\xE4gt Trumpf, holt Augen \xD72",
       name: "Weihwasser",
       s: 0,
       r: 1,
-      when: [{ from: 3, max: true, steal: true, dbl: true }],
-      text: "Herz-Zehner. Ab dem vierten Stich schl\xE4gt er jede Karte, die Augen des Stichs gehen an sein Team und z\xE4hlen doppelt. Ein Schnapser ist nach drei Stichen schon entschieden."
+      when: [{ from: 3, top: true, steal: true, dbl: true }],
+      text: "Herz-Zehner. Ab dem vierten Stich schl\xE4gt er in Trumpfspielen jede Karte au\xDFer dem Trumpf-Ass; die Augen des Stichs gehen an sein Team, doppelt, wenn sein Team ihn auch sticht. Ein Schnapser ist nach drei Stichen schon entschieden."
     },
     klingelbeutel: {
       key: "klingelbeutel",
@@ -1735,13 +1741,13 @@ button.link {
     },
     enzian: {
       key: "enzian",
-      short: "Stich 1\u20133 unschlagbar",
+      short: "Stich 1\u20133: schl\xE4gt Trumpf",
       name: "Enzian",
       s: 2,
       r: 4,
       wild: true,
-      when: [{ to: 3, max: true }],
-      text: "Eichel-Unter, gilt als Trumpf. In den ersten drei Stichen schl\xE4gt er jede Karte, danach ist er der niedrigste Trumpf. Wer schnell alle Stiche will, scheitert an ihm."
+      when: [{ to: 3, top: true }],
+      text: "Eichel-Unter, gilt als Trumpf. In den ersten drei Stichen schl\xE4gt er jede Karte au\xDFer dem Trumpf-Ass, danach ist er der niedrigste Trumpf. Wer schnell alle Stiche will, scheitert an ihm."
     },
     siegelring: {
       key: "siegelring",
@@ -1794,30 +1800,142 @@ button.link {
     },
     primadonna: {
       key: "primadonna",
-      short: "au\xDFer im Zehnerloch unschlagbar",
+      short: "mit Trumpf: schl\xE4gt alles, \xD72",
       name: "Primadonna",
       s: 0,
       r: 2,
-      when: [{ ten: false, max: true }],
-      text: "Herz-K\xF6nig. Schl\xE4gt jede Karte, nur im Zehnerloch ist sie ein gew\xF6hnlicher K\xF6nig."
+      when: [{ ten: false, top: true, dbl: true }],
+      text: "Herz-K\xF6nig. Schl\xE4gt in Trumpfspielen jede Karte au\xDFer dem Trumpf-Ass, und die Augen z\xE4hlen doppelt. Im Zehnerloch und ohne Trumpf ist sie ein gew\xF6hnlicher K\xF6nig."
     },
     krone: {
       key: "krone",
-      short: "mit Trumpf unschlagbar",
+      short: "mit Trumpf: kein Trumpf dr\xFCber, \xD72",
       name: "F\xFCrstenkrone",
       s: 3,
       r: 0,
-      when: [{ trump: true, max: true }],
-      text: "Pik-Ass. In Spielen mit Trumpf schl\xE4gt sie jede Karte."
+      when: [{ trump: true, blessed: true, dbl: true }],
+      text: "Pik-Ass. In Spielen mit Trumpf sticht kein Trumpf \xFCber sie, und gewinnt ihr Team den Stich, z\xE4hlen die Augen doppelt."
     },
     faecher: {
       key: "faecher",
-      short: "ohne Trumpf unschlagbar",
+      short: "kein Trumpf dr\xFCber, holt Augen",
       name: "F\xE4cher",
       s: 2,
       r: 1,
-      when: [{ trump: false, max: true }],
-      text: "Eichel-Zehner. In Spielen ohne Trumpf schl\xE4gt er jede Karte."
+      blessed: true,
+      steal: true,
+      text: "Eichel-Zehner. Solange er den Stich h\xE4lt, sticht kein Trumpf dar\xFCber (nur das Eichel-Ass), und die Augen des Stichs gehen an sein Team, egal wer sticht."
+    },
+    // ---------- level 3: Traunsee (Gegenspiel) ----------
+    salzpfanne: {
+      key: "salzpfanne",
+      short: "gegen dich: Trumpf, holt Augen",
+      name: "Salzpfanne",
+      s: 3,
+      r: 4,
+      against: true,
+      wild: true,
+      steal: true,
+      text: "Pik-Unter. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Gilt in Trumpfspielen als niedrigster Trumpf, und die Augen des Stichs gehen an ihr Team, egal wer sticht. Im eigenen Spiel ein gew\xF6hnlicher Unter."
+    },
+    dampfkessel: {
+      key: "dampfkessel",
+      short: "gegen dich: Augen \xD72",
+      name: "Dampfkessel",
+      s: 2,
+      r: 3,
+      against: true,
+      dbl: true,
+      text: "Eichel-Ober. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Gewinnt sein Team den Stich, in dem er liegt, z\xE4hlen dessen Augen doppelt."
+    },
+    fischerkanzel: {
+      key: "fischerkanzel",
+      short: "ab Stich 4: schl\xE4gt Trumpf, \xD72",
+      name: "Fischerkanzel",
+      s: 0,
+      r: 4,
+      when: [{ from: 3, top: true, dbl: true }],
+      text: "Herz-Unter. Ab dem vierten Stich schl\xE4gt sie in Trumpfspielen jede Karte au\xDFer dem Trumpf-Ass, und gewinnt ihr Team den Stich, z\xE4hlen die Augen doppelt. Ein Schnapser ist nach drei Stichen schon entschieden."
+    },
+    doppeladler: {
+      key: "doppeladler",
+      short: "gegen dich: kein Trumpf dr\xFCber, \xD72",
+      name: "Doppeladler",
+      s: 1,
+      r: 1,
+      against: true,
+      blessed: true,
+      dbl: true,
+      text: "Schellen-Zehner. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Solange er den Stich h\xE4lt, sticht kein Trumpf dar\xFCber (nur das Schellen-Ass), und gewinnt sein Team den Stich, z\xE4hlen die Augen doppelt."
+    },
+    jagdhorn: {
+      key: "jagdhorn",
+      short: "gegen dich: holt die Augen",
+      name: "Jagdhorn",
+      s: 3,
+      r: 3,
+      against: true,
+      steal: true,
+      text: "Pik-Ober. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Die Augen des Stichs, in dem es liegt, gehen an sein Team, egal wer sticht."
+    },
+    // ---------- level 4: Höllental (Meisterstück) ----------
+    rute: {
+      key: "rute",
+      short: "ab Stich 4: holt Augen \xD72",
+      name: "Krampusrute",
+      s: 1,
+      r: 4,
+      when: [{ from: 3, steal: true, dbl: true }],
+      text: "Schellen-Unter. Ab dem vierten Stich gehen die Augen des Stichs, in dem sie liegt, an ihr Team und z\xE4hlen doppelt. Wer nach drei Stichen 66 hat, ist ihr entkommen."
+    },
+    larve: {
+      key: "larve",
+      short: "mit Trumpf: holt Augen (\xD72)",
+      name: "Perchtenlarve",
+      s: 0,
+      r: 3,
+      when: [{ trump: true, steal: true, dbl: true }],
+      text: "Herz-Ober. In Spielen mit Trumpf gehen die Augen des Stichs, in dem sie liegt, an ihr Team \u2013 doppelt, wenn ihr Team ihn auch sticht. Ohne Trumpf ein gew\xF6hnlicher Ober."
+    },
+    besen: {
+      key: "besen",
+      short: "Stich 1\u20132 nie, dann kein Trumpf dr\xFCber \xD72",
+      name: "Hexenbesen",
+      s: 2,
+      r: 0,
+      when: [
+        { to: 2, nil: true },
+        { from: 2, blessed: true, dbl: true }
+      ],
+      text: "Eichel-Ass. In den ersten zwei Stichen sticht er nie. Ab dem dritten Stich sticht kein Trumpf \xFCber ihn, und gewinnt sein Team den Stich, z\xE4hlen die Augen doppelt. Wer ihn fr\xFCh herauslockt, nimmt ihm den Schrecken."
+    },
+    pferdefuss: {
+      key: "pferdefuss",
+      short: "Trumpf, holt die Augen",
+      name: "Pferdefu\xDF",
+      s: 2,
+      r: 4,
+      wild: true,
+      steal: true,
+      text: "Eichel-Unter, gilt als niedrigster Trumpf. Wenn ihn sein Besitzer-Team spielt, bekommt es die Augen des Stichs, egal wer sticht."
+    },
+    hoellenfeuer: {
+      key: "hoellenfeuer",
+      short: "ab Stich 4 unschlagbar, \xD72",
+      name: "H\xF6llenfeuer",
+      s: 0,
+      r: 1,
+      when: [{ from: 3, max: true, dbl: true }],
+      text: "Herz-Zehner. Ab dem vierten Stich schl\xE4gt es jede Karte, und die Augen des Stichs z\xE4hlen doppelt."
+    },
+    schwefel: {
+      key: "schwefel",
+      short: "holt die Augen",
+      name: "Schwefel",
+      s: 1,
+      r: 2,
+      steal: true,
+      text: "Schellen-K\xF6nig, Preis eines Teufelspakts. Wenn ihn sein Besitzer-Team spielt, bekommt es die Augen des Stichs, egal wer sticht."
     }
   };
 
@@ -2635,8 +2753,8 @@ button.link {
       },
       weihwasser: {
         name: "Weihwasser",
-        short: "ab Stich 4 unschlagbar",
-        text: "Herz-Zehner. Ab dem vierten Stich schl\xE4gt er jede Karte, die Augen des Stichs gehen an sein Team und z\xE4hlen doppelt. Ein Schnapser ist nach drei Stichen schon entschieden."
+        short: "ab Stich 4: schl\xE4gt Trumpf, holt Augen \xD72",
+        text: "Herz-Zehner. Ab dem vierten Stich schl\xE4gt er in Trumpfspielen jede Karte au\xDFer dem Trumpf-Ass; die Augen des Stichs gehen an sein Team, doppelt, wenn sein Team ihn auch sticht. Ein Schnapser ist nach drei Stichen schon entschieden."
       },
       klingelbeutel: {
         name: "Klingelbeutel",
@@ -2650,8 +2768,8 @@ button.link {
       },
       enzian: {
         name: "Enzian",
-        short: "Stich 1\u20133 unschlagbar",
-        text: "Eichel-Unter, gilt als Trumpf. In den ersten drei Stichen schl\xE4gt er jede Karte, danach ist er der niedrigste Trumpf. Wer schnell alle Stiche will, scheitert an ihm."
+        short: "Stich 1\u20133: schl\xE4gt Trumpf",
+        text: "Eichel-Unter, gilt als Trumpf. In den ersten drei Stichen schl\xE4gt er jede Karte au\xDFer dem Trumpf-Ass, danach ist er der niedrigste Trumpf. Wer schnell alle Stiche will, scheitert an ihm."
       },
       siegelring: {
         name: "Siegelring",
@@ -2680,18 +2798,73 @@ button.link {
       },
       primadonna: {
         name: "Primadonna",
-        short: "au\xDFer im Zehnerloch unschlagbar",
-        text: "Herz-K\xF6nig. Schl\xE4gt jede Karte, nur im Zehnerloch ist sie ein gew\xF6hnlicher K\xF6nig."
+        short: "mit Trumpf: schl\xE4gt alles, \xD72",
+        text: "Herz-K\xF6nig. Schl\xE4gt in Trumpfspielen jede Karte au\xDFer dem Trumpf-Ass, und die Augen z\xE4hlen doppelt. Im Zehnerloch und ohne Trumpf ist sie ein gew\xF6hnlicher K\xF6nig."
       },
       krone: {
         name: "F\xFCrstenkrone",
-        short: "mit Trumpf unschlagbar",
-        text: "Pik-Ass. In Spielen mit Trumpf schl\xE4gt sie jede Karte."
+        short: "mit Trumpf: kein Trumpf dr\xFCber, \xD72",
+        text: "Pik-Ass. In Spielen mit Trumpf sticht kein Trumpf \xFCber sie, und gewinnt ihr Team den Stich, z\xE4hlen die Augen doppelt."
       },
       faecher: {
         name: "F\xE4cher",
-        short: "ohne Trumpf unschlagbar",
-        text: "Eichel-Zehner. In Spielen ohne Trumpf schl\xE4gt er jede Karte."
+        short: "kein Trumpf dr\xFCber, holt Augen",
+        text: "Eichel-Zehner. Solange er den Stich h\xE4lt, sticht kein Trumpf dar\xFCber (nur das Eichel-Ass), und die Augen des Stichs gehen an sein Team, egal wer sticht."
+      },
+      salzpfanne: {
+        name: "Salzpfanne",
+        short: "gegen dich: Trumpf, holt Augen",
+        text: "Pik-Unter. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Gilt in Trumpfspielen als niedrigster Trumpf, und die Augen des Stichs gehen an ihr Team, egal wer sticht. Im eigenen Spiel ein gew\xF6hnlicher Unter."
+      },
+      dampfkessel: {
+        name: "Dampfkessel",
+        short: "gegen dich: Augen \xD72",
+        text: "Eichel-Ober. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Gewinnt sein Team den Stich, in dem er liegt, z\xE4hlen dessen Augen doppelt."
+      },
+      fischerkanzel: {
+        name: "Fischerkanzel",
+        short: "ab Stich 4: schl\xE4gt Trumpf, \xD72",
+        text: "Herz-Unter. Ab dem vierten Stich schl\xE4gt sie in Trumpfspielen jede Karte au\xDFer dem Trumpf-Ass, und gewinnt ihr Team den Stich, z\xE4hlen die Augen doppelt. Ein Schnapser ist nach drei Stichen schon entschieden."
+      },
+      doppeladler: {
+        name: "Doppeladler",
+        short: "gegen dich: kein Trumpf dr\xFCber, \xD72",
+        text: "Schellen-Zehner. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Solange er den Stich h\xE4lt, sticht kein Trumpf dar\xFCber (nur das Schellen-Ass), und gewinnt sein Team den Stich, z\xE4hlen die Augen doppelt."
+      },
+      jagdhorn: {
+        name: "Jagdhorn",
+        short: "gegen dich: holt die Augen",
+        text: "Pik-Ober. Wirkt nur gegen Spiele, die das andere Team angesagt hat: Die Augen des Stichs, in dem es liegt, gehen an sein Team, egal wer sticht."
+      },
+      rute: {
+        name: "Krampusrute",
+        short: "ab Stich 4: holt Augen \xD72",
+        text: "Schellen-Unter. Ab dem vierten Stich gehen die Augen des Stichs, in dem sie liegt, an ihr Team und z\xE4hlen doppelt. Wer nach drei Stichen 66 hat, ist ihr entkommen."
+      },
+      larve: {
+        name: "Perchtenlarve",
+        short: "mit Trumpf: holt Augen (\xD72)",
+        text: "Herz-Ober. In Spielen mit Trumpf gehen die Augen des Stichs, in dem sie liegt, an ihr Team \u2013 doppelt, wenn ihr Team ihn auch sticht. Ohne Trumpf ein gew\xF6hnlicher Ober."
+      },
+      besen: {
+        name: "Hexenbesen",
+        short: "Stich 1\u20132 nie, dann kein Trumpf dr\xFCber \xD72",
+        text: "Eichel-Ass. In den ersten zwei Stichen sticht er nie. Ab dem dritten Stich sticht kein Trumpf \xFCber ihn, und gewinnt sein Team den Stich, z\xE4hlen die Augen doppelt. Wer ihn fr\xFCh herauslockt, nimmt ihm den Schrecken."
+      },
+      pferdefuss: {
+        name: "Pferdefu\xDF",
+        short: "Trumpf, holt die Augen",
+        text: "Eichel-Unter, gilt als niedrigster Trumpf. Wenn ihn sein Besitzer-Team spielt, bekommt es die Augen des Stichs, egal wer sticht."
+      },
+      hoellenfeuer: {
+        name: "H\xF6llenfeuer",
+        short: "ab Stich 4 unschlagbar, \xD72",
+        text: "Herz-Zehner. Ab dem vierten Stich schl\xE4gt es jede Karte, und die Augen des Stichs z\xE4hlen doppelt."
+      },
+      schwefel: {
+        name: "Schwefel",
+        short: "holt die Augen",
+        text: "Schellen-K\xF6nig, Preis eines Teufelspakts. Wenn ihn sein Besitzer-Team spielt, bekommt es die Augen des Stichs, egal wer sticht."
       }
     },
     levels: {
@@ -2708,6 +2881,20 @@ button.link {
         intro: "Hinter dem Schloss f\xFChrt die Stra\xDFe in die Stadt. Du nimmst ein Zimmer im Gasthof zur Post. Ziel: die F\xFCrstin in der Residenz schlagen.",
         title: "Schnapskaiser der Stadt",
         won: "Du schl\xE4gst die F\xFCrstin. Du bist Schnapskaiser der Stadt!"
+      },
+      3: {
+        name: "Traunsee",
+        into: "an den Traunsee",
+        intro: "Mit dem Zug f\xE4hrst du in die Sommerfrische an den Traunsee. Hier sagen die Herrschaften gern an, und gewonnen wird im Gegenspiel. Ziel: den Erzherzog im Seeschloss Ort schlagen.",
+        title: "k. u. k. Hofschnapser",
+        won: "Du schl\xE4gst den Erzherzog. Du bist k. u. k. Hofschnapser!"
+      },
+      4: {
+        name: "H\xF6llental",
+        into: "ins H\xF6llental",
+        intro: "Hinter dem See wird das Tal eng und finster. In der Letzten Einkehr erz\xE4hlt man vom Teufel, der am H\xF6llentor um Seelen kartelt. Ziel: den Teufel schlagen.",
+        title: "Der den Teufel schlug",
+        won: "Du schl\xE4gst den Teufel beim Bauernschnapsen. Du bist der, der den Teufel schlug!"
       }
     },
     locs: {
@@ -2725,7 +2912,8 @@ button.link {
         opp: ["M\xFCller Sepp", "M\xFCllerin Resi"],
         text: "Die M\xFCllersleut sind sparsam: Augen z\xE4hlen hier wenig, der M\xFChlstein mahlt sie weg. Wer alle Stiche holt, braucht keine Augen.",
         ruleText: "Gang z\xE4hlt hier 12. Gebettelt wird beim M\xFCller nicht.",
-        lose: "Der M\xFCller lacht und mahlt weiter."
+        lose: "Der M\xFCller lacht und mahlt weiter.",
+        tip: "Spiel Gang (z\xE4hlt 12 = ganze Partie): Da z\xE4hlen nur Stiche, der M\xFChlstein nimmt dir keine Augen weg. Im Normalspiel hilft dir ein eigener Schellen-Unter, damit der M\xFCller ihn nicht hat."
       },
       kirche: {
         name: "Kirchenwirt",
@@ -2733,7 +2921,8 @@ button.link {
         opp: ["Mesner Alois", "K\xF6chin Hedi"],
         text: "Nach der Messe wird gekartelt, aber gesittet. Gebettelt wird drau\xDFen vor der Kirche. Der Mesner und die K\xF6chin heben sich ihre Karten f\xFCr den Schluss auf.",
         ruleText: "Kein Kontra am Kirchtisch.",
-        lose: "Der Mesner erz\xE4hlt im ganzen Tal von deiner Niederlage."
+        lose: "Der Mesner erz\xE4hlt im ganzen Tal von deiner Niederlage.",
+        tip: "Spiel Schnapser: Nach drei Stichen ist er vorbei, bevor Weihwasser und Klingelbeutel ab dem vierten Stich wirken. Im Normalspiel fr\xFCh viele Augen sichern."
       },
       markt: {
         name: "Viehmarkt",
@@ -2741,7 +2930,8 @@ button.link {
         opp: ["H\xE4ndler Gruber", "H\xE4ndler Huber"],
         text: "Die Viehh\xE4ndler reizen frech und lieben den Bettler. Wer selbst ansagt, dem nimmt die Kuhglocke die Augen. Wer gut dagegenh\xE4lt, verdient am Kontra.",
         ruleText: "Bettler z\xE4hlt 8. Die H\xE4ndler sagen \xF6fter an.",
-        lose: "Die H\xE4ndler z\xE4hlen grinsend ihr Geld."
+        lose: "Die H\xE4ndler z\xE4hlen grinsend ihr Geld.",
+        tip: "Lass die H\xE4ndler ansagen und halte mit Kontra dagegen: Die Kuhglocke wirkt nur gegen Spiele, die ihr angesagt habt. Bettler z\xE4hlt 8 und lohnt sich mit schwacher Hand."
       },
       alm: {
         name: "Almh\xFCtte",
@@ -2749,7 +2939,8 @@ button.link {
         opp: ["Senner Hias", "Sennerin Vroni"],
         text: "Oben am Berg gelten eigene Gesetze: Es wird nur mit Trumpf gespielt. Wer gleich zu Beginn alles will, verbrennt sich am Enzian.",
         ruleText: "Herz ist immer Trumpf.",
-        lose: "Die Sennerin hat Mitleid und packt dir Speck ein: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung."
+        lose: "Die Sennerin hat Mitleid und packt dir Speck ein: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung.",
+        tip: "Bleib beim Normalspiel und lass dich nicht hetzen: Der Enzian sticht in den ersten drei Stichen alles au\xDFer dem Herz-Ass. Heb hohe Tr\xFCmpfe f\xFCr den Schluss auf."
       },
       schloss: {
         name: "Schloss",
@@ -2757,7 +2948,8 @@ button.link {
         opp: ["Graf Ferdinand", "Gr\xE4fin Adele"],
         text: "Wer den Grafen schl\xE4gt, ist Schnapsk\xF6nig des Tals. Der Graf spielt mit drei Spezialkarten.",
         ruleText: "Ein ganzes Bummerl.",
-        lose: "Der Graf lacht. Du darfst es wieder versuchen."
+        lose: "Der Graf lacht. Du darfst es wieder versuchen.",
+        tip: "Bettler umgeht Grafenwappen, Siegelring und Zepter komplett. Im Normalspiel brauchst du eigene Beutekarten und das Trumpf-Ass gegen das Grafenwappen."
       },
       post: {
         name: "Gasthof zur Post",
@@ -2773,7 +2965,8 @@ button.link {
         opp: ["Oberkellner Leopold", "Sitzkassiererin Mitzi"],
         text: "Hier wird ohne Trumpf gespielt, so wie der Ober den Kaffee: schwarz. Mit Trumpf gewinnt die Melange.",
         ruleText: "Gang z\xE4hlt hier 12.",
-        lose: "Der Ober hat Mitleid und bringt dir einen Krapfen: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung."
+        lose: "Der Ober hat Mitleid und bringt dir einen Krapfen: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung.",
+        tip: "Spiel Gang (z\xE4hlt 12 = ganze Partie): Ohne Trumpf sticht die Melange nie. In Spielen mit Trumpf holt sie doppelte Augen."
       },
       brauerei: {
         name: "Brauerei",
@@ -2781,23 +2974,114 @@ button.link {
         opp: ["Braumeister Vinzenz", "Br\xE4uin Kathi"],
         text: "Beim Br\xE4u wird mit Trumpf gespielt und nicht gebettelt. Wer Augen z\xE4hlt, verliert sie an den Ma\xDFkrug.",
         ruleText: "Nur Spiele mit Trumpf.",
-        lose: "Der Br\xE4u schenkt dir zum Trost noch eins ein."
+        lose: "Der Br\xE4u schenkt dir zum Trost noch eins ein.",
+        tip: "Spiel Bauernschnapser mit starken Tr\xFCmpfen: Da z\xE4hlen keine Augen, der Ma\xDFkrug ist wirkungslos. Im Normalspiel keine hohen Augen in seinen Stich schmieren."
       },
       oper: {
         name: "Oper",
         at: "in der Oper",
         opp: ["Tenor Amadeo", "Primadonna Gloria"],
-        text: "In der Garderobe spielt die Primadonna, und sie gewinnt jeden Stich. Nur im Zehnerloch singt sie falsch.",
+        text: "In der Garderobe sticht die Primadonna in Trumpfspielen fast alles und holt doppelte Augen. Ohne Trumpf und im Zehnerloch singt sie falsch.",
         ruleText: "Zehnerloch z\xE4hlt hier 15. Kein Bettler in der Garderobe.",
-        lose: "Die Primadonna erz\xE4hlt es der ganzen Stadt."
+        lose: "Die Primadonna erz\xE4hlt es der ganzen Stadt.",
+        tip: "Spiel Zehnerloch (z\xE4hlt 15 = ganze Partie) oder Gang: Ohne Trumpf ist die Primadonna ein gew\xF6hnlicher Herz-K\xF6nig. In Trumpfspielen verdoppelt sie ihre Stiche."
       },
       residenz: {
         name: "Residenz",
         at: "in der Residenz",
         opp: ["F\xFCrstin Theodora", "Hofrat Pichler"],
-        text: "Die F\xFCrstin spielt mit zwei Spezialkarten: eine sticht in Spielen mit Trumpf alles, die andere in Spielen ohne. Ohne gute eigene Karten kommst du hier nicht durch.",
+        text: "Die F\xFCrstin spielt mit zwei Spezialkarten: \xFCber beide sticht kein Trumpf, die Krone verdoppelt, der F\xE4cher holt die Augen. Ohne gute eigene Karten kommst du hier nicht durch.",
         ruleText: "Ein ganzes Bummerl, kein Bettler.",
-        lose: "Die F\xFCrstin l\xE4chelt. Du darfst es wieder versuchen."
+        lose: "Die F\xFCrstin l\xE4chelt. Du darfst es wieder versuchen.",
+        tip: "Meist Normalspiel mit starken eigenen Beutekarten: \xDCber F\xFCrstenkrone und F\xE4cher sticht kein Trumpf; bediene Pik und Eichel hoch und schmiere keine Augen in den F\xE4cher."
+      },
+      gmunden: {
+        name: "Gasthof am Rathausplatz",
+        at: "im Gasthof am Rathausplatz",
+        opp: ["Rathauswirt Xaver", "Kellnerin Burgi"],
+        text: "Dein Quartier in Gmunden, direkt am See. Hier spielst du ohne Folgen.",
+        ruleText: "In der Gaststube wird geklopft.",
+        lose: ""
+      },
+      saline: {
+        name: "Saline Ebensee",
+        at: "in der Saline Ebensee",
+        opp: ["Sudmeister Gottfried", "Salzfertigerin Loisi"],
+        text: "Im Sudhaus ist es hei\xDF und laut. Wer hier selbst ein Spiel ansagt, verbrennt sich an der Salzpfanne. Nur wer keinen Stich will, dem ist sie gleich.",
+        ruleText: "Kein Gang, kein Zehnerloch, kein Farbengang.",
+        lose: "Der Sudmeister wischt sich den Schwei\xDF ab und lacht.",
+        tip: "Spiel Bettler oder lass die Gegner ansagen: Die Salzpfanne wirkt nur gegen deine Ansagen und ist im Bettler (ohne Trumpf, keine Augen) v\xF6llig harmlos."
+      },
+      dampfer: {
+        name: "Raddampfer Gisela",
+        at: "auf dem Raddampfer Gisela",
+        opp: ["Kapit\xE4n Anton", "Zahlmeisterin Fanny"],
+        text: "An Deck wird nur Normalspiel gespielt. Wer selbst ansagt, dem heizt der Dampfkessel ein. Ist das Normalspiel der anderen schwach, spritzt du.",
+        ruleText: "Nur Normalspiel und Spritzer.",
+        lose: "Die Zahlmeisterin hat Mitleid und schenkt dir ein Kipferl: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung.",
+        tip: "Hier gibt es nur Normalspiel: Lass die Gegner ansagen und gib Spritzer, wenn ihre Hand schwach wirkt. Der Dampfkessel heizt nur gegen deine eigenen Ansagen ein."
+      },
+      traunkirchen: {
+        name: "Traunkirchen",
+        at: "in Traunkirchen",
+        opp: ["Fischer Hans", "Fischerin Leni"],
+        text: "Unter der Fischerkanzel wird schnell gespielt: Ab dem vierten Stich geh\xF6rt der See den Fischern. Wer alle f\xFCnf Stiche braucht, geht unter. Drei Stiche mit 66 Augen reichen, aber nur als Kontraschnapser.",
+        ruleText: "Kein Bettler, kein Schnapser, kein Bauernschnapser. Der Kontraschnapser ist erlaubt.",
+        lose: "Die Fischerin sch\xFCttelt den Kopf: Zu langsam.",
+        tip: "Spiel Kontraschnapser, wenn du als Gegner der Vorhand 66 Augen in drei Stichen siehst: Dann ist das Spiel vorbei, bevor die Fischerkanzel ab Stich 4 wirkt."
+      },
+      seeschloss: {
+        name: "Seeschloss Ort",
+        at: "im Seeschloss Ort",
+        opp: ["Erzherzog Salvator", "Hofdame Josepha"],
+        text: "Der Erzherzog verbringt den Sommer im Seeschloss. Seine zwei Spezialkarten wirken nur gegen Spiele, die du ansagst. Lass ihn ansagen und halte dagegen.",
+        ruleText: "Ein ganzes Bummerl, kein Bettler.",
+        lose: "Der Erzherzog nickt huldvoll. Du darfst es wieder versuchen.",
+        tip: "Lass den Erzherzog ansagen und halte mit Kontra dagegen: Doppeladler und Jagdhorn ruhen in seinen eigenen Spielen und strafen nur deine Ansagen."
+      },
+      einkehr: {
+        name: "Letzte Einkehr",
+        at: "in der Letzten Einkehr",
+        opp: ["Wirt Sebastian", "Kellnerin Afra"],
+        text: "Das letzte Gasthaus vor dem H\xF6llentor. Hier spielst du ohne Folgen.",
+        ruleText: "In der Gaststube wird geklopft.",
+        lose: ""
+      },
+      krampushoehle: {
+        name: "Krampush\xF6hle",
+        at: "in der Krampush\xF6hle",
+        opp: ["Krampus Ruprecht", "Krampus Gangerl"],
+        text: "Die Krampusse schwingen ab dem vierten Stich die Rute. Wer seine 66 Augen schon nach drei Stichen hat, kommt ungeschoren davon.",
+        ruleText: "Kein Bettler.",
+        lose: "Die Krampusse rasseln mit den Ketten.",
+        tip: "Spiel Schnapser, sobald du 66 Augen in den ersten drei Stichen siehst: So entkommst du der Krampusrute, die erst ab dem vierten Stich Augen holt und verdoppelt."
+      },
+      perchtenstube: {
+        name: "Perchtenstube",
+        at: "in der Perchtenstube",
+        opp: ["Schiachpercht Lenz", "Sch\xF6nperchtin Hulda"],
+        text: "Hinter der Larve holt die Percht in Spielen mit Trumpf die Augen jedes Stichs, doppelt, wenn sie ihn auch sticht. Ohne Trumpf ist sie ein gew\xF6hnlicher Ober. Im Normalspiel hei\xDFt das: keine Augen in ihren Stich schmieren; hast du alle Stiche ohne Trumpf sicher, entgehst du ihr mit einem Gang.",
+        ruleText: "Kein Bettler.",
+        lose: "Die Perchten tanzen um dich herum.",
+        tip: "Im Normalspiel keine Augen in den Stich der Perchtenlarve schmieren; hast du alle Stiche ohne Trumpf sicher, entgehst du ihr mit einem Gang."
+      },
+      hexenhaus: {
+        name: "Hexenhaus",
+        at: "im Hexenhaus",
+        opp: ["Hexe Rauhgret", "Kr\xE4uterweib Walburga"],
+        text: "Die Hexen lesen jedes Zeichen. Ihr Besen fliegt erst ab dem dritten Stich. Hier gewinnt, wer mit Ferdl klopft, Tr\xFCmpfe aufhebt und mitz\xE4hlt.",
+        ruleText: "Nur Spiele mit Trumpf, kein Bettler.",
+        lose: "Die Hexe kichert und r\xFChrt im Kessel.",
+        tip: "Normalspiel mit Zeichen: Lock den Hexenbesen in den ersten zwei Stichen heraus, da sticht er nie. Ab Stich 3 sticht kein Trumpf mehr \xFCber das Eichel-Ass."
+      },
+      hoellentor: {
+        name: "H\xF6llentor",
+        at: "am H\xF6llentor",
+        opp: ["Der Teufel", "Teufels Gro\xDFmutter"],
+        text: "Der Teufel spielt fair, aber meisterhaft. Er hat nur zwei Spezialkarten, beide wirken erst sp\xE4t oder holen Augen. Gewinnen musst du mit deinem K\xF6nnen.",
+        ruleText: "Ein ganzes Bummerl, alle Spiele erlaubt.",
+        lose: "Der Teufel grinst. Du darfst es wieder versuchen.",
+        tip: "Meist Normalspiel, aufmerksam mitz\xE4hlen: Der Pferdefu\xDF holt als Trumpf Augen, das H\xF6llenfeuer schl\xE4gt ab Stich 4 alles f\xFCr doppelte Augen. Fr\xFChe Stiche und eigene Beutekarten entscheiden."
       }
     },
     routes: {
@@ -2815,7 +3099,21 @@ button.link {
       opernring: "Opernring",
       hinterhof: "Hinterhof",
       hofgasse: "Hofgasse",
-      bastei: "Bastei"
+      bastei: "Bastei",
+      esplanade: "Seeuferstra\xDFe",
+      landungssteg: "Landungssteg",
+      salzweg: "Soleleitungsweg",
+      seeweg: "Seeweg",
+      schlossbruecke: "Seebr\xFCcke",
+      ostufer: "Ostufer",
+      traunstein: "Traunstein-Steig",
+      hoehlenweg: "H\xF6hlenweg",
+      perchtenweg: "Perchtenweg",
+      hexensteig: "Hexensteig",
+      moorweg: "Moorweg",
+      hoellenweg: "H\xF6llenweg",
+      klamm: "Teufelsklamm",
+      koehlersteig: "K\xF6hlersteig"
     },
     temper: {
       treu: "treu",
@@ -2824,11 +3122,14 @@ button.link {
     },
     speck: {
       1: "Speck",
-      2: "Krapfen"
+      2: "Krapfen",
+      3: "Kipferl"
     },
     passages: {
       1: "Dein Bauernschnapser spricht sich herum. Der Mesner zeigt dir den Geheimgang vom Kirchenwirt zum Schloss.",
-      2: "Dein Gang spricht sich herum. Der Oberkellner zeigt dir den Weg \xFCber die Bastei vom Kaffeehaus zur Residenz."
+      2: "Dein Gang spricht sich herum. Der Oberkellner zeigt dir den Weg \xFCber die Bastei vom Kaffeehaus zur Residenz.",
+      3: "Dein Gegenspiel spricht sich herum. Der Kapit\xE4n zeigt dir den Steig \xFCber den Traunstein zum Seeschloss.",
+      4: "Dein ehrliches Spiel spricht sich herum. Ein K\xF6hler zeigt dir den Steig von der Perchtenstube zum H\xF6llentor."
     },
     lessons: {
       stiche: {
@@ -2901,6 +3202,36 @@ button.link {
           "Alle am Tisch h\xF6ren das Klopfen. Auch die Gegner k\xF6nnen es deuten."
         ],
         tips: ["Nicht jeder versteht jedes Zeichen. Ferdl lernt mit jeder Partie dazu."]
+      },
+      gegenspiel: {
+        title: "Gegenspiel",
+        goal: "Halte gegen die Ansagen der Gegner: mit Kontra, Spritzer oder einem Kontraschnapser.",
+        intro: [
+          "Am Traunsee sagen die Gegner gern an. Gewonnen wird oft auf der anderen Seite: im <b>Gegenspiel</b>.",
+          "<b>Kontra:</b> Glaubst du, der Ansager schafft sein Spiel nicht, verdoppelst du nach dem Bieten die Punkte. Der Ansager kann mit <b>Re</b> noch einmal verdoppeln.",
+          "<b>Spritzer</b> (Hausregel): Sagt die Vorhand der Gegner Normalspiel an, kannst du es schon beim Bieten verdoppeln. Schwach ist ein Normalspiel, wenn du selbst Trumpf-Ass oder Trumpf-Zehner h\xE4ltst oder ein Paar melden kannst.",
+          "<b>Kontraschnapser:</b> Hast du als Gegner der Vorhand eine starke Hand, sag selbst an: 66 Augen in den ersten drei Stichen, jeden Stich machen. Er bringt 12 Punkte.",
+          "Z\xE4hl mit: Wie viele Augen haben die Ansager schon, wie viele fehlen ihnen noch? Daraus folgt, ob dein Kontra h\xE4lt."
+        ],
+        tips: [
+          "Kontra lohnt sich, wenn du zwei sichere Stiche in der Hand hast.",
+          "Spritz nur, wenn auch Ferdl mitspielen kann: Er sitzt im Gegenspiel neben dir."
+        ]
+      },
+      zaehlen: {
+        title: "Augen z\xE4hlen",
+        goal: "Z\xE4hl die Augen beider Teams mit: Wie viele fehlen euch noch bis 66?",
+        intro: [
+          "Wer mitz\xE4hlt, wei\xDF jederzeit, wie viele Augen seinem Team bis 66 fehlen. In dieser Lektion sind die Augen im Punktestand versteckt.",
+          "Z\xE4hl nach jedem Stich: <b>Ass 11, Zehner 10, K\xF6nig 4, Ober 3, Unter 2</b>. Gemeldete Paare z\xE4hlen mit (20, in Trumpf 40), sobald dein Team einen Stich hat.",
+          "Fehlen nur noch wenige Augen, spiel sicher: Ein Ass oder ein hoher Trumpf beendet das Spiel. Fehlen viele, heb deine Tr\xFCmpfe f\xFCr die Stiche mit vielen Augen auf.",
+          "Z\xE4hlen hilft auch beim Ansagen: Bringen deine sicheren Stiche in den ersten drei Stichen 66 Augen? Dann sag <b>Schnapser</b> an.",
+          "Unter dem Punktestand kannst du deine Rechnung aufdecken."
+        ],
+        tips: [
+          "Im ganzen Spiel gibt es 120 Augen. Habt ihr 55, fehlt nur noch ein Zehner und ein Unter.",
+          "Z\xE4hl auch f\xFCr die Gegner: Haben sie 60, darf kein Ass mehr an sie gehen."
+        ]
       }
     },
     banter: {
@@ -2964,7 +3295,17 @@ button.link {
         kaffee: ["Ein Melange auf Ihre Rechnung.", "Zahlen, bitte!"],
         brauerei: ["Prost!", "Des is guat abg\u2019lagert."],
         oper: ["Bravo! Bravissimo!", "Da capo!"],
-        residenz: ["Das Haus dankt.", "Wie es sich geh\xF6rt."]
+        residenz: ["Das Haus dankt.", "Wie es sich geh\xF6rt."],
+        gmunden: ["Servus am See!", "Des geht aufs Haus, Sommerfrischler."],
+        saline: ["Des is a g\u2019salzene Rechnung.", "Do wird\u2019s da hei\xDF."],
+        dampfer: ["Volle Kraft voraus!", "Alle Mann an Deck!"],
+        traunkirchen: ["Petri Heil!", "Der See gibt, der See nimmt."],
+        seeschloss: ["Seine Hoheit ist erfreut.", "Wie es sich am Hofe geh\xF6rt."],
+        einkehr: ["Noch a letzts Glasl?", "Pass auf di auf, da dr\xFCben."],
+        krampushoehle: ["Wer net brav is, kriagt die Rute!", "H\xF6rst die Ketten?"],
+        perchtenstube: ["Schiach oder sch\xF6n?", "Die Percht sieht alles."],
+        hexenhaus: ["Hihihi!", "Des riecht nach Kr\xE4uterl."],
+        hoellentor: ["Ein faires Spiel, mein Freund.", "Die Seele l\xE4uft dir nicht davon."]
       },
       ferdl: {
         treu: {
@@ -3061,10 +3402,13 @@ button.link {
       partieWon: ({ at, s0, s1 }) => `Partie ${at} gewonnen ${s0}:${s1}.`,
       loot: ({ spName, spText }) => `Beute: ${spName}. ${spText}`,
       partieLost: ({ at, s0, s1, lose }) => `Partie ${at} verloren ${s0}:${s1}. ${lose}`,
-      leave: ({ at }) => `Du stehst ${at} vorzeitig auf.`
+      leave: ({ at }) => `Du stehst ${at} vorzeitig auf.`,
+      pact: ({ at, price, spName }) => price === "pfand" ? `Pakt mit dem Teufel ${at}: ${spName} verpf\xE4ndet.` : `Pakt mit dem Teufel ${at}: Die Gegner spielen mit ${spName}.`,
+      pactEnd: ({ at, spName }) => `Der Pakt ${at} ist erf\xFCllt.${spName ? ` ${spName} geh\xF6rt wieder dir.` : ""}`
     },
     bonus: {
-      speck: ({ name }) => `${name}: +2 zum Start.`
+      speck: ({ name }) => `${name}: +2 zum Start.`,
+      pact: ({ n }) => `Teufelspakt: +${n} zum Start.`
     },
     idle: {
       againstOpp: ({ o1, o3 }) => ({
@@ -3229,6 +3573,7 @@ button.link {
       },
       dom: {
         houseRulePrefix: "Hausregel:",
+        tipPrefix: "Tipp:",
         knockAllowed: "Klopfen erlaubt.",
         knockForbidden: "Klopfen verboten.",
         notAllowed: (list) => `Nicht erlaubt: ${list}.`,
@@ -3264,9 +3609,21 @@ button.link {
         alreadyLooted: (spName) => `Ihre Spezialkarte ${spName} hast du schon erbeutet.`,
         yourSpecialsHeading: "Deine Spezialkarten",
         lootHint: (mate) => `Alle erbeuteten Karten werden in jeder Partie mitgemischt. Ihr Effekt wirkt, wenn du oder ${mate} sie spielt.`,
+        bagHeading: (n, max) => `Kartentasche (${n} von ${max})`,
+        bagIn: "In die Tasche",
+        bagOut: "Aus der Tasche",
+        bagPacked: "kommt mit",
+        bagPawned: "beim Teufel verpf\xE4ndet",
+        pactHeading: "Teufelspakt",
+        pactOffer: (n) => `Der Teufel bietet dir einen Pakt an: Jede Partie hier beginnt mit ${n} Punkten Vorsprung, bis du den Ort geschlagen hast. So lange gilt auch der Preis. Ein Pakt l\xE4sst sich nicht l\xF6sen.`,
+        pactPfandBtn: (spName) => `${spName} verpf\xE4nden`,
+        pactPfandTip: "Die Karte spielt hier f\xFCr die Gegner und bleibt bis zum Sieg aus deiner Kartentasche.",
+        pactHoelleBtn: (spName) => `Gegner bekommen ${spName}`,
+        pactActive: (n, price, spName) => `Pakt besteht: +${n} zum Start. Preis: ${price === "pfand" ? `${spName} spielt f\xFCr die Gegner` : `die Gegner spielen mit ${spName}`}.`,
+        bagHint: (max, mate) => `In jede Partie nimmst du h\xF6chstens ${max} Karten mit. W\xE4hle vor dem Herausfordern, was am n\xE4chsten Tisch hilft. Ihr Effekt wirkt, wenn du oder ${mate} sie spielt.`,
         noLootHint: "Noch keine. Schl\xE4gst du einen Ort, erbeutest du die Spezialkarte der Gegner.",
         backpack: (speck) => `Im Rucksack: ${speck} (+2 zum Start der n\xE4chsten Partie).`,
-        passageHint: (level) => `Schlag die Orte auf dem Weg zum Ziel. ${level === 2 ? "Ein gewonnener Gang" : "Ein gewonnener Bauernschnapser"} spricht sich herum.`,
+        passageHint: (level) => `Schlag die Orte auf dem Weg zum Ziel. ${{ 1: "Ein gewonnener Bauernschnapser", 2: "Ein gewonnener Gang", 3: "Ein gewonnener Spritzer oder Kontraschnapser", 4: "Ein Sieg ganz ohne Pakt und ohne eigene Spezialkarten" }[level] || "Ein besonderes Spiel"} spricht sich herum.`,
         diaryHeading: "Reisetagebuch"
       },
       table: {
@@ -3328,6 +3685,9 @@ button.link {
         scoreTo: (target) => `Partie bis ${target}`,
         scorePoints: "Punkte",
         scoreCardPts: "Augen",
+        countHidden: "?",
+        countQuestion: "Mitz\xE4hlen: Wie viele Augen habt ihr, wie viele fehlen bis 66? Aufdecken",
+        countReveal: (us, them) => `Ihr habt ${us} Augen, es fehlen ${Math.max(0, 66 - us)}. Die Gegner haben ${them}.`,
         usTeam: (mate) => `Du & ${mate}`,
         gameLabel: "Spiel:",
         signalExpTip: "Wie wahrscheinlich jemand ein Zeichen bemerkt und richtig deutet",
@@ -3474,8 +3834,8 @@ button.link {
       },
       weihwasser: {
         name: "Holy Water",
-        short: "trick 4+: unbeatable",
-        text: "Ten of Hearts. From trick 4 onward it beats every card, and its team takes double the trick\u2019s card points. A 3-Trick 66 is already decided after three tricks."
+        short: "trick 4+: beats trump, takes pts \xD72",
+        text: "Ten of Hearts. From trick 4 onward it beats every card except the trump Ace in trump games; its team takes the trick\u2019s card points, doubled if its team wins the trick too. A 3-Trick 66 is already decided after three tricks."
       },
       klingelbeutel: {
         name: "Collection Bag",
@@ -3489,8 +3849,8 @@ button.link {
       },
       enzian: {
         name: "Gentian",
-        short: "tricks 1\u20133 unbeatable",
-        text: "Jack of Acorns, counts as trump. Beats every card in the first three tricks, then becomes the lowest trump. Stops anyone trying to sweep early tricks."
+        short: "tricks 1\u20133: beats trump",
+        text: "Jack of Acorns, counts as trump. Beats every card except the trump Ace in the first three tricks, then becomes the lowest trump. Stops anyone trying to sweep early tricks."
       },
       siegelring: {
         name: "Signet Ring",
@@ -3519,18 +3879,73 @@ button.link {
       },
       primadonna: {
         name: "Prima Donna",
-        short: "unbeatable exc. 10-High",
-        text: "King of Hearts. Beats every card except in Ten-High Slam, where it is an ordinary King."
+        short: "w/ trump: beats all, \xD72",
+        text: "King of Hearts. Beats every card except the trump Ace in trump games, and the card points count double. Ordinary King without trump and in Ten-High Slam."
       },
       krone: {
         name: "Princess\u2019s Crown",
-        short: "w/ trump: unbeatable",
-        text: "Ace of Leaves. In trump games it beats every card."
+        short: "w/ trump: no trump over, \xD72",
+        text: "Ace of Leaves. In trump games no trump beats it, and if its team wins the trick, the card points count double."
       },
       faecher: {
         name: "Hand Fan",
-        short: "no trump: unbeatable",
-        text: "Ten of Acorns. In no-trump games it beats every card."
+        short: "no trump over, takes pts",
+        text: "Ten of Acorns. While it holds the trick, no trump beats it (only the Ace of Acorns), and its team takes the trick\u2019s card points, no matter who wins."
+      },
+      salzpfanne: {
+        name: "Salt Pan",
+        short: "vs. callers: trump, takes pts",
+        text: "Jack of Leaves. Only works against contracts declared by the other team: counts as the lowest trump in trump games, and its team takes the trick\u2019s card points, no matter who wins. Ordinary Jack in its own team\u2019s contract."
+      },
+      dampfkessel: {
+        name: "Steam Boiler",
+        short: "vs. callers: pts \xD72",
+        text: "Queen of Acorns. Only works against contracts declared by the other team: when its team wins the trick it is played in, that trick\u2019s card points count double."
+      },
+      fischerkanzel: {
+        name: "Fish Pulpit",
+        short: "trick 4+: beats trump, \xD72",
+        text: "Jack of Hearts. From trick 4 onward it beats every card except the trump Ace in trump games, and if its team wins the trick, the card points count double. A 3-Trick 66 is already decided after three tricks."
+      },
+      doppeladler: {
+        name: "Double Eagle",
+        short: "vs. callers: no trump over, \xD72",
+        text: "Ten of Bells. Only works against contracts declared by the other team: while it holds the trick, no trump beats it (only the Ace of Bells), and if its team wins the trick, the card points count double."
+      },
+      jagdhorn: {
+        name: "Hunting Horn",
+        short: "vs. callers: takes pts",
+        text: "Queen of Leaves. Only works against contracts declared by the other team: its team takes the trick\u2019s card points, no matter who wins."
+      },
+      rute: {
+        name: "Krampus Switch",
+        short: "trick 4+: takes pts \xD72",
+        text: "Jack of Bells. From trick 4 onward its team takes the card points of the trick it is played in, doubled. Reach 66 within three tricks and you escape it."
+      },
+      larve: {
+        name: "Perchta Mask",
+        short: "trump games: takes pts (\xD72)",
+        text: "Queen of Hearts. In trump games its team takes the trick\u2019s card points\u2014doubled if its team wins the trick too. Ordinary Queen without trump."
+      },
+      besen: {
+        name: "Witch\u2019s Broom",
+        short: "tricks 1\u20132 never, then no trump over \xD72",
+        text: "Ace of Acorns. Never wins in the first two tricks. From trick 3 onward no trump beats it, and if its team wins the trick, the card points count double. Draw it out early and it loses its terror."
+      },
+      pferdefuss: {
+        name: "Cloven Hoof",
+        short: "trump, takes pts",
+        text: "Jack of Acorns, counts as the lowest trump. When its owner team plays it, they take the trick\u2019s card points, no matter who wins."
+      },
+      hoellenfeuer: {
+        name: "Hellfire",
+        short: "trick 4+: unbeatable, \xD72",
+        text: "Ten of Hearts. From trick 4 onward it beats every card, and the trick\u2019s card points count double."
+      },
+      schwefel: {
+        name: "Brimstone",
+        short: "takes pts",
+        text: "King of Bells, the price of a pact with the devil. When its owner team plays it, they take the trick\u2019s card points, no matter who wins."
       }
     },
     levels: {
@@ -3547,6 +3962,20 @@ button.link {
         intro: "Beyond the Castle the road leads into the City. You take a room at the Post Inn. Goal: beat the Princess at The Residence.",
         title: "Schnaps Emperor of the City",
         won: "You defeated the Princess. You are the Schnaps Emperor of the City!"
+      },
+      3: {
+        name: "Lake Traunsee",
+        into: "Lake Traunsee",
+        intro: "You take the train to the summer resort on Lake Traunsee. The gentry love to bid high, and you win by defending. Goal: beat the Archduke at Ort Lake Castle.",
+        title: "Imperial Court Schnapser",
+        won: "You defeated the Archduke. You are the Imperial Court Schnapser!"
+      },
+      4: {
+        name: "Hell Valley",
+        into: "Hell Valley",
+        intro: "Beyond the lake the valley turns narrow and dark. At the Last Inn they tell of the devil who plays cards for souls at the Gate of Hell. Goal: beat the devil.",
+        title: "The One Who Beat the Devil",
+        won: "You beat the devil at Bauernschnapsen. You are the one who beat the devil!"
       }
     },
     locs: {
@@ -3564,7 +3993,8 @@ button.link {
         opp: ["Miller Sepp", "Miller Resi"],
         text: "The millers are thrifty: card points mean little here while the Millstone grinds them away. Win all tricks and you need no points.",
         ruleText: "No-Trump Slam scores 12 here. No Beggar at the Mill.",
-        lose: "The Miller laughs and keeps grinding."
+        lose: "The Miller laughs and keeps grinding.",
+        tip: "Play No-Trump Slam (worth 12 = whole match): only tricks count, so the Millstone cannot steal card points. In a Normal Game, holding the Jack of Bells keeps it out of their hands."
       },
       kirche: {
         name: "Church Tavern",
@@ -3572,7 +4002,8 @@ button.link {
         opp: ["Sexton Alois", "Cook Hedi"],
         text: "Cards are played after mass, strictly polite. No begging inside. The Sexton and the Cook save their best cards for the late tricks.",
         ruleText: "No Doubles at the Church table.",
-        lose: "The Sexton tells the whole valley about your defeat."
+        lose: "The Sexton tells the whole valley about your defeat.",
+        tip: "Play 3-Trick 66: it ends after three tricks, before Holy Water and the Collection Bag kick in from trick 4. In a Normal Game, secure points early."
       },
       markt: {
         name: "Cattle Market",
@@ -3580,7 +4011,8 @@ button.link {
         opp: ["Trader Gruber", "Trader Huber"],
         text: "The traders bid boldly and love Beggar. Declare yourself and the Cowbell steals your card points. Defend well and profit from Doubles.",
         ruleText: "Beggar scores 8. The traders bid more aggressively.",
-        lose: "The traders count their coins with a grin."
+        lose: "The traders count their coins with a grin.",
+        tip: "Let the dealers declare and hit back with Double: the Cowbell only works against contracts your team declared. Beggar is worth 8 and pays off with a weak hand."
       },
       alm: {
         name: "Alpine Hut",
@@ -3588,7 +4020,8 @@ button.link {
         opp: ["Herdsman Hias", "Dairymaid Vroni"],
         text: "Up on the mountain, trump rules supreme: only trump games are played. Try to sweep early and you\u2019ll get burned by the Gentian.",
         ruleText: "Hearts are always trump.",
-        lose: "Vroni takes pity and packs you some Speck: your next match starts 2 points ahead."
+        lose: "Vroni takes pity and packs you some Speck: your next match starts 2 points ahead.",
+        tip: "Stick to the Normal Game and don\u2019t rush: Gentian beats everything except the Ace of Hearts in the first three tricks. Save high trumps for late tricks."
       },
       schloss: {
         name: "The Castle",
@@ -3596,7 +4029,8 @@ button.link {
         opp: ["Count Ferdinand", "Countess Adele"],
         text: "Beat the Count to become Schnaps King of the Valley. The Count plays with three special cards.",
         ruleText: "A full match to 24 points.",
-        lose: "The Count laughs. You may try again."
+        lose: "The Count laughs. You may try again.",
+        tip: "Beggar sidesteps Count\u2019s Crest, Signet Ring and Scepter completely. In a Normal Game, bring strong loot and hold the Ace of Trumps against Count\u2019s Crest."
       },
       post: {
         name: "Post Inn",
@@ -3612,7 +4046,8 @@ button.link {
         opp: ["Head Waiter Leopold", "Cashier Mitzi"],
         text: "Here they play without trump, just like the waiter takes his coffee: black. With trump, the Melange dominates.",
         ruleText: "No-Trump Slam scores 12 here.",
-        lose: "The Head Waiter takes pity and brings you a Krapfen pastry: your next match starts 2 points ahead."
+        lose: "The Head Waiter takes pity and brings you a Krapfen pastry: your next match starts 2 points ahead.",
+        tip: "Play No-Trump Slam (worth 12 = whole match): without trump, Melange never wins a trick. In trump games it scores double points."
       },
       brauerei: {
         name: "Brewery",
@@ -3620,23 +4055,114 @@ button.link {
         opp: ["Brewmaster Vinzenz", "Brewer Kathi"],
         text: "At the Brewery only trump games are played and no Beggar. Anyone counting card points loses them to the Beer Stein.",
         ruleText: "Trump games only.",
-        lose: "The Brewmaster pours you another pint for consolation."
+        lose: "The Brewmaster pours you another pint for consolation.",
+        tip: "Play Trump Slam with strong trumps: card points don\u2019t matter there, so the Beer Stein does nothing. In a Normal Game, don\u2019t smear points into its trick."
       },
       oper: {
         name: "Opera House",
         at: "at the Opera House",
         opp: ["Tenor Amadeo", "Prima Donna Gloria"],
-        text: "Backstage the Prima Donna takes center stage and wins every trick. Only in Ten-High Slam does she sing off-key.",
+        text: "Backstage the Prima Donna beats almost everything in trump games for double points. Without trump and in Ten-High Slam she sings off-key.",
         ruleText: "Ten-High Slam scores 15 here. No Beggar backstage.",
-        lose: "The Prima Donna tells the whole city."
+        lose: "The Prima Donna tells the whole city.",
+        tip: "Play Ten-High Slam (worth 15 = whole match) or No-Trump Slam: without trump, the Prima Donna is an ordinary King of Hearts. In trump games she doubles her tricks."
       },
       residenz: {
         name: "The Residence",
         at: "at The Residence",
         opp: ["Princess Theodora", "Counselor Pichler"],
-        text: "The Princess plays with two special cards: one beats everything with trump, the other without trump. You\u2019ll need strong loot of your own to break through.",
+        text: "The Princess plays with two special cards: no trump beats either of them\u2014the Crown doubles the points, the Fan takes them. You\u2019ll need strong loot of your own to break through.",
         ruleText: "A full match to 24 points, no Beggar.",
-        lose: "The Princess smiles. You may try again."
+        lose: "The Princess smiles. You may try again.",
+        tip: "Usually Normal Game with strong loot of your own: no trump beats Princess\u2019s Crown or Hand Fan; follow Leaves and Acorns high and keep points out of the Hand Fan\u2019s trick."
+      },
+      gmunden: {
+        name: "Town Square Inn",
+        at: "at the Town Square Inn",
+        opp: ["Innkeeper Xaver", "Waitress Burgi"],
+        text: "Your lodgings in Gmunden, right on the lake. Play here without consequences.",
+        ruleText: "Knocking is allowed in the parlour.",
+        lose: ""
+      },
+      saline: {
+        name: "Ebensee Saltworks",
+        at: "at the Ebensee Saltworks",
+        opp: ["Boilermaster Gottfried", "Salt Packer Loisi"],
+        text: "The boiling house is hot and loud. Declare a contract yourself and you get burned by the Salt Pan. Only someone who wants no tricks at all doesn\u2019t mind it.",
+        ruleText: "No No-Trump Slam, no Ten-High Slam, no Suit Slam.",
+        lose: "The Boilermaster wipes his brow and laughs.",
+        tip: "Play Beggar or let them declare: the Salt Pan only works against your own contracts and does nothing in Beggar (no trump, no card points)."
+      },
+      dampfer: {
+        name: "Paddle Steamer Gisela",
+        at: "aboard the Paddle Steamer Gisela",
+        opp: ["Captain Anton", "Purser Fanny"],
+        text: "On deck only the Normal Game is played. Declare it yourself and the Steam Boiler heats things up. If the others\u2019 Normal Game is weak, double it early.",
+        ruleText: "Only Normal Game and Early Double.",
+        lose: "The Purser takes pity and gives you a Kipferl: your next match starts 2 points ahead.",
+        tip: "Only Normal Game is played here: let the opponents declare and call Early Double when their hand looks weak. The Steam Boiler only fires against your own contracts."
+      },
+      traunkirchen: {
+        name: "Traunkirchen",
+        at: "in Traunkirchen",
+        opp: ["Fisherman Hans", "Fisherwoman Leni"],
+        text: "Under the Fish Pulpit, games are fast: from trick 4 the lake belongs to the fishers. Anyone who needs all five tricks goes under. Three tricks with 66 points will do, but only as a Counter 3-Trick 66.",
+        ruleText: "No Beggar, no 3-Trick 66, no Trump Slam. Counter 3-Trick 66 is allowed.",
+        lose: "The Fisherwoman shakes her head: too slow.",
+        tip: "Call Counter 3-Trick 66 when you can make 66 points in three tricks against forehand: the hand ends before the Fish Pulpit activates from trick 4."
+      },
+      seeschloss: {
+        name: "Ort Lake Castle",
+        at: "at Ort Lake Castle",
+        opp: ["Archduke Salvator", "Lady-in-Waiting Josepha"],
+        text: "The Archduke spends his summers at the lake castle. His two special cards only work against contracts you declare. Let him declare and defend.",
+        ruleText: "A full match to 24 points, no Beggar.",
+        lose: "The Archduke nods graciously. You may try again.",
+        tip: "Let the Archduke declare and defend with Double: Double Eagle and Hunting Horn sit idle in his own contracts and only punish yours."
+      },
+      einkehr: {
+        name: "Last Inn",
+        at: "at the Last Inn",
+        opp: ["Innkeeper Sebastian", "Waitress Afra"],
+        text: "The last inn before the Gate of Hell. Play here without consequences.",
+        ruleText: "Knocking is allowed in the parlour.",
+        lose: ""
+      },
+      krampushoehle: {
+        name: "Krampus Cave",
+        at: "in the Krampus Cave",
+        opp: ["Krampus Ruprecht", "Krampus Gangerl"],
+        text: "From trick 4 the Krampuses swing the switch. Whoever has 66 points after three tricks gets away unscathed.",
+        ruleText: "No Beggar.",
+        lose: "The Krampuses rattle their chains.",
+        tip: "Call 3-Trick 66 whenever you see 66 points in the first three tricks: you escape the Krampus Switch, which only steals and doubles points from trick 4."
+      },
+      perchtenstube: {
+        name: "Perchta Parlour",
+        at: "in the Perchta Parlour",
+        opp: ["Ugly Percht Lenz", "Fair Perchta Hulda"],
+        text: "Behind the mask the Percht takes the card points of her trick in trump games, doubled if her team wins it too. Without trump she is an ordinary Queen. In the Normal Game that means: don\u2019t smear points into her trick; if you are sure of every trick without trump, a No-Trump Slam escapes her.",
+        ruleText: "No Beggar.",
+        lose: "The Perchten dance around you.",
+        tip: "In a Normal Game, keep points out of the Perchta Mask\u2019s trick; if you hold every trick without trump, a No-Trump Slam escapes it."
+      },
+      hexenhaus: {
+        name: "Witch\u2019s Cottage",
+        at: "at the Witch\u2019s Cottage",
+        opp: ["Witch Rauhgret", "Herb Woman Walburga"],
+        text: "The witches read every signal. Their broom only flies from trick 3. You win here by knocking with Ferdl, saving trumps and counting points.",
+        ruleText: "Trump games only, no Beggar.",
+        lose: "The witch giggles and stirs her cauldron.",
+        tip: "Normal Game with signals: draw out the Witch\u2019s Broom in the first two tricks, when it never wins. From trick 3 onward no trump beats the Ace of Acorns."
+      },
+      hoellentor: {
+        name: "Gate of Hell",
+        at: "at the Gate of Hell",
+        opp: ["The Devil", "Devil\u2019s Grandmother"],
+        text: "The devil plays fair, but masterfully. He has only two special cards, both work late or take points. You have to win with your skill.",
+        ruleText: "A full match to 24 points, all contracts allowed.",
+        lose: "The devil grins. You may try again.",
+        tip: "Usually Normal Game, keep careful count: Cloven Hoof steals points as trump, and Hellfire beats everything from trick 4 for double points. Early tricks and your loot decide."
       }
     },
     routes: {
@@ -3654,7 +4180,21 @@ button.link {
       opernring: "Opera Ring",
       hinterhof: "Courtyard",
       hofgasse: "Court Lane",
-      bastei: "Bastion"
+      bastei: "Bastion",
+      esplanade: "Lakeshore Road",
+      landungssteg: "Landing Pier",
+      salzweg: "Brine Pipeline Path",
+      seeweg: "Lake Crossing",
+      schlossbruecke: "Castle Bridge",
+      ostufer: "East Shore",
+      traunstein: "Traunstein Trail",
+      hoehlenweg: "Cave Path",
+      perchtenweg: "Perchta Path",
+      hexensteig: "Witch\u2019s Trail",
+      moorweg: "Moor Path",
+      hoellenweg: "Road to Hell",
+      klamm: "Devil\u2019s Gorge",
+      koehlersteig: "Charcoal Burner\u2019s Trail"
     },
     temper: {
       treu: "Loyal",
@@ -3663,11 +4203,14 @@ button.link {
     },
     speck: {
       1: "Speck",
-      2: "Krapfen"
+      2: "Krapfen",
+      3: "Kipferl"
     },
     passages: {
       1: "Word of your Trump Slam spreads. The Sexton shows you the Secret Passage from the Church Tavern to The Castle.",
-      2: "Word of your No-Trump Slam spreads. The Head Waiter shows you the Bastion shortcut from the Coffeehouse to The Residence."
+      2: "Word of your No-Trump Slam spreads. The Head Waiter shows you the Bastion shortcut from the Coffeehouse to The Residence.",
+      3: "Word of your defence spreads. The Captain shows you the trail over the Traunstein to the lake castle.",
+      4: "Word of your honest play spreads. A charcoal burner shows you the trail from the Perchta Parlour to the Gate of Hell."
     },
     lessons: {
       stiche: {
@@ -3740,6 +4283,36 @@ button.link {
           "Everyone at the table hears a knock, so opponents can read it too."
         ],
         tips: ["Not everyone notices every signal. Ferdl gets sharper with every match you play."]
+      },
+      gegenspiel: {
+        title: "Defending",
+        goal: "Stand up to the opponents\u2019 contracts: with a Double, an Early Double or a Counter 3-Trick 66.",
+        intro: [
+          "At Lake Traunsee the opponents love to declare. You often win on the other side: by <b>defending</b>.",
+          "<b>Double (Kontra):</b> If you think the declarer will fail, you double the points after the auction. The declarer may answer with a <b>Redouble</b>.",
+          "<b>Early Double</b> (house rule): If the opponents\u2019 Forehand calls a Normal Game, you can double it during the auction. A Normal Game is weak if you hold the Ace or Ten of trumps yourself or can meld a pair.",
+          "<b>Counter 3-Trick 66:</b> With a strong hand as an opponent of Forehand, declare yourself: 66 card points in the first three tricks, winning every trick. It scores 12 points.",
+          "Keep count: how many card points do the declarers have, how many are they missing? That tells you whether your Double will hold."
+        ],
+        tips: [
+          "A Double pays off when you hold two sure tricks.",
+          "Only double early if Ferdl can help: he defends right next to you."
+        ]
+      },
+      zaehlen: {
+        title: "Counting Points",
+        goal: "Count both teams\u2019 card points: how many do you still need for 66?",
+        intro: [
+          "If you keep count, you always know how many points your team still needs for 66. In this lesson the card points in the score are hidden.",
+          "Count after every trick: <b>Ace 11, Ten 10, King 4, Queen 3, Jack 2</b>. Declared marriages count too (20, in trump 40), once your team has a trick.",
+          "If you need only a few more points, play safe: an Ace or a high trump ends the game. If you need many, save your trumps for the tricks with lots of points.",
+          "Counting helps with bidding too: do your sure tricks bring 66 points within the first three tricks? Then declare a <b>3-Trick 66</b>.",
+          "Below the score you can reveal your count."
+        ],
+        tips: [
+          "There are 120 card points in a game. With 55 you only need a Ten and a Jack.",
+          "Count for the opponents too: if they have 60, no Ace may go to them."
+        ]
       }
     },
     banter: {
@@ -3798,7 +4371,17 @@ button.link {
         kaffee: ["A Melange on your tab.", "Check, please!"],
         brauerei: ["Cheers!", "Nicely aged, that one."],
         oper: ["Bravo! Bravissimo!", "Da capo!"],
-        residenz: ["The house thanks you.", "Just as it should be."]
+        residenz: ["The house thanks you.", "Just as it should be."],
+        gmunden: ["Welcome to the lake!", "That one\u2019s on the house, summer guest."],
+        saline: ["That\u2019s a salty bill.", "Things get hot in here."],
+        dampfer: ["Full steam ahead!", "All hands on deck!"],
+        traunkirchen: ["Tight lines!", "The lake gives, the lake takes."],
+        seeschloss: ["His Highness is pleased.", "As befits the court."],
+        einkehr: ["One last glass?", "Take care over there."],
+        krampushoehle: ["Naughty ones get the switch!", "Hear the chains?"],
+        perchtenstube: ["Ugly or fair?", "The Perchta sees everything."],
+        hexenhaus: ["Hee hee hee!", "Smells of herbs in here."],
+        hoellentor: ["A fair game, my friend.", "Your soul isn\u2019t going anywhere."]
       },
       ferdl: {
         treu: {
@@ -3895,10 +4478,13 @@ button.link {
       partieWon: ({ at, s0, s1 }) => `Match ${at} won ${s0}:${s1}.`,
       loot: ({ spName, spText }) => `Looted: ${spName}. ${spText}`,
       partieLost: ({ at, s0, s1, lose }) => `Match ${at} lost ${s0}:${s1}. ${lose}`,
-      leave: ({ at }) => `You left the table early ${at}.`
+      leave: ({ at }) => `You left the table early ${at}.`,
+      pact: ({ at, price, spName }) => price === "pfand" ? `Pact with the devil ${at}: ${spName} pawned.` : `Pact with the devil ${at}: the opponents play with ${spName}.`,
+      pactEnd: ({ at, spName }) => `The pact ${at} is fulfilled.${spName ? ` ${spName} is yours again.` : ""}`
     },
     bonus: {
-      speck: ({ name }) => `${name}: +2 head start.`
+      speck: ({ name }) => `${name}: +2 head start.`,
+      pact: ({ n }) => `Pact with the devil: +${n} head start.`
     },
     idle: {
       againstOpp: ({ o1, o3 }) => ({
@@ -4063,6 +4649,7 @@ button.link {
       },
       dom: {
         houseRulePrefix: "House rule:",
+        tipPrefix: "Tip:",
         knockAllowed: "Knocking allowed.",
         knockForbidden: "No knocking.",
         notAllowed: (list) => `Not allowed: ${list}.`,
@@ -4098,9 +4685,21 @@ button.link {
         alreadyLooted: (spName) => `You already looted their special card ${spName}.`,
         yourSpecialsHeading: "Your Special Cards",
         lootHint: (mate) => `All looted cards are shuffled into every match. Their effect triggers when you or ${mate} play them.`,
+        bagHeading: (n, max) => `Card Bag (${n} of ${max})`,
+        bagIn: "Pack",
+        bagOut: "Unpack",
+        bagPacked: "comes along",
+        bagPawned: "pawned to the devil",
+        pactHeading: "Pact with the Devil",
+        pactOffer: (n) => `The devil offers you a pact: every match here starts ${n} points ahead until you beat this location. The price holds just as long. A pact cannot be undone.`,
+        pactPfandBtn: (spName) => `Pawn ${spName}`,
+        pactPfandTip: "The card plays for the opponents here and stays out of your card bag until you win.",
+        pactHoelleBtn: (spName) => `Opponents get ${spName}`,
+        pactActive: (n, price, spName) => `Pact in force: +${n} head start. Price: ${price === "pfand" ? `${spName} plays for the opponents` : `the opponents play with ${spName}`}.`,
+        bagHint: (max, mate) => `You bring at most ${max} cards into each match. Pick before you challenge what helps at the next table. Their effect triggers when you or ${mate} play them.`,
         noLootHint: "None yet. Beat a location to loot your opponents\u2019 special card.",
         backpack: (speck) => `In your pack: ${speck} (+2 head start in your next match).`,
-        passageHint: (level) => `Beat locations along the way to the boss. ${level === 2 ? "Winning a No-Trump Slam" : "Winning a Trump Slam"} gets people talking.`,
+        passageHint: (level) => `Beat locations along the way to the boss. ${{ 1: "Winning a Trump Slam", 2: "Winning a No-Trump Slam", 3: "Winning an Early Double or a Counter 3-Trick 66", 4: "A win without any pact and without your own special cards" }[level] || "A special game"} gets people talking.`,
         diaryHeading: "Travel Diary"
       },
       table: {
@@ -4162,6 +4761,9 @@ button.link {
         scoreTo: (target) => `Match to ${target}`,
         scorePoints: "Points",
         scoreCardPts: "Card Pts",
+        countHidden: "?",
+        countQuestion: "Keep count: how many card points do you have, how many are missing for 66? Reveal",
+        countReveal: (us, them) => `You have ${us} card points, ${Math.max(0, 66 - us)} missing. The opponents have ${them}.`,
         usTeam: (mate) => `You & ${mate}`,
         gameLabel: "Contract:",
         signalExpTip: "Chance a player notices and reads a table signal",
@@ -4295,7 +4897,7 @@ button.link {
   var locText = (key, lang) => dict(lang).locs[key];
   var routeName = (key, lang) => dict(lang).routes[key];
   var temperName = (key, lang) => dict(lang).temper[key];
-  var speckLabel = (level, lang) => dict(lang).speck[level === 2 ? 2 : 1];
+  var speckLabel = (level, lang) => dict(lang).speck[level] || dict(lang).speck[1];
   var lessonText = (id, lang) => dict(lang).lessons[id];
   var banterPools = (lang) => dict(lang).banter;
   var feedbackReasonLabel = (reason, lang) => dict(lang).feedback.reasons[reason] || reason;
@@ -4467,6 +5069,10 @@ button.link {
         return d.hist.loot({ spName: d.specials[p.sp].name, spText: d.specials[p.sp].text });
       case "hist.partieLost":
         return d.hist.partieLost({ at: d.locs[p.loc].at, s0: p.s0, s1: p.s1, lose: d.locs[p.loc].lose });
+      case "hist.pact":
+        return d.hist.pact({ at: d.locs[p.loc].at, price: p.price, spName: d.specials[p.card].name });
+      case "hist.pactEnd":
+        return d.hist.pactEnd({ at: d.locs[p.loc].at, spName: p.card ? d.specials[p.card].name : "" });
       case "hist.leave":
         return d.hist.leave({ at: d.locs[p.loc].at });
       default:
@@ -4688,9 +5294,11 @@ button.link {
     PARTNER: () => PARTNER,
     ROUTES: () => ROUTES,
     TEMPER: () => TEMPER,
+    bagSize: () => bagSize,
     banter: () => banter,
     banterMemory: () => banterMemory,
     canChallenge: () => canChallenge,
+    carryOptions: () => carryOptions,
     countHand: () => countHand,
     endPartie: () => endPartie,
     ferdlExp: () => ferdlExp,
@@ -4699,9 +5307,13 @@ button.link {
     hasNextLevel: () => hasNextLevel,
     idleNote: () => idleNote,
     lessonById: () => lessonById,
+    lessonLevel: () => lessonLevel,
     lessonPartie: () => lessonPartie,
+    lessonsFor: () => lessonsFor,
     lessonsShown: () => lessonsShown,
     levelOf: () => levelOf,
+    levelSlots: () => levelSlots,
+    makePact: () => makePact,
     migratePartie: () => migratePartie,
     migrateWorld: () => migrateWorld,
     neighbors: () => neighbors,
@@ -4711,10 +5323,14 @@ button.link {
     note: () => note2,
     oppSpecial: () => oppSpecial,
     oppSpecials: () => oppSpecials,
+    pactOptions: () => pactOptions,
     partieResult: () => partieResult,
+    partyLoot: () => partyLoot,
+    pawned: () => pawned,
     reachable: () => reachable,
     seatNames: () => seatNames,
     speckName: () => speckName,
+    toggleBag: () => toggleBag,
     travel: () => travel
   });
 
@@ -4723,6 +5339,8 @@ button.link {
     1: {
       name: "Das Tal",
       start: "dorf",
+      terrain: "valley",
+      passage: { route: "geheimgang", contracts: ["bauern", "kbauern", "herren"] },
       intro: "Du sitzt beim Dorfwirt. Ziel: den Grafen im Schloss beim Schnapsen schlagen.",
       title: "Schnapsk\xF6nig des Tals",
       won: "Du schl\xE4gst den Grafen. Du bist Schnapsk\xF6nig des Tals!"
@@ -4730,9 +5348,35 @@ button.link {
     2: {
       name: "Die Stadt",
       start: "post",
+      terrain: "city",
+      passage: { route: "bastei", contracts: ["gang", "zehnergang", "farbengang"] },
       intro: "Hinter dem Schloss f\xFChrt die Stra\xDFe in die Stadt. Du nimmst ein Zimmer im Gasthof zur Post. Ziel: die F\xFCrstin in der Residenz schlagen.",
       title: "Schnapskaiser der Stadt",
       won: "Du schl\xE4gst die F\xFCrstin. Du bist Schnapskaiser der Stadt!"
+    },
+    3: {
+      name: "Traunsee",
+      start: "gmunden",
+      terrain: "lake",
+      bag: 2,
+      passage: { route: "traunstein", contracts: ["kschnapser", "kbauern"], spritzer: true },
+      intro: "Mit dem Zug f\xE4hrst du in die Sommerfrische an den Traunsee. Hier sagen die Herrschaften gern an, und gewonnen wird im Gegenspiel. Ziel: den Erzherzog im Seeschloss Ort schlagen.",
+      title: "k. u. k. Hofschnapser",
+      won: "Du schl\xE4gst den Erzherzog. Du bist k. u. k. Hofschnapser!"
+    },
+    4: {
+      name: "H\xF6llental",
+      start: "einkehr",
+      terrain: "gorge",
+      bag: 2,
+      // clean: a partie won without a Teufelspakt and without own special cards
+      passage: { route: "koehlersteig", clean: true },
+      // Teufelspakt: +3 at the start of every partie at that location until it is beaten; price = pawn a looted card
+      // (plays for the opponents) or the opponents get the Höllenkarte `card`
+      pact: { bonus: 3, card: "schwefel" },
+      intro: "Hinter dem See wird das Tal eng und finster. In der Letzten Einkehr erz\xE4hlt man vom Teufel, der am H\xF6llentor um Seelen kartelt. Ziel: den Teufel schlagen.",
+      title: "Der den Teufel schlug",
+      won: "Du schl\xE4gst den Teufel beim Bauernschnapsen. Du bist der, der den Teufel schlug!"
     }
   };
   var levelOf = (loc) => LOCS[loc].level || 1;
@@ -4804,7 +5448,8 @@ button.link {
       special: "enzian",
       rules: { target: 10, klopfen: true, fixedTrump: 0, banned: ["bettler", "gang", "zehnergang", "farbengang"] },
       ruleText: "Herz ist immer Trumpf.",
-      lose: "Die Sennerin hat Mitleid und packt dir Speck ein: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung."
+      lose: "Die Sennerin hat Mitleid und packt dir Speck ein: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung.",
+      consolation: true
     },
     schloss: {
       favours: "bettler",
@@ -4849,7 +5494,8 @@ button.link {
       special: "melange",
       rules: { target: 12, klopfen: true, values: { gang: 12 } },
       ruleText: "Gang z\xE4hlt hier 12.",
-      lose: "Der Ober hat Mitleid und bringt dir einen Krapfen: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung."
+      lose: "Der Ober hat Mitleid und bringt dir einen Krapfen: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung.",
+      consolation: true
     },
     brauerei: {
       name: "Brauerei",
@@ -4875,7 +5521,7 @@ button.link {
       y: 235,
       opp: ["Tenor Amadeo", "Primadonna Gloria"],
       exp: 0.85,
-      text: "In der Garderobe spielt die Primadonna, und sie gewinnt jeden Stich. Nur im Zehnerloch singt sie falsch.",
+      text: "In der Garderobe sticht die Primadonna in Trumpfspielen fast alles und holt doppelte Augen. Ohne Trumpf und im Zehnerloch singt sie falsch.",
       special: "primadonna",
       rules: { target: 15, klopfen: true, banned: ["bettler"], values: { zehnergang: 15 } },
       ruleText: "Zehnerloch z\xE4hlt hier 15. Kein Bettler in der Garderobe.",
@@ -4890,12 +5536,169 @@ button.link {
       y: 115,
       opp: ["F\xFCrstin Theodora", "Hofrat Pichler"],
       exp: 0.95,
-      text: "Die F\xFCrstin spielt mit zwei Spezialkarten: eine sticht in Spielen mit Trumpf alles, die andere in Spielen ohne. Ohne gute eigene Karten kommst du hier nicht durch.",
+      text: "Die F\xFCrstin spielt mit zwei Spezialkarten: \xFCber beide sticht kein Trumpf, die Krone verdoppelt, der F\xE4cher holt die Augen. Ohne gute eigene Karten kommst du hier nicht durch.",
       special: "krone",
       extra: ["faecher"],
       rules: { target: 24, klopfen: true, banned: ["bettler"] },
       ruleText: "Ein ganzes Bummerl, kein Bettler.",
       lose: "Die F\xFCrstin l\xE4chelt. Du darfst es wieder versuchen."
+    },
+    // ---------- level 3: Traunsee (Gegenspiel) ----------
+    gmunden: {
+      name: "Gasthof am Rathausplatz",
+      at: "im Gasthof am Rathausplatz",
+      level: 3,
+      x: 95,
+      y: 330,
+      opp: ["Rathauswirt Xaver", "Kellnerin Burgi"],
+      exp: 0.65,
+      home: true,
+      text: "Dein Quartier in Gmunden, direkt am See. Hier spielst du ohne Folgen.",
+      rules: { target: 12, klopfen: true },
+      ruleText: "In der Gaststube wird geklopft."
+    },
+    saline: {
+      name: "Saline Ebensee",
+      at: "in der Saline Ebensee",
+      level: 3,
+      favours: "bettler",
+      x: 205,
+      y: 165,
+      opp: ["Sudmeister Gottfried", "Salzfertigerin Loisi"],
+      exp: 0.7,
+      text: "Im Sudhaus ist es hei\xDF und laut. Wer hier selbst ein Spiel ansagt, verbrennt sich an der Salzpfanne. Nur wer keinen Stich will, dem ist sie gleich.",
+      special: "salzpfanne",
+      rules: { target: 15, banned: ["gang", "zehnergang", "farbengang"] },
+      ruleText: "Kein Gang, kein Zehnerloch, kein Farbengang.",
+      lose: "Der Sudmeister wischt sich den Schwei\xDF ab und lacht."
+    },
+    dampfer: {
+      name: "Raddampfer Gisela",
+      at: "auf dem Raddampfer Gisela",
+      level: 3,
+      favours: "spritzer",
+      x: 300,
+      y: 335,
+      opp: ["Kapit\xE4n Anton", "Zahlmeisterin Fanny"],
+      exp: 0.75,
+      text: "An Deck wird nur Normalspiel gespielt. Wer selbst ansagt, dem heizt der Dampfkessel ein. Ist das Normalspiel der anderen schwach, spritzt du.",
+      special: "dampfkessel",
+      rules: {
+        target: 12,
+        klopfen: true,
+        banned: ["bettler", "schnapser", "gang", "zehnergang", "kschnapser", "bauern", "farbengang", "kbauern", "herren"]
+      },
+      ruleText: "Nur Normalspiel und Spritzer.",
+      lose: "Die Zahlmeisterin hat Mitleid und schenkt dir ein Kipferl: deine n\xE4chste Partie beginnt mit 2 Punkten Vorsprung.",
+      consolation: true
+    },
+    traunkirchen: {
+      name: "Traunkirchen",
+      at: "in Traunkirchen",
+      level: 3,
+      favours: "kschnapser",
+      x: 420,
+      y: 235,
+      opp: ["Fischer Hans", "Fischerin Leni"],
+      exp: 0.75,
+      text: "Unter der Fischerkanzel wird schnell gespielt: Ab dem vierten Stich geh\xF6rt der See den Fischern. Wer alle f\xFCnf Stiche braucht, geht unter. Drei Stiche mit 66 Augen reichen, aber nur als Kontraschnapser.",
+      special: "fischerkanzel",
+      rules: { target: 15, banned: ["bettler", "schnapser", "bauern"] },
+      ruleText: "Kein Bettler, kein Schnapser, kein Bauernschnapser. Der Kontraschnapser ist erlaubt.",
+      lose: "Die Fischerin sch\xFCttelt den Kopf: Zu langsam."
+    },
+    seeschloss: {
+      name: "Seeschloss Ort",
+      at: "im Seeschloss Ort",
+      level: 3,
+      final: true,
+      favours: "kontra",
+      x: 545,
+      y: 115,
+      opp: ["Erzherzog Salvator", "Hofdame Josepha"],
+      exp: 0.95,
+      text: "Der Erzherzog verbringt den Sommer im Seeschloss. Seine zwei Spezialkarten wirken nur gegen Spiele, die du ansagst. Lass ihn ansagen und halte dagegen.",
+      special: "doppeladler",
+      extra: ["jagdhorn"],
+      rules: { target: 24, klopfen: true, banned: ["bettler"] },
+      ruleText: "Ein ganzes Bummerl, kein Bettler.",
+      lose: "Der Erzherzog nickt huldvoll. Du darfst es wieder versuchen."
+    },
+    // ---------- level 4: Höllental (Meisterstück) ----------
+    einkehr: {
+      name: "Letzte Einkehr",
+      at: "in der Letzten Einkehr",
+      level: 4,
+      x: 95,
+      y: 330,
+      opp: ["Wirt Sebastian", "Kellnerin Afra"],
+      exp: 0.7,
+      home: true,
+      text: "Das letzte Gasthaus vor dem H\xF6llentor. Hier spielst du ohne Folgen.",
+      rules: { target: 12, klopfen: true },
+      ruleText: "In der Gaststube wird geklopft."
+    },
+    krampushoehle: {
+      name: "Krampush\xF6hle",
+      at: "in der Krampush\xF6hle",
+      level: 4,
+      favours: "schnapser",
+      x: 205,
+      y: 165,
+      opp: ["Krampus Ruprecht", "Krampus Gangerl"],
+      exp: 0.8,
+      text: "Die Krampusse schwingen ab dem vierten Stich die Rute. Wer seine 66 Augen schon nach drei Stichen hat, kommt ungeschoren davon.",
+      special: "rute",
+      rules: { target: 15, banned: ["bettler"] },
+      ruleText: "Kein Bettler.",
+      lose: "Die Krampusse rasseln mit den Ketten."
+    },
+    perchtenstube: {
+      name: "Perchtenstube",
+      at: "in der Perchtenstube",
+      level: 4,
+      favours: "gang",
+      x: 300,
+      y: 335,
+      opp: ["Schiachpercht Lenz", "Sch\xF6nperchtin Hulda"],
+      exp: 0.8,
+      text: "Hinter der Larve holt die Percht in Spielen mit Trumpf die Augen jedes Stichs, doppelt, wenn sie ihn auch sticht. Ohne Trumpf ist sie ein gew\xF6hnlicher Ober. Im Normalspiel hei\xDFt das: keine Augen in ihren Stich schmieren; hast du alle Stiche ohne Trumpf sicher, entgehst du ihr mit einem Gang.",
+      special: "larve",
+      rules: { target: 12, banned: ["bettler"] },
+      ruleText: "Kein Bettler.",
+      lose: "Die Perchten tanzen um dich herum."
+    },
+    hexenhaus: {
+      name: "Hexenhaus",
+      at: "im Hexenhaus",
+      level: 4,
+      favours: "normal",
+      x: 420,
+      y: 235,
+      opp: ["Hexe Rauhgret", "Kr\xE4uterweib Walburga"],
+      exp: 0.95,
+      text: "Die Hexen lesen jedes Zeichen. Ihr Besen fliegt erst ab dem dritten Stich. Hier gewinnt, wer mit Ferdl klopft, Tr\xFCmpfe aufhebt und mitz\xE4hlt.",
+      special: "besen",
+      rules: { target: 10, klopfen: true, banned: ["bettler", "gang", "zehnergang", "farbengang"] },
+      ruleText: "Nur Spiele mit Trumpf, kein Bettler.",
+      lose: "Die Hexe kichert und r\xFChrt im Kessel."
+    },
+    hoellentor: {
+      name: "H\xF6llentor",
+      at: "am H\xF6llentor",
+      level: 4,
+      final: true,
+      favours: "normal",
+      x: 545,
+      y: 115,
+      opp: ["Der Teufel", "Teufels Gro\xDFmutter"],
+      exp: 0.95,
+      text: "Der Teufel spielt fair, aber meisterhaft. Er hat nur zwei Spezialkarten, beide wirken erst sp\xE4t oder holen Augen. Gewinnen musst du mit deinem K\xF6nnen.",
+      special: "pferdefuss",
+      extra: ["hoellenfeuer"],
+      rules: { target: 24, klopfen: true },
+      ruleText: "Ein ganzes Bummerl, alle Spiele erlaubt.",
+      lose: "Der Teufel grinst. Du darfst es wieder versuchen."
     }
   };
   var ROUTES = {
@@ -4913,7 +5716,21 @@ button.link {
     opernring: { a: "kaffee", b: "oper", name: "Opernring" },
     hinterhof: { a: "brauerei", b: "oper", name: "Hinterhof" },
     hofgasse: { a: "oper", b: "residenz", name: "Hofgasse" },
-    bastei: { a: "kaffee", b: "residenz", name: "Bastei", hidden: true }
+    bastei: { a: "kaffee", b: "residenz", name: "Bastei", hidden: true },
+    esplanade: { a: "gmunden", b: "saline", name: "Seeuferstra\xDFe" },
+    landungssteg: { a: "gmunden", b: "dampfer", name: "Landungssteg" },
+    salzweg: { a: "saline", b: "traunkirchen", name: "Soleleitungsweg" },
+    seeweg: { a: "dampfer", b: "traunkirchen", name: "Seeweg" },
+    schlossbruecke: { a: "traunkirchen", b: "seeschloss", name: "Seebr\xFCcke" },
+    ostufer: { a: "saline", b: "seeschloss", name: "Ostufer" },
+    traunstein: { a: "dampfer", b: "seeschloss", name: "Traunstein-Steig", hidden: true },
+    hoehlenweg: { a: "einkehr", b: "krampushoehle", name: "H\xF6hlenweg" },
+    perchtenweg: { a: "einkehr", b: "perchtenstube", name: "Perchtenweg" },
+    hexensteig: { a: "krampushoehle", b: "hexenhaus", name: "Hexensteig" },
+    moorweg: { a: "perchtenstube", b: "hexenhaus", name: "Moorweg" },
+    hoellenweg: { a: "hexenhaus", b: "hoellentor", name: "H\xF6llenweg" },
+    klamm: { a: "krampushoehle", b: "hoellentor", name: "Teufelsklamm" },
+    koehlersteig: { a: "perchtenstube", b: "hoellentor", name: "K\xF6hlersteig", hidden: true }
   };
 
   // src/world/lessons.js
@@ -5007,17 +5824,61 @@ button.link {
         "Alle am Tisch h\xF6ren das Klopfen. Auch die Gegner k\xF6nnen es deuten."
       ],
       tips: ["Nicht jeder versteht jedes Zeichen. Ferdl lernt mit jeder Partie dazu."]
+    },
+    {
+      id: "gegenspiel",
+      level: 3,
+      title: "Gegenspiel",
+      goal: "Halte gegen die Ansagen der Gegner: mit Kontra, Spritzer oder einem Kontraschnapser.",
+      hands: 4,
+      // the opponents bid more often here, so there is something to defend against
+      rules: { banned: only("bettler", "schnapser", "kschnapser"), aggressive: true },
+      intro: [
+        "Am Traunsee sagen die Gegner gern an. Gewonnen wird oft auf der anderen Seite: im <b>Gegenspiel</b>.",
+        "<b>Kontra:</b> Glaubst du, der Ansager schafft sein Spiel nicht, verdoppelst du nach dem Bieten die Punkte. Der Ansager kann mit <b>Re</b> noch einmal verdoppeln.",
+        "<b>Spritzer</b> (Hausregel): Sagt die Vorhand der Gegner Normalspiel an, kannst du es schon beim Bieten verdoppeln. Schwach ist ein Normalspiel, wenn du selbst Trumpf-Ass oder Trumpf-Zehner h\xE4ltst oder ein Paar melden kannst.",
+        "<b>Kontraschnapser:</b> Hast du als Gegner der Vorhand eine starke Hand, sag selbst an: 66 Augen in den ersten drei Stichen, jeden Stich machen. Er bringt 12 Punkte.",
+        "Z\xE4hl mit: Wie viele Augen haben die Ansager schon, wie viele fehlen ihnen noch? Daraus folgt, ob dein Kontra h\xE4lt."
+      ],
+      tips: [
+        "Kontra lohnt sich, wenn du zwei sichere Stiche in der Hand hast.",
+        "Spritz nur, wenn auch Ferdl mitspielen kann: Er sitzt im Gegenspiel neben dir."
+      ]
+    },
+    {
+      id: "zaehlen",
+      level: 4,
+      title: "Augen z\xE4hlen",
+      goal: "Z\xE4hl die Augen beider Teams mit: Wie viele fehlen euch noch bis 66?",
+      hands: 4,
+      count: true,
+      // the table hides the card points; the player counts and reveals them (src/ui/table.js)
+      rules: { banned: only("schnapser"), klopfen: true },
+      intro: [
+        "Wer mitz\xE4hlt, wei\xDF jederzeit, wie viele Augen seinem Team bis 66 fehlen. In dieser Lektion sind die Augen im Punktestand versteckt.",
+        "Z\xE4hl nach jedem Stich: <b>Ass 11, Zehner 10, K\xF6nig 4, Ober 3, Unter 2</b>. Gemeldete Paare z\xE4hlen mit (20, in Trumpf 40), sobald dein Team einen Stich hat.",
+        "Fehlen nur noch wenige Augen, spiel sicher: Ein Ass oder ein hoher Trumpf beendet das Spiel. Fehlen viele, heb deine Tr\xFCmpfe f\xFCr die Stiche mit vielen Augen auf.",
+        "Z\xE4hlen hilft auch beim Ansagen: Bringen deine sicheren Stiche in den ersten drei Stichen 66 Augen? Dann sag <b>Schnapser</b> an.",
+        "Unter dem Punktestand kannst du deine Rechnung aufdecken."
+      ],
+      tips: [
+        "Im ganzen Spiel gibt es 120 Augen. Habt ihr 55, fehlt nur noch ein Zehner und ein Unter.",
+        "Z\xE4hl auch f\xFCr die Gegner: Haben sie 60, darf kein Ass mehr an sie gehen."
+      ]
     }
   ];
   var lessonById = (id) => LESSONS.find((x) => x.id === id);
-  var lessonsShown = (W) => (W.level || 1) === 1;
+  var lessonLevel = (L) => L.level || 1;
+  var lessonsFor = (level) => LESSONS.filter((x) => lessonLevel(x) === (level || 1));
+  var lessonsShown = (W) => lessonsFor(W.level).length > 0;
   function nextLesson(id) {
-    const i = LESSONS.findIndex((x) => x.id === id);
-    return i >= 0 && i < LESSONS.length - 1 ? LESSONS[i + 1] : null;
+    const list = lessonsFor(lessonLevel(lessonById(id) || {}));
+    const i = list.findIndex((x) => x.id === id);
+    return i >= 0 && i < list.length - 1 ? list[i + 1] : null;
   }
   function lessonPartie(W, id) {
     const L = lessonById(id);
-    const P = newPartie(W, "dorf", true);
+    const P = newPartie(W, LEVELS[lessonLevel(L)].start, true);
     P.rules = { ...L.rules, lesson: true };
     P.target = null;
     P.lesson = id;
@@ -5029,16 +5890,6 @@ button.link {
   // src/world/campaign.js
   var PARTNER = "Ferdl";
   var TEMPER = { treu: "treu", stur: "stur", schlitzohr: "Schlitzohr" };
-  var PASSAGES = {
-    1: {
-      route: "geheimgang",
-      contracts: ["bauern", "kbauern", "herren"]
-    },
-    2: {
-      route: "bastei",
-      contracts: ["gang", "zehnergang", "farbengang"]
-    }
-  };
   var HIST_MAX = 30;
   function freshWorld() {
     const routes = {};
@@ -5052,13 +5903,17 @@ button.link {
       speck: 0,
       won: false,
       loot: [],
+      bag: [],
+      pacts: {},
       lessons: {},
       hist: [{ k: "hist.levelIntro", p: { level: 1 }, c: "" }]
     };
   }
   function migrateWorld(W) {
     if (!W.loot) W.loot = [];
+    if (!W.bag) W.bag = [...W.loot];
     if (!W.lessons) W.lessons = {};
+    if (!W.pacts) W.pacts = {};
     if (!W.level) W.level = 1;
     if (!W.routes) W.routes = {};
     for (const k in ROUTES) if (!W.routes[k]) W.routes[k] = { open: !ROUTES[k].hidden, known: !ROUTES[k].hidden };
@@ -5074,15 +5929,34 @@ button.link {
     return P;
   }
   var hasNextLevel = (W) => W.won && !!LEVELS[W.level + 1];
+  function levelSlots(level) {
+    const out = /* @__PURE__ */ new Set();
+    for (const k in LOCS) {
+      if (levelOf(k) !== level) continue;
+      for (const key of [LOCS[k].special, ...LOCS[k].extra || []].filter(Boolean))
+        out.add(SPECIALS[key].s + ":" + SPECIALS[key].r);
+    }
+    const pc = LEVELS[level] && LEVELS[level].pact && SPECIALS[LEVELS[level].pact.card];
+    if (pc) out.add(pc.s + ":" + pc.r);
+    return out;
+  }
+  function carryOptions(W) {
+    if (!hasNextLevel(W)) return [];
+    const taken = levelSlots(W.level + 1);
+    return W.loot.filter((k) => !taken.has(SPECIALS[k].s + ":" + SPECIALS[k].r));
+  }
   function nextLevel(W, carry) {
     if (!hasNextLevel(W)) throw new Error("kein n\xE4chstes Level");
     if (!W.loot.includes(carry)) throw new Error("Karte nicht erbeutet: " + carry);
+    if (!carryOptions(W).includes(carry)) throw new Error("Karte passt nicht ins n\xE4chste Level: " + carry);
     const L = LEVELS[W.level + 1];
     W.level++;
     W.loc = L.start;
     W.speck = 0;
     W.won = false;
     W.loot = [carry];
+    W.bag = [carry];
+    W.pacts = {};
     W.beaten = { [L.start]: true };
     note2(W, { k: "hist.nextLevel", p: { level: W.level, carry } }, "good");
   }
@@ -5122,6 +5996,39 @@ button.link {
     return k && !W.loot.includes(k) ? k : null;
   };
   var oppSpecials = (W, loc) => [oppSpecial(W, loc), ...LOCS[loc].extra || []].filter(Boolean);
+  var bagSize = (W) => LEVELS[W.level].bag || 0;
+  function partyLoot(W) {
+    const n = bagSize(W);
+    const free = (k) => W.loot.includes(k) && !pawned(W).includes(k);
+    if (!n) return W.loot.filter(free);
+    return (W.bag || []).filter(free).slice(0, n);
+  }
+  function toggleBag(W, key) {
+    if (!W.loot.includes(key)) throw new Error("Karte nicht erbeutet: " + key);
+    if (pawned(W).includes(key)) return false;
+    const bag = partyLoot(W);
+    if (bag.includes(key)) W.bag = bag.filter((k) => k !== key);
+    else if (bag.length < bagSize(W)) W.bag = [...bag, key];
+    else return false;
+    return true;
+  }
+  var pawned = (W) => Object.values(W.pacts || {}).filter((x) => x.price === "pfand").map((x) => x.card);
+  function pactOptions(W, loc) {
+    const pact = LEVELS[levelOf(loc)].pact;
+    if (!pact || levelOf(loc) !== W.level || LOCS[loc].home || W.beaten[loc] || (W.pacts || {})[loc]) return null;
+    return { pfand: W.loot.filter((k) => !pawned(W).includes(k)), hoelle: pact.card };
+  }
+  function makePact(W, loc, price, card2) {
+    const opt = pactOptions(W, loc);
+    if (!opt) throw new Error("kein Pakt m\xF6glich: " + loc);
+    if (price === "pfand") {
+      if (!opt.pfand.includes(card2)) throw new Error("Karte nicht verpf\xE4ndbar: " + card2);
+      W.pacts[loc] = { price, card: card2 };
+      W.bag = (W.bag || []).filter((k) => k !== card2);
+    } else if (price === "hoelle") W.pacts[loc] = { price };
+    else throw new Error("unbekannter Preis: " + price);
+    note2(W, { k: "hist.pact", p: { loc, price, card: price === "pfand" ? card2 : opt.hoelle } }, "bad");
+  }
   function canChallenge(W, loc) {
     if (W.won) return { ok: false, why: "won" };
     if (!reachable(W, W.loc).includes(loc)) return { ok: false, why: "noroute" };
@@ -5147,9 +6054,17 @@ button.link {
       specials: []
     };
     for (const key of oppSpecials(W, loc)) P.specials.push({ key, team: 1 });
-    for (const key of W.loot) P.specials.push({ key, team: 0 });
+    for (const key of partyLoot(W)) P.specials.push({ key, team: 0 });
+    const pact = !P.practice && (W.pacts || {})[loc];
+    if (pact) {
+      const def = LEVELS[levelOf(loc)].pact;
+      P.pact = true;
+      P.specials.push({ key: pact.price === "pfand" ? pact.card : def.card, team: 1 });
+      P.score[0] += def.bonus;
+      P.bonus.push({ k: "bonus.pact", p: { n: def.bonus } });
+    }
     if (W.speck && !P.practice) {
-      P.score[0] = 2;
+      P.score[0] += 2;
       W.speck = 0;
       P.bonus.push({ k: "bonus.speck", p: { level: W.level } });
     }
@@ -5178,26 +6093,20 @@ button.link {
     if (P.lesson) P.played = (P.played || 0) + 1;
     if (P.practice) return;
     const lv = levelOf(P.loc);
-    const pass = PASSAGES[lv];
-    if (pass && team(r.declarer) === 0 && r.ok && pass.contracts.includes(r.contract) && !W.routes[pass.route].known) {
+    const pass = LEVELS[lv].passage;
+    if (pass && !W.routes[pass.route].known && (wonContract(r, pass) || pass.spritzer && wonSpritzer(P.hand))) {
       W.routes[pass.route] = { open: true, known: true };
       note2(W, { k: "hist.passage", p: { level: lv } }, "good");
     }
   }
+  var wonContract = (r, pass) => team(r.declarer) === 0 && r.ok && (pass.contracts || []).includes(r.contract);
+  var wonSpritzer = (st) => st.result.winTeam === 0 && Object.entries(st.kontraSaid || {}).some(([s, k]) => k === "spritzer" && team(+s) === 0);
   function partieResult(P) {
     if (P.lesson) return P.played >= lessonById(P.lesson).hands ? true : null;
     if (P.score[0] >= P.target) return true;
     if (P.score[1] >= P.target) return false;
     return null;
   }
-  var LOSE_EFFECTS = {
-    alm: (W) => {
-      W.speck = 2;
-    },
-    kaffee: (W) => {
-      W.speck = 2;
-    }
-  };
   function endPartie(W, P, won) {
     const k = P.loc;
     const l = LOCS[k];
@@ -5213,20 +6122,30 @@ button.link {
         } else note2(W, { k: "hist.partieWon", p: { loc: k, s0: P.score[0], s1: P.score[1] } }, "good");
         W.beaten[k] = true;
         W.loc = k;
+        if (W.pacts && W.pacts[k]) {
+          note2(W, { k: "hist.pactEnd", p: { loc: k, card: W.pacts[k].card } }, "good");
+          delete W.pacts[k];
+        }
+        const pass = LEVELS[levelOf(k)].passage;
+        if (pass && pass.clean && !W.routes[pass.route].known && !P.pact && !P.specials.some((x) => x.team === 0)) {
+          W.routes[pass.route] = { open: true, known: true };
+          note2(W, { k: "hist.passage", p: { level: levelOf(k) } }, "good");
+        }
         if (l.special && !W.loot.includes(l.special)) {
           W.loot.push(l.special);
+          if (bagSize(W) && partyLoot(W).length < bagSize(W)) W.bag = [...partyLoot(W), l.special];
           note2(W, { k: "hist.loot", p: { sp: l.special } }, "good");
         }
       } else {
         note2(W, { k: "hist.partieLost", p: { loc: k, s0: P.score[0], s1: P.score[1] } }, "bad");
-        if (LOSE_EFFECTS[k]) LOSE_EFFECTS[k](W);
+        if (l.consolation) W.speck = 2;
       }
     }
     W.partien = (W.partien || 0) + 1;
   }
 
   // src/world/banter.js
-  var FEIN = /* @__PURE__ */ new Set(["schloss", "kaffee", "oper", "residenz"]);
+  var FEIN = /* @__PURE__ */ new Set(["schloss", "kaffee", "oper", "residenz", "seeschloss", "hoellentor"]);
   var OPPS = [1, 3];
   var MAX_LINES = 1;
   var pick = (rng, a) => a[Math.floor(rng() * a.length) % a.length];
@@ -5599,6 +6518,10 @@ button.link {
     parts.push(D.partieTo(r.target));
     return `<div class="rule small"><b>${D.houseRulePrefix}</b> ${parts.join(" ")}</div>`;
   }
+  function tipHTML(locKey) {
+    const tip2 = locText(locKey) && locText(locKey).tip;
+    return tip2 ? `<div class="tip small"><b>${t().ui.dom.tipPrefix}</b> ${tip2}</div>` : "";
+  }
   var spCard = (key) => {
     const d = SPECIALS[key];
     return { s: d.s, r: d.r, sp: d };
@@ -5855,20 +6778,54 @@ button.link {
     <path d="M0 270 C90 250 140 290 210 265 S330 230 360 280 S470 330 620 300" fill="none" stroke="var(--water)" stroke-width="9" stroke-linecap="round" opacity=".7"/>
     <g fill="var(--paper-ink)" opacity=".16"><path d="M250 60 h30 v-20 l15 -12 l15 12 v20 h30 v40 h-90z"/><path d="M360 90 h25 v-25 l12 -10 l12 10 v25 h25 v30 h-74z"/><path d="M120 60 h40 v35 h-40z"/><path d="M455 330 h35 v-22 l17 -14 l17 14 v22 h20 v30 h-89z"/></g>
     <g fill="var(--laub)" opacity=".25"><circle cx="40" cy="120" r="14"/><circle cx="62" cy="108" r="11"/><circle cx="560" cy="250" r="13"/><circle cx="582" cy="262" r="10"/></g>`;
+  var LAKE = `
+    <path d="M150 395 C170 330 250 300 330 285 S470 250 500 190 S560 90 610 60 L620 0 L620 120 C590 170 560 250 520 300 S380 370 300 400z" fill="var(--water)" opacity=".35"/>
+    <g fill="var(--paper-ink)" opacity=".18"><path d="M440 150 l50 -110 l50 110z"/><path d="M500 160 l35 -70 l35 70z"/><path d="M20 140 l40 -70 l40 70z"/></g>
+    <g fill="var(--laub)" opacity=".25"><circle cx="40" cy="200" r="14"/><circle cx="62" cy="188" r="11"/><circle cx="140" cy="60" r="13"/><circle cx="162" cy="72" r="10"/></g>`;
+  var GORGE = `
+    <g fill="var(--paper-ink)" opacity=".2"><path d="M0 0 h160 l-40 60 l30 50 l-60 70 l20 60 l-110 40z"/><path d="M620 400 h-150 l40 -50 l-30 -60 l60 -50 l-20 -70 l100 -40z"/></g>
+    <path d="M110 400 C140 330 200 300 250 280 S360 250 420 200 S520 120 600 30" fill="none" stroke="var(--water)" stroke-width="6" stroke-linecap="round" opacity=".6"/>
+    <g fill="var(--them)" opacity=".25"><circle cx="575" cy="70" r="6"/><circle cx="590" cy="88" r="4"/><circle cx="560" cy="92" r="3"/></g>
+    <g fill="var(--laub)" opacity=".22"><circle cx="40" cy="250" r="12"/><circle cx="60" cy="238" r="9"/><circle cx="250" cy="70" r="11"/></g>`;
+  var TERRAIN = { valley: VALLEY, city: CITY, lake: LAKE, gorge: GORGE };
   function lessonHTML(W, activeLesson) {
     const M = t().ui.map;
     const done = W.lessons || {};
-    const nDone = LESSONS.filter((x) => done[x.id]).length;
+    const list = lessonsFor(W.level);
+    const nDone = list.filter((x) => done[x.id]).length;
     const L = activeLesson && lessonById(activeLesson);
     const LT = L && lessonText(L.id);
-    return `<h2 style="font-size:1.05rem">${M.lessonHeading}${nDone ? ` <small class="muted">${M.lessonProgress(nDone, LESSONS.length)}</small>` : ""}</h2>
+    return `<h2 style="font-size:1.05rem">${M.lessonHeading}${nDone ? ` <small class="muted">${M.lessonProgress(nDone, list.length)}</small>` : ""}</h2>
     <div class="small muted">${nDone ? M.lessonRepeatHint : M.lessonNewHint}</div>
-    <div class="lessons">${LESSONS.map(
+    <div class="lessons">${list.map(
       (x, i) => `<button type="button" data-lesson="${x.id}" class="${done[x.id] ? "done" : ""}${x.id === activeLesson ? " sel" : ""}" aria-expanded="${x.id === activeLesson}">${i + 1}. ${lessonText(x.id).title}${done[x.id] ? " \u2713" : ""}</button>`
     ).join("")}</div>
     ${L ? `<div class="lessonintro"><div><b>${M.lessonGoalLabel}</b> ${LT.goal} <span class="muted">${M.lessonHandsMeta(L.hands)}</span></div>
       <ul>${LT.intro.map((line) => `<li>${line}</li>`).join("")}</ul>
       <div class="row"><button class="primary" id="startLesson" type="button">${M.startLesson}</button></div></div>` : ""}`;
+  }
+  function pactHTML(W, loc, M) {
+    const def = LEVELS[levelOf(loc)].pact;
+    if (!def) return "";
+    const cur = (W.pacts || {})[loc];
+    if (cur) {
+      const sp = specialText(cur.price === "pfand" ? cur.card : def.card).name;
+      return `<div class="small"><b>${M.pactHeading}:</b> ${M.pactActive(def.bonus, cur.price, sp)}</div>`;
+    }
+    const opt = pactOptions(W, loc);
+    if (!opt) return "";
+    return `<details class="pact small"><summary>${M.pactHeading}</summary><div>${M.pactOffer(def.bonus)}</div>
+    <div class="row">${opt.pfand.map(
+      (key) => `<button type="button" data-pact="pfand" data-card="${key}" title="${M.pactPfandTip}">${M.pactPfandBtn(specialText(key).name)}</button>`
+    ).join(
+      ""
+    )}<button type="button" data-pact="hoelle">${M.pactHoelleBtn(specialText(opt.hoelle).name)}</button></div></details>`;
+  }
+  function bagButton(W, key, M) {
+    if (pawned(W).includes(key)) return `<div class="small muted">${M.bagPawned}</div>`;
+    const inBag = partyLoot(W).includes(key);
+    const full = !inBag && partyLoot(W).length >= bagSize(W);
+    return `<div class="row"><button type="button" data-bag="${key}" aria-pressed="${inBag}"${full ? " disabled" : ""}>${inBag ? M.bagOut : M.bagIn}</button>${inBag ? ` <span class="small">${M.bagPacked}</span>` : ""}</div>`;
   }
   function renderMap(ui2, ctl2) {
     const M = t().ui.map;
@@ -5894,7 +6851,7 @@ button.link {
       <text class="sub" x="${l2.x}" y="${l2.y + 46}" text-anchor="middle">${l2.home ? M.locHome : W.beaten[k2] ? M.locBeaten : M.locTo(l2.rules.target)}</text>
     </g>`;
     }).join("");
-    const terrain = W.level === 2 ? CITY : VALLEY;
+    const terrain = TERRAIN[LEVELS[W.level].terrain] || VALLEY;
     const k = sel || W.loc;
     const l = LOCS2[k];
     const lt = locText(k);
@@ -5904,7 +6861,7 @@ button.link {
     const lv = levelText(W.level);
     if (W.won && hasNextLevel(W))
       action = `<div class="banner"><h2>${lv.title}</h2><div>${M.nextLevelIntro(levelText(W.level + 1).into)}</div></div>
-      <div class="row carry">${W.loot.map((key) => `<button class="primary" type="button" data-carry="${key}">${M.carryBtn(specialText(key).name)}</button>`).join("")}</div>`;
+      <div class="row carry">${carryOptions(W).map((key) => `<button class="primary" type="button" data-carry="${key}">${M.carryBtn(specialText(key).name)}</button>`).join("")}</div>`;
     else if (W.won) action = `<div class="banner"><h2>${lv.title}</h2><div>${M.wonRestart(lv.won)}</div></div>`;
     else if (k === W.loc)
       action = `<div class="row"><button class="primary" id="playHere" type="button">${l.home ? M.playPractice : M.playRematch}</button></div>`;
@@ -5912,13 +6869,15 @@ button.link {
       if (W.beaten[k])
         action = `<div class="row"><button class="primary" id="travel" type="button">${M.travelBtn}</button><span class="muted small">${M.alreadyBeaten}</span></div>`;
       else
-        action = `<div class="row"><button class="primary" id="travel" type="button">${M.challengeBtn}</button></div>
+        action = `${pactHTML(W, k, M)}<div class="row"><button class="primary" id="travel" type="button">${M.challengeBtn}</button></div>
       <div class="muted small">${M.challengeHint(!!oppSpecial2(k), lt.lose)}</div>`;
     } else action = `<div class="muted">${M.noRoute(locText(W.loc).name)}</div>`;
     const done = W.lessons || {};
-    const nDone = LESSONS.filter((x) => done[x.id]).length;
-    const activeLesson = selLesson === null && !nDone && !W.partien ? LESSONS[0].id : selLesson;
+    const levelLessons = lessonsFor(W.level);
+    const nDone = levelLessons.filter((x) => done[x.id]).length;
+    const activeLesson = selLesson === null && !nDone && !W.partien && levelLessons.length ? levelLessons[0].id : selLesson;
     const lessons = l.home && lessonsShown(W) ? lessonHTML(W, activeLesson) : "";
+    const bag = bagSize(W);
     $("view").innerHTML = `<div class="mapgrid">
     <div class="mapbox"><svg viewBox="0 0 620 400" role="img" aria-label="${M.mapAria(lv.name)}">${terrain}${routes}${locs}</svg></div>
     <div class="panel">
@@ -5927,12 +6886,13 @@ button.link {
       ${lessons}
       ${!l.home ? `<div class="small">${M.opponentsLabel} <b>${lt.opp.join(" & ")}</b></div>` : ""}
       ${l.home ? "" : ruleHTML(l, k)}
+      ${tipHTML(k)}
       ${oppSpecials2(k).map((x) => specHTML(x, M.oppSpecialPrefix)).join("")}
       ${l.special && !oppSpecial2(k) ? `<div class="small muted">${M.alreadyLooted(specialText(l.special).name)}</div>` : ""}
       ${action}
-      <h2 style="font-size:1.05rem">${M.yourSpecialsHeading}</h2>
-      ${W.loot.length ? `${W.loot.map((key) => specHTML(key, "", true)).join("")}
-        <div class="small muted">${M.lootHint(PARTNER2)}</div>` : `<div class="small muted">${M.noLootHint}</div>`}
+      <h2 style="font-size:1.05rem">${bag ? M.bagHeading(partyLoot(W).length, bag) : M.yourSpecialsHeading}</h2>
+      ${W.loot.length ? `${W.loot.map((key) => specHTML(key, "", true) + (bag ? bagButton(W, key, M) : "")).join("")}
+        <div class="small muted">${bag ? M.bagHint(bag, PARTNER2) : M.lootHint(PARTNER2)}</div>` : `<div class="small muted">${M.noLootHint}</div>`}
       ${W.speck ? `<div class="small">${M.backpack(speckName(W))}</div>` : ""}
       <div class="small muted">${M.passageHint(W.level)}</div>
       <h2 style="font-size:1.05rem">${M.diaryHeading}</h2>
@@ -5955,6 +6915,8 @@ button.link {
     if (tr) tr.onclick = () => ctl2.travel(k);
     const ph = $("playHere");
     if (ph) ph.onclick = () => ctl2.startPartie(W.loc, true);
+    document.querySelectorAll("[data-pact]").forEach((b) => b.onclick = () => ctl2.pact(k, b.dataset.pact, b.dataset.card));
+    document.querySelectorAll("[data-bag]").forEach((b) => b.onclick = () => ctl2.toggleBag(b.dataset.bag));
     document.querySelectorAll("[data-carry]").forEach((b) => b.onclick = () => ctl2.carry(b.dataset.carry));
     document.querySelectorAll("[data-lesson]").forEach(
       (b) => b.onclick = () => {
@@ -6150,20 +7112,24 @@ button.link {
     const lesson = P.lesson && lessonById(P.lesson);
     const LT = lesson && lessonText(lesson.id);
     const pct = (tm) => Math.min(100, P.score[tm] / P.target * 100);
+    const hide = lesson && lesson.count && st.phase !== "done";
+    const eyes = (tm) => hide ? T.countHidden : `${st.teamPts[tm]}${meldSum(tm)}`;
     const lessonBox = lesson ? `<details class="lessonintro small"${P.played ? "" : " open"}><summary>${T.lessonSummary(Math.min(P.played + 1, lesson.hands), lesson.hands, LT.goal)}</summary>
       <ul>${LT.intro.map((line) => `<li>${line}</li>`).join("")}</ul>
       ${LT.tips.map((tip2) => `<div><b>${T.rememberLabel}</b> ${tip2}</div>`).join("")}</details>` : "";
     const side = `<div class="panel">
-    <div class="ptitle"><h2>${lesson ? T.lessonHeading(LESSONS.indexOf(lesson) + 1, LT.title) : lt.name + (P.practice ? T.practiceSuffix : "")}</h2>
+    <div class="ptitle"><h2>${lesson ? T.lessonHeading(lessonsFor(lessonLevel(lesson)).indexOf(lesson) + 1, LT.title) : lt.name + (P.practice ? T.practiceSuffix : "")}</h2>
     <button type="button" id="leave" class="leave" title="${P.practice ? T.leavePracticeTip : T.leaveMatchTip}">${P.practice ? T.leavePractice : T.leaveMatch}</button></div>
     ${lessonBox}
     ${l.home ? "" : ruleHTML(l, P.loc)}
+    ${lesson || !coachOn(P) ? "" : tipHTML(P.loc)}
     ${P.specials.map((x) => specHTML(x.key, x.team ? T.oppPrefix : T.ourPrefix, true, P)).join("")}
     <div class="score">
       <span class="h">${lesson ? T.scoreLesson : T.scoreTo(P.target)}</span><span class="h">${T.scorePoints}</span><span class="h">${T.scoreCardPts}</span>
-      <span style="color:var(--you)">${T.usTeam(PARTNER3)}</span><b>${P.score[0]}</b><span>${st.teamPts[0]}${meldSum(0)}</span>
-      <span style="color:var(--them)">${lt.opp[0].split(" ").pop()} & ${lt.opp[1].split(" ").pop()}</span><b>${P.score[1]}</b><span>${st.teamPts[1]}${meldSum(1)}</span>
+      <span style="color:var(--you)">${T.usTeam(PARTNER3)}</span><b>${P.score[0]}</b><span>${eyes(0)}</span>
+      <span style="color:var(--them)">${lt.opp[0].split(" ").pop()} & ${lt.opp[1].split(" ").pop()}</span><b>${P.score[1]}</b><span>${eyes(1)}</span>
     </div>
+    ${hide ? `<details class="count small"><summary>${T.countQuestion}</summary>${T.countReveal(st.teamPts[0], st.teamPts[1])}</details>` : ""}
     ${lesson ? "" : `<div class="bar"><i style="width:${pct(0)}%;background:var(--you)"></i></div>
     <div class="bar"><i style="width:${pct(1)}%;background:var(--them)"></i></div>`}
     <div class="small">${T.gameLabel} <b>${contract}</b></div>
@@ -6462,7 +7428,7 @@ button.link {
   }
 
   // src/ui/app.js
-  var BUILD = true ? "fe05e669e6" : "dev";
+  var BUILD = true ? "757b6d383e" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var ui = createState(migrateWorld(loadWorld() || freshWorld()));
   var save = () => saveWorld(ui.W);
@@ -6580,6 +7546,16 @@ button.link {
     },
     carry(key) {
       carrySpecial(ui, key);
+      save();
+      render();
+    },
+    pact(loc, price, card2) {
+      makePact(ui.W, loc, price, card2);
+      save();
+      render();
+    },
+    toggleBag(key) {
+      toggleBag(ui.W, key);
       save();
       render();
     },
