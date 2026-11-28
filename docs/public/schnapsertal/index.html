@@ -1595,7 +1595,7 @@ button.link {
       <div class="row fb-actions"><button value="close" id="tr-close" autofocus>Schließen</button></div>
     </form>
   </dialog>
-  <footer class="small"><a id="ft-imprint" href="https://hablich.dev/impressum">Impressum</a> · <a id="ft-privacy" href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version 757b6d383e · 27.11.2026, 01:46</span></footer>
+  <footer class="small"><a id="ft-imprint" href="https://hablich.dev/impressum">Impressum</a> · <a id="ft-privacy" href="https://hablich.dev/datenschutz">Datenschutz</a> · <span class="build">Version 67acbe9151 · 27.11.2026, 14:33</span></footer>
 </div>
 <script>(() => {
   var __defProp = Object.defineProperty;
@@ -6442,7 +6442,7 @@ button.link {
     }
   }
   var statsUrl = (feedbackUrl) => feedbackUrl ? feedbackUrl.replace(/\/api\/feedback$/, "/api/stats") : "";
-  function handRecord({ P, build = "dev", coach = false, now = Date.now(), id }) {
+  function handRecord({ P, build = "dev", engine = "dev", coach = false, now = Date.now(), id }) {
     const st = P.hand;
     const r = st.result;
     const deal = st.hands.map((h) => h.map((c) => c.id));
@@ -6453,6 +6453,7 @@ button.link {
       v: STATS_VERSION,
       id: id || `${now.toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
       build,
+      engine,
       mode: P.practice ? "uebung" : "kampagne",
       loc: P.loc,
       rules: P.rules || {},
@@ -7428,7 +7429,8 @@ button.link {
   }
 
   // src/ui/app.js
-  var BUILD = true ? "757b6d383e" : "dev";
+  var BUILD = true ? "67acbe9151" : "dev";
+  var ENGINE = true ? "2ddd7865ee" : "dev";
   var fbUrl = globalThis.SCHNAPSERTAL_FEEDBACK_URL ?? FEEDBACK_URL;
   var ui = createState(migrateWorld(loadWorld() || freshWorld()));
   var save = () => saveWorld(ui.W);
@@ -7489,7 +7491,7 @@ button.link {
   }
   function sendStats() {
     if (ui.P.lesson || !statsOn(localStorage)) return;
-    sendRecord(statsUrl(fbUrl), handRecord({ P: ui.P, build: BUILD, coach: coachOn(ui.P) }));
+    sendRecord(statsUrl(fbUrl), handRecord({ P: ui.P, build: BUILD, engine: ENGINE, coach: coachOn(ui.P) }));
   }
   var { openFeedback, refreshFeedbackI18n } = initFeedback({
     BUILD,
